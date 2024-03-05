@@ -3,23 +3,38 @@
     <!--CSS-->
     <style>
         /* Sets border for tables*/
-        table, tr, th {
+        table, tr, th, td {
             border: 1px solid black; 
             border-collapse: collapse;
         }
-        /*Adds Padding*/
-        th{
+        /*Adds padding to tables*/
+        th, td{
             padding-left: 4px;
             padding-right: 4px;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
+
+    <!--School of Business Image-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Wisconsin_School_of_Business_Logo.png" alt="" style="max-width: 33%;">
+    <p></p> <!--Spacing between image and navbar (may delete later)-->
+    <!--Navigation Bar-->
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#employers">Employers</a>
+        <a href="#events">Events</a>
+        <a href="#login">Login</a>
+    </div>
+
 </head>
 <body>
+    <h1>Upcoming Events</h1>
     <!--Table-->
     <table>
+        <!--Heading row-->
         <tr>
             <th>Company</th>
             <th>Event Type</th>
@@ -27,13 +42,24 @@
             <th>Date of Event</th>
             <th>Expected Attendance</th>
         </tr>
+        <!--Event Rows-->
         <tr>
-            <th>Samsung</th>
-            <th>Talk</th>
-            <th>March 7 2023</th>
-            <th>March 10 2023</th>
-            <th>41</th>
+            <td>Standard Oil</td>
+            <td>Speaker Event</td>
+            <td>January 1 1889</td>
+            <td>January 7 1889</td>
+            <td>201</td>
+        </tr>
+        <tr>
+            <td>Samsung</td>
+            <td>Talk</td>
+            <td>March 7 2023</td>
+            <td>March 10 2023</td>
+            <td>41</td>
         </tr>
     </table>
 </body>
+<p></p>
+<button>Accept</button>
+<button>Deny</button>
 </html>
