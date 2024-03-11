@@ -17,6 +17,11 @@
         }
         .column2 {
         }
+        .verticaldiv {
+            display: flex; /* Enables flex layout */
+            flex-direction: column; /* Stacks children vertically */
+            align-items: flex-start; /* Aligns children to the start, not stretching them to the full width */
+        }
     </style>
     
     <!--School of Business Image-->
@@ -46,7 +51,12 @@
         
     </div>
     <div class="column2">
-        Company name column
+        Company name columns
+        <div class="verticaldiv">
+            <h2>Samsung</h2>
+            <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="" width="200px">
+            <button>Register</button>
+        </div>
     </div>
 </div>
 
