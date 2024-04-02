@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employers Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      .custom-navbar {
+        padding: 5px;
+        height: 100px;
+      }
+
+      .custom-navbar .navbar-brand img {
+        max-height: 70px;
+      }
+
+      .background-image {
+        background-image: url("Image /meeting\ room.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 20vh;
+      }
+
+      .text-container {
+        position: absolute;
+        top: 21%;
+        left: 50%; /* Set left position to 50% */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center horizontally and vertically */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.6
+        ); /* Adjust the alpha value (0.6) for transparency */
+        min-height: 10vh;
+        width: calc(70% - 1in);
+      }
+
+      /*CSS for Calendar*/
+      .calendar_body {
+        display: flex;
+        margin-top: 50px;
+        justify-content: center;
+        background-color: #fffcff;
+      }
+      .calendar_button {
+        width: 75px;
+        cursor: pointer;
+        box-shadow: 0px 0px 2px gray;
+        border: none;
+        outline: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+      }
+      #header {
+        padding: 10px;
+        color: #d36c6c;
+        font-size: 26px;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: space-between;
+      }
+      #header button {
+        background-color: #92a1d1;
+      }
+      #container {
+        width: 770px;
+      }
+      #weekdays {
+        width: 100%;
+        display: flex;
+        color: #247ba0;
+      }
+      #weekdays div {
+        width: 100px;
+        padding: 10px;
+      }
+      #calendar {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .day {
+        width: 100px;
+        padding: 10px;
+        height: 100px;
+        cursor: pointer;
+        box-sizing: border-box;
+        background-color: white;
+        margin: 5px;
+        box-shadow: 0px 0px 3px #cbd4c2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .day:hover {
+        background-color: #e8faed;
+      }
+
+      .day + #currentDay {
+        background-color: #e8f4fa;
+      }
+      .event {
+        font-size: 10px;
+        padding: 3px;
+        background-color: #58bae4;
+        color: white;
+        border-radius: 5px;
+        max-height: 55px;
+        overflow: hidden;
+      }
+      .padding {
+        cursor: default !important;
+        background-color: #fffcff !important;
+        box-shadow: none !important;
+      }
+      #newEventModal,
+      #deleteEventModal {
+        display: none;
+        z-index: 20;
+        padding: 25px;
+        background-color: #e8f4fa;
+        box-shadow: 0px 0px 3px black;
+        border-radius: 5px;
+        width: 350px;
+        top: 100px;
+        left: calc(50% - 175px);
+        position: absolute;
+        font-family: sans-serif;
+      }
+      #eventTitleInput {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 25px;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 3px gray;
+      }
+      #eventTitleInput.error {
+        border: 2px solid red;
+      }
+      #cancelButton,
+      #deleteButton {
+        background-color: #d36c6c;
+      }
+      #saveButton,
+      #closeButton {
+        background-color: #92a1d1;
+      }
+      #eventText {
+        font-size: 14px;
+      }
+      #modalBackDrop {
+        display: none;
+        top: 0px;
+        left: 0px;
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <!--Header-->
+    <nav
+      class="navbar custom-navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="Image /logo.jpeg" class="d-inline-block align-top" alt="" />
+          <span class="ml-2 is-size-3" href="Home.html"
+            >Employers Tracking</span
+          >
+        </a>
+
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarNavDropdown"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarNavDropdown" class="navbar-menu">
+        <div class="navbar-start is-size-4">
+          <a class="navbar-item" href="Home.html">Home</a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Employers </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="RegistrationForm.html"
+                >Registration Form</a
+              >
+              <a class="navbar-item" href="Calendar.html">Calendar</a>
+            </div>
+          </div>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Events </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="Events.html">Events Register</a>
+              <a class="navbar-item" href="Engagement.html"
+                >Employers Engagement</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <!-- Sign In Button -->
+          <div class="navbar-item">
+            <div class="dropdown is-bottom">
+              <button
+                class="button"
+                style="background-color: rgba(197, 35, 40, 255); color: white"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu2"
+                href="#"
+              >
+                Sign In
+              </button>
+              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item">Student</a>
+                  <a href="#" class="dropdown-item">Employer</a>
+                  <a href="#" class="dropdown-item">Admit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sign Out Button -->
+          <div class="navbar-item">
+            <button
+              class="button"
+              style="background-color: rgba(197, 35, 40, 255); color: white"
+              href="#"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!--Main-->
+    <main>
+      <section class="section background-image">
+        <div class="text-container pl-6 p-5 has-text-centered">
+          <h1 class="title is-size-1">Welcome to The Employers Tracking!</h1>
+        </div>
+      </section>
+
+      <!--Calandar for Employer to view what they have been signed up-->
+      <section class="calendar_body">
+        <div id="container">
+          <div id="header">
+            <div id="monthDisplay"></div>
+            <div>
+              <button class="calendar_button" id="backButton">Back</button>
+              <button class="calendar_button" id="nextButton">Next</button>
+            </div>
+          </div>
+          <div id="weekdays">
+            <div>Sunday</div>
+            <div>Monday</div>
+            <div>Tuesday</div>
+            <div>Wednesday</div>
+            <div>Thursday</div>
+            <div>Friday</div>
+            <div>Saturday</div>
+          </div>
+          <div id="calendar"></div>
+        </div>
+        <div id="newEventModal">
+          <h2>New Event</h2>
+
+          <input id="eventTitleInput" placeholder="Event Title" />
+
+          <button id="saveButton">Save</button>
+          <button id="cancelButton">Cancel</button>
+        </div>
+
+        <div id="deleteEventModal">
+          <h2>Event</h2>
+
+          <p id="eventText"></p>
+
+          <button id="deleteButton">Delete</button>
+          <button id="closeButton">Close</button>
+        </div>
+
+        <div id="modalBackDrop"></div>
+        <!--JS for Calendar-->
+      </section>
+    </main>
+    <!--Footer-->
+    <footer></footer>
+    <!--Sign up Model-->
+    <!--Sign in Model-->
+    <script src="./Script.js"></script>
+  </body>
+</html>

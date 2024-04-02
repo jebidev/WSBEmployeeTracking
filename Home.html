@@ -12,8 +12,6 @@
       src="https://kit.fontawesome.com/8a80b728dc.js"
       crossorigin="anonymous"
     ></script>
-    <script src="./Calendar.js"></script>
-
     <style>
       .custom-navbar {
         padding: 5px;
@@ -25,29 +23,26 @@
       }
 
       .background-image {
-        background-image: url("Image /school\ area.jpeg");
+        background-image: url("Image /Business\ Building.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 20vh;
+        min-height: 70vh;
       }
 
       .text-container {
         position: absolute;
-        top: 21%;
-        left: 50%; /* Set left position to 50% */
-        transform: translate(
-          -50%,
-          -50%
-        ); /* Center horizontally and vertically */
+        top: 46%; /* Adjust as needed to vertically center the text */
+        left: 0%; /* Adjust to move the text container to the left */
+        transform: translateY(-50%);
         background-color: rgba(
           255,
           255,
           255,
           0.6
-        ); /* Adjust the alpha value (0.6) for transparency */
-        min-height: 10vh;
-        width: calc(70% - 1in);
+        ); /* Adjust the alpha value (0.7) for transparency */
+        min-height: 60vh;
+        width: calc(70% - 2in);
       }
     </style>
   </head>
@@ -61,9 +56,7 @@
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
           <img src="Image /logo.jpeg" class="d-inline-block align-top" alt="" />
-          <span class="ml-2 is-size-3" href="Home.html"
-            >Employers Tracking</span
-          >
+          <span class="ml-2 is-size-3" href="#">Employers Tracking</span>
         </a>
 
         <a
@@ -146,13 +139,14 @@
     <!--Main-->
     <main>
       <section class="section background-image">
-        <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="title is-size-1">Time to Welcome Employers!</h1>
+        <div class="text-container pl-6 p-6">
+          <h1 class="title is-size-1">Welcome to The Employers Tracking!</h1>
+          <p class="subtitle is-size-3">About the Website Goes Here</p>
         </div>
       </section>
-      <!--Employers Signed up the event filter-->
+
       <section>
-        <h1 class="title is-size-2 p-5">Register Events</h1>
+        <h1 class="title is-size-2 p-5">All Events</h1>
       </section>
 
       <section>
@@ -162,26 +156,15 @@
             <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
               <h1 class="is-size-3 has-text-white">Filter</h1>
               <form action="#">
-                <!-- Checkbox for accept events -->
+                <!-- Checkbox for saved events -->
                 <div class="field">
                   <input
                     type="checkbox"
-                    id="acceptEvents"
+                    id="savedEvents"
                     class="is-checkradio"
                   />
-                  <label for="AcceptedEvents" class="has-text-white"
-                    >Events Accepted</label
-                  >
-                </div>
-
-                <div class="field">
-                  <input
-                    type="checkbox"
-                    id="DeclineEvents"
-                    class="is-checkradio"
-                  />
-                  <label for="DeclineEvents" class="has-text-white"
-                    >Events Declined</label
+                  <label for="savedEvents" class="has-text-white"
+                    >Events You Saved</label
                   >
                 </div>
 
@@ -203,16 +186,49 @@
                     <div class="select is-fullwidth">
                       <select>
                         <option>Select a company...</option>
-                        <option>Company A</option>
-                        <option>Company B</option>
-                        <option>Company C</option>
+                        <option>Ey</option>
+                        <option>KPMG</option>
+                        <option>PWC</option>
+                        <option>Deloitte</option>
+                        <option>RSM</option>
+                        <option>BDO</option>
+                        <option>Wipfli</option>
+                        <option>Baker Tilly</option>
                         <!-- Add more options as needed -->
                       </select>
                     </div>
                   </div>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">EY</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">KPMG</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">PWC</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Deloitte</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Checkbox for event types -->
+                <!-- Checkbox for event category -->
                 <div class="field">
                   <label class="label has-text-white">Category</label>
                   <div class="control">
@@ -242,6 +258,63 @@
                         </label>
                       </div>
                       <!-- Add more checkboxes for different event types -->
+                    </div>
+                  </div>
+                </div>
+
+                <!--Checkbox for Medium-->
+                <div class="field">
+                  <label class="label has-text-white">Medium</label>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Virtual</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">In-Person</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date picker -->
+                <div class="field">
+                  <label class="label has-text-white">Date</label>
+                  <div class="control">
+                    <input type="date" class="input" />
+                  </div>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Upcoming Events</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Today</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Next 20 Days</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Past Events</span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -292,7 +365,7 @@
                       <span class="has-text-weight-semibold">Date:</span>
                       March 27, 2024
                     </p>
-                    <!--Accept and Decline Button-->
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -300,20 +373,10 @@
                         color: white;
                       "
                     >
-                      Accept
-                    </button>
-                    <button
-                      class="button is-primary"
-                      style="
-                        background-color: rgba(197, 35, 40, 255);
-                        color: white;
-                      "
-                    >
-                      Decline
+                      Save
                     </button>
                   </div>
                 </div>
-
                 <div class="box">
                   <div class="content">
                     <!--Company name and logo-->
@@ -343,7 +406,7 @@
                       <span class="has-text-weight-semibold">Date:</span>
                       March 27, 2024
                     </p>
-                    <!--Accept and Decline Button-->
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -351,8 +414,40 @@
                         color: white;
                       "
                     >
-                      Accept
+                      Save
                     </button>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -360,7 +455,7 @@
                         color: white;
                       "
                     >
-                      Decline
+                      Save
                     </button>
                   </div>
                 </div>
@@ -397,7 +492,7 @@
                       <span class="has-text-weight-semibold">Date:</span>
                       March 27, 2024
                     </p>
-                    <!--Accept and Decline Button-->
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -405,16 +500,7 @@
                         color: white;
                       "
                     >
-                      Accept
-                    </button>
-                    <button
-                      class="button is-primary"
-                      style="
-                        background-color: rgba(197, 35, 40, 255);
-                        color: white;
-                      "
-                    >
-                      Decline
+                      Save
                     </button>
                   </div>
                 </div>
@@ -447,7 +533,7 @@
                       <span class="has-text-weight-semibold">Date:</span>
                       March 27, 2024
                     </p>
-                    <!--Accept and Decline Button-->
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -455,8 +541,40 @@
                         color: white;
                       "
                     >
-                      Accept
+                      Save
                     </button>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Save Button-->
                     <button
                       class="button is-primary"
                       style="
@@ -464,7 +582,7 @@
                         color: white;
                       "
                     >
-                      Decline
+                      Save
                     </button>
                   </div>
                 </div>
