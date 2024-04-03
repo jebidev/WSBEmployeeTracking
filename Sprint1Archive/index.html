@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Column Layout</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 3fr; /* Creates two columns*/
+        }
+        /* Just for visual differentiation */
+        .column1, .column2 {
+            padding: 2px;
+        }
+        .column1 {
+        }
+        .column2 {
+        }
+        .verticaldiv {
+            display: flex; /* Enables flex layout */
+            flex-direction: column; /* Stacks children vertically */
+            align-items: flex-start; /* Aligns children to the start, not stretching them to the full width */
+            gap: 10px; /* Space between elements inside the verticaldiv */
+        }
+    </style>
+    
+    <!--School of Business Image-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Wisconsin_School_of_Business_Logo.png" alt="" style="max-width: 33%;">
+    <p></p> <!--Spacing between image and navbar (may delete later)-->
+    <!--Navigation Bar-->
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#employers">Employers</a>
+        <a href="#events">Events</a>
+        <button>login</button>
+    </div>
+</head>
+<body>
+
+<div class="container">
+    <div class="column1">
+        Search column
+        <form action="">
+            <label for="fname">Search:</label><br>
+            <input type="text" id="fname" name="fname"><br>
+            <input type="checkbox" id="subscribe">
+            <label for="subscribe">Employer 1</label><br>
+            <label for="date">Date</label><br>
+            <input type="date" id="date"><br>
+        
+    </div>
+    <div class="column2" id="companies">
+        Company name columns
+        <div class="verticaldiv">
+            <h2>Samsung</h2>
+            <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="" width="200px">
+            <button>Register</button>
+        </div>
+        <div class="verticaldiv">
+            <h2>Microsoft</h2>
+            <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt="" width="200px">
+            <button>Register</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

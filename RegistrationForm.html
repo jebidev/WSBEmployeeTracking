@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employers Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./Calendar.js"></script>
+
+    <style>
+      .custom-navbar {
+        padding: 5px;
+        height: 100px;
+      }
+
+      .custom-navbar .navbar-brand img {
+        max-height: 70px;
+      }
+
+      .background-image {
+        background-image: url("Image /Career\ Fair.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 20vh;
+      }
+
+      .text-container {
+        position: absolute;
+        top: 21%;
+        left: 50%; /* Set left position to 50% */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center horizontally and vertically */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.6
+        ); /* Adjust the alpha value (0.6) for transparency */
+        min-height: 10vh;
+        width: calc(70% - 1in);
+      }
+      .main-content {
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #dddddd;
+      }
+      button {
+        padding: 5px 15px;
+        margin: 5px;
+      }
+
+      .form-container {
+        background-color: #f9f9f9;
+        padding: 30px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #666;
+        font-weight: bold;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="date"],
+      .form-group input[type="number"],
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Added for better box sizing */
+      }
+
+      .form-group input[type="checkbox"] {
+        margin-right: 10px;
+      }
+
+      .form-group label.checkbox-label {
+        display: inline-block;
+        margin-right: 20px;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .submit-btn {
+        background-color: #a00000; /* Adjust the color to match the screenshot */
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .submit-btn:hover {
+        background-color: #880000;
+        transition: background-color 0.3s;
+      }
+      .seating-choice-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .seating-choice {
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        width: 30%;
+        text-align: center;
+        cursor: pointer;
+        transition: border 0.3s;
+      }
+
+      .seating-choice img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .seating-choice.selected {
+        border-color: #a00000; /* Adjust the color to match the screenshot */
+      }
+
+      /* Hide the actual radio button */
+      .seating-choice input[type="radio"] {
+        display: none;
+      }
+
+      .seating-choice label {
+        display: block;
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // Add click event to each seating choice
+        document.querySelectorAll(".seating-choice").forEach((choice) => {
+          choice.addEventListener("click", function () {
+            // Remove 'selected' from all choices
+            document
+              .querySelectorAll(".seating-choice")
+              .forEach((c) => c.classList.remove("selected"));
+
+            // Add 'selected' to clicked choice
+            this.classList.add("selected");
+
+            // Check the radio button inside the clicked choice
+            this.querySelector('input[type="radio"]').checked = true;
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!--Header-->
+    <nav
+      class="navbar custom-navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="Image /logo.jpeg" class="d-inline-block align-top" alt="" />
+          <span class="ml-2 is-size-3" href="Home.html"
+            >Employers Tracking</span
+          >
+        </a>
+
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarNavDropdown"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarNavDropdown" class="navbar-menu">
+        <div class="navbar-start is-size-4">
+          <a class="navbar-item" href="Home.html">Home</a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Employers </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="RegistrationForm.html"
+                >Registration Form</a
+              >
+              <a class="navbar-item" href="Calendar.html">Calendar</a>
+            </div>
+          </div>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Events </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="Events.html">Events Register</a>
+              <a class="navbar-item" href="Engagement.html"
+                >Employers Engagement</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <!-- Sign In Button -->
+          <div class="navbar-item">
+            <div class="dropdown is-bottom">
+              <button
+                class="button"
+                style="background-color: rgba(197, 35, 40, 255); color: white"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu2"
+                href="#"
+              >
+                Sign In
+              </button>
+              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item">Student</a>
+                  <a href="#" class="dropdown-item">Employer</a>
+                  <a href="#" class="dropdown-item">Admit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sign Out Button -->
+          <div class="navbar-item">
+            <button
+              class="button"
+              style="background-color: rgba(197, 35, 40, 255); color: white"
+              href="#"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!--Main-->
+    <main>
+      <section class="section background-image">
+        <div class="text-container pl-6 p-5 has-text-centered">
+          <h1 class="title is-size-1">Register Your Events Here!</h1>
+        </div>
+      </section>
+      <!--Employers Signed up the event filter-->
+      <section>
+        <h1 class="title is-size-2 p-5">Registration Form</h1>
+      </section>
+
+      <section>
+        <div class="form-container">
+          <form>
+            <div class="form-group">
+              <label for="employerContactNumber"
+                >Employer Contact Number:</label
+              >
+              <input
+                type="tel"
+                id="employerContactNumber"
+                name="employerContactNumber"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                placeholder="123-456-7890"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="eventName">Event Name:</label>
+              <input type="text" id="eventName" name="eventName" />
+            </div>
+
+            <div class="form-group">
+              <label for="eventName">Description of the Event:</label>
+              <input type="text" id="eventName" name="eventName" />
+            </div>
+
+            <div class="form-group">
+              <label for="eventDate">Event Date:</label>
+              <input type="date" id="eventDate" name="eventDate" />
+            </div>
+
+            <div class="form-group">
+              <label for="eventTopic">Event Category</label>
+              <select id="eventTopic" name="eventTopic">
+                <!-- Topics provided by the user -->
+                <option value="topic1">Select a event category</option>
+                <option value="topic1">Hiring</option>
+                <option value="topic2">Office Hour</option>
+                <option value="topic3">Networking</option>
+                <option value="topic3">Info Sessions</option>
+              </select>
+            </div>
+
+            <section style="display: flex; justify-content: space-between">
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="location">Location:</label>
+                <select id="location" name="location" style="width: 100%">
+                  <!-- Locations provided by the user -->
+                  <option value="location1">Location 1</option>
+                  <option value="location2">Location 2</option>
+                  <option value="location3">Location 3</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="eventCapacity">Event Capacity:</label>
+                <input
+                  type="number"
+                  id="eventCapacity"
+                  name="eventCapacity"
+                  style="width: 100%"
+                />
+              </div>
+            </section>
+
+            <div
+              class="form-group"
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+              "
+            >
+              <!-- Beverages Column -->
+              <div>
+                <label style="font-weight: bold">Beverages:</label>
+                <div class="checkbox-group">
+                  <!-- Include your beverage options here -->
+                </div>
+              </div>
+
+              <!-- Meals Column -->
+              <div>
+                <label style="font-weight: bold">Meals:</label>
+                <div class="checkbox-group">
+                  <!-- Include your meal options here -->
+                </div>
+              </div>
+
+              <!-- Snacks Column -->
+              <div>
+                <label style="font-weight: bold">Snacks:</label>
+                <div class="checkbox-group">
+                  <!-- Include your snack options here -->
+                </div>
+              </div>
+
+              <!-- Disposables Column -->
+              <div>
+                <label style="font-weight: bold">Disposables:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="beverage-napkins"
+                      />
+                      Beverage Napkins
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="cutlery-and-napkin-kits"
+                      />
+                      Cutlery and Napkin Kits
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="disposable-tablecloth"
+                      />
+                      Disposable Tablecloth
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="small-plates"
+                      />
+                      Small Plates (6")
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="large-plates"
+                      />
+                      Large Plates (10")
+                    </label>
+                  </li>
+
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="serving-utensils-serving-spoons"
+                      />
+                      Serving Spoons
+                    </label>
+                  </li>
+                  <!-- Additional disposable options can be added here -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventCapacity">Seating Arrangement:</label>
+              <div class="seating-choice-container">
+                <!-- Seating choice 1 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    name="seatingArrangement"
+                    value="arrangement1"
+                    required
+                  />
+                  <img src="path_to_image1.jpg" alt="Arrangement 1" />
+                  Arrangement 1
+                </label>
+
+                <!-- Seating choice 2 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    name="seatingArrangement"
+                    value="arrangement2"
+                    required
+                  />
+                  <img src="path_to_image2.jpg" alt="Arrangement 2" />
+                  Arrangement 2
+                </label>
+
+                <!-- Seating choice 3 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    name="seatingArrangement"
+                    value="arrangement3"
+                    required
+                  />
+                  <img src="path_to_image3.jpg" alt="Arrangement 3" />
+                  Arrangement 3
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+          </form>
+        </div>
+      </section>
+    </main>
+    <!--Footer-->
+    <footer></footer>
+    <!--Sign up Model-->
+    <!--Sign in Model-->
+  </body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employers Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./Calendar.js"></script>
+
+    <style>
+      .custom-navbar {
+        padding: 5px;
+        height: 100px;
+      }
+
+      .custom-navbar .navbar-brand img {
+        max-height: 70px;
+      }
+
+      .background-image {
+        background-image: url("Image /school\ area.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 20vh;
+      }
+
+      .text-container {
+        position: absolute;
+        top: 21%;
+        left: 50%; /* Set left position to 50% */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center horizontally and vertically */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.6
+        ); /* Adjust the alpha value (0.6) for transparency */
+        min-height: 10vh;
+        width: calc(70% - 1in);
+      }
+    </style>
+  </head>
+  <body>
+    <!--Header-->
+    <nav
+      class="navbar custom-navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="Image /logo.jpeg" class="d-inline-block align-top" alt="" />
+          <span class="ml-2 is-size-3" href="Home.html"
+            >Employers Tracking</span
+          >
+        </a>
+
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarNavDropdown"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarNavDropdown" class="navbar-menu">
+        <div class="navbar-start is-size-4">
+          <a class="navbar-item" href="Home.html">Home</a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Employers </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="RegistrationForm.html"
+                >Registration Form</a
+              >
+              <a class="navbar-item" href="Calendar.html">Calendar</a>
+            </div>
+          </div>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Events </a>
+
+            <div class="navbar-dropdown is-size-6">
+              <a class="navbar-item" href="Events.html">Events Register</a>
+              <a class="navbar-item" href="Engagement.html"
+                >Employers Engagement</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <!-- Sign In Button -->
+          <div class="navbar-item">
+            <div class="dropdown is-bottom">
+              <button
+                class="button"
+                style="background-color: rgba(197, 35, 40, 255); color: white"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu2"
+                href="#"
+              >
+                Sign In
+              </button>
+              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item">Student</a>
+                  <a href="#" class="dropdown-item">Employer</a>
+                  <a href="#" class="dropdown-item">Admit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sign Out Button -->
+          <div class="navbar-item">
+            <button
+              class="button"
+              style="background-color: rgba(197, 35, 40, 255); color: white"
+              href="#"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!--Main-->
+    <main>
+      <section class="section background-image">
+        <div class="text-container pl-6 p-5 has-text-centered">
+          <h1 class="title is-size-1">Time to Welcome Employers!</h1>
+        </div>
+      </section>
+      <!--Employers Signed up the event filter-->
+      <section>
+        <h1 class="title is-size-2 p-5">Register Events</h1>
+      </section>
+
+      <section>
+        <div class="columns">
+          <!-- Filter Sidebar -->
+          <div class="column is-3">
+            <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
+              <h1 class="is-size-3 has-text-white">Filter</h1>
+              <form action="#">
+                <!-- Checkbox for accept events -->
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="acceptEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="AcceptedEvents" class="has-text-white"
+                    >Events Accepted</label
+                  >
+                </div>
+
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="DeclineEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="DeclineEvents" class="has-text-white"
+                    >Events Declined</label
+                  >
+                </div>
+
+                <!-- Search -->
+                <div class="field">
+                  <label class="label has-text-white">Search</label>
+                  <div class="control has-icons-left">
+                    <input type="text" class="input" placeholder="Search..." />
+                    <span class="icon is-left">
+                      <i class="fas fa-search"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Dropdown for company names -->
+                <div class="field">
+                  <label class="label has-text-white">Company</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select>
+                        <option>Select a company...</option>
+                        <option>Company A</option>
+                        <option>Company B</option>
+                        <option>Company C</option>
+                        <!-- Add more options as needed -->
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Checkbox for event types -->
+                <div class="field">
+                  <label class="label has-text-white">Category</label>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Hiring</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Office Hour</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Networking</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Info Sessions </span>
+                        </label>
+                      </div>
+                      <!-- Add more checkboxes for different event types -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="field">
+                  <div class="control">
+                    <button type="submit" class="button is-white is-fullwidth">
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Events Content -->
+          <div class="column is-9">
+            <div class="columns">
+              <div class="column is-6">
+                <!--First Column-->
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Accept and Decline Button-->
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Accept
+                    </button>
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
+
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Accept and Decline Button-->
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Accept
+                    </button>
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="column is-6">
+                <!--Second Column-->
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Accept and Decline Button-->
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Accept
+                    </button>
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="content">
+                    <!--Company name and logo-->
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-48x48">
+                          <img src="company_logo.jpg" alt="Company Logo" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">Company Name</p>
+                      </div>
+                    </div>
+                    <!--Event Name-->
+                    <p class="title is-5 p-5">Event Name</p>
+                    <!--Event Description-->
+                    <p>Description of the event goes here.</p>
+                    <!--Event and Medium Type-->
+                    <div class="field is-grouped">
+                      <p class="Type">
+                        <span class="tag is-light">Virtual/In-Person</span>
+                        <span class="tag is-light">Event Type</span>
+                      </p>
+                    </div>
+                    <!--Event Date-->
+                    <p>
+                      <span class="has-text-weight-semibold">Date:</span>
+                      March 27, 2024
+                    </p>
+                    <!--Accept and Decline Button-->
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Accept
+                    </button>
+                    <button
+                      class="button is-primary"
+                      style="
+                        background-color: rgba(197, 35, 40, 255);
+                        color: white;
+                      "
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!--Footer-->
+    <footer></footer>
+    <!--Sign up Model-->
+    <!--Sign in Model-->
+  </body>
+</html>

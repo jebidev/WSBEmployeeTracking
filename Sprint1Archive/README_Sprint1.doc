@@ -1,0 +1,47 @@
+Develop at least 2 user stories. For example, “As a user, I need a nice, interactive user interface so that I enjoy using the site”
+    - Story 1 - As an admin user (WSB staff), I need an interface that allows for easy access to all events, along with a way to accept or deny upcoming events. I would like to be able to see which employers are coming to what events, and how often they have attended events at WSB. This should be an easy to follow interface that also allows us to update any upcoming events, and view attendance for these events. This will benefit us that we have easy access to all information regarding events hosted by employers, along with quick acceptance and denial of events.
+    - Story 2 - As a student user, I want to be able to see a nice event calendar for the Business School. The GUI should be easy to navigate and show me all the info about employers and events on a simple layout.
+    - Story 3 - As an employer user, I want to be able to edit add/edit event details such as date, time, location, and description to keep the information accurate. I also want to be able to communicate with my attendees through a notification system that is clean and simple. 
+
+GitHub Link: https://github.com/jebidev/Sprint1
+
+Trello Link: https://trello.com/b/y2OQPaTm/is424-team-project
+
+Daily Standups:
+March 4, 2024
+What did you do yesterday?
+    - created justinmind prototype to get a better understanding of what we are going to be creating and have a visual representation
+What are you planning to do today?
+    - discussing what we all need to do tomorrow and set up basic code for next couple of days
+Any problems are you facing?
+    - exam week, conflicting schedule
+
+March 8, 2024
+What did you do yesterday?
+    - took the exam! We also completed our tasks for generating the html for the registration and the admin view table. we prototyped the student home page
+What are you planning to do today?
+    - We will complete the login page, and student home page with a calendar
+Any problems are you facing?
+    - lack of motivation due to just having the exam, tight schedule with completion and having other work due.
+
+March 9, 2024
+What did you do yesterday?
+    - created homepage gui, signin page
+What are you planning to do today?
+    - sprint review and review other teams work
+Any problems are you facing?
+    - none, work is completed
+
+Sprint Review
+What did you learn from doing our first sprint?
+    - Coding collaboratively can be extremely complicated when everyone has separate tasks to work on that work off of prior work. We also had to do a lot of time management to make sure all tasks could be completed in time. We also got our first hands-on experience working with GitHub collaboratively.
+What did go well? Why?
+    - Coding went well, especially using VSCode, and we each could create our separate pages that we had to work on. This went well because we were all able to work off of each others work, and view it and give feedback.
+What didn’t go well? Why not?
+    - Early in the sprint, we had time management issues, particularly due to exams and conflicting time availabilities to work on the project. This can be extremely difficult, due to everyone having other classes, work, and other extracurriculars going on that overlap.
+How can you make things better next time?
+    - Have a fixed time every day to do the daily standup meetings; also set timelines further out so none of the tasks feel as rushed.
+Are you satisfied with what you already completed?
+    - We are satisfied with what we have created so far; our first drafts of different pages has been well-received, and we feel like we have a better understanding of Agile practices. We are excited to start making the pages more dynamic as we move forward with the project.
+Which group was invited? What are your observations/notes? Everybody was present?
+    - We reviewed Group 11 and their project about Habitat for Humanity. We compared the Figma design to the HTML page they developed. We really liked the design of the app, and how they utilized photos throughtout the page. We also noticed there were some spelling errors on the page, such as "Sign in" is "Sing in". They have not started the JS portion, but the website was well designed and easy to follow. We cannot wait to see how the final result turns out. The entire team was present to showcase their design.
