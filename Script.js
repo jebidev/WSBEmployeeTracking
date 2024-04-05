@@ -148,5 +148,6 @@ function initButtons() {
 initButtons();
 load();
 
-// document.addEventListener("click", () => {
-//   const saveButtons = document.querySelectorAll(".save-event-button");
+document.querySelector("#save-event-button1").addEventListener("click", () => {
+  console.log("HIII");
+});
