@@ -606,6 +606,88 @@
     >
       <span>hi </span>
     </button>
-    <script src="Script.js"></script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employers Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .section {
+        display: none;
+      }
+      /* Additional styles from your files can be merged here */
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar custom-navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <!-- Navbar content from your files -->
+    </nav>
+
+    <!-- Home Section -->
+    <div id="homeSection" class="section is-active">
+      <!-- Content from Home.html -->
+    </div>
+
+    <!-- Calendar Section -->
+    <div id="calendarSection" class="section">
+      <!-- Content from Calendar.html -->
+    </div>
+
+    <!-- Engagement Section -->
+    <div id="engagementSection" class="section">
+      <!-- Content from Engagement.html -->
+    </div>
+
+    <!-- Events Section -->
+    <div id="eventsSection" class="section">
+      <!-- Content from Events.html -->
+    </div>
+
+    <!-- Registration Form Section -->
+    <div id="registrationFormSection" class="section">
+      <!-- Content from RegistrationForm.html -->
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".section");
+        const navLinks = document.querySelectorAll(".navbar-item");
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetSection = document.querySelector(
+              this.getAttribute("href")
+            );
+            sections.forEach((section) => {
+              section.style.display = "none";
+            });
+
+            targetSection.style.display = "block";
+          });
+        });
+
+        // Initially display the home section
+        document.getElementById("homeSection").style.display = "block";
+      });
+    </script>
+    <script src="./Script.js"></script>
   </body>
 </html>
