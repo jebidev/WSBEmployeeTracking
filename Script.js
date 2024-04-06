@@ -147,5 +147,3 @@ function initButtons() {
 
 initButtons();
 load();
-
-
