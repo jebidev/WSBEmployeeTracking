@@ -47,6 +47,157 @@
       #registrationContainer {
             display: none;
         }
+      .background-image {
+        background-image: url("Image /Career\ Fair.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 20vh;
+      }
+
+      .text-container {
+        position: absolute;
+        top: 21%;
+        left: 50%; /* Set left position to 50% */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center horizontally and vertically */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.6
+        ); /* Adjust the alpha value (0.6) for transparency */
+        min-height: 10vh;
+        width: calc(70% - 1in);
+      }
+      .main-content {
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #dddddd;
+      }
+      button {
+        padding: 5px 15px;
+        margin: 5px;
+      }
+
+      .form-container {
+        background-color: #f9f9f9;
+        padding: 30px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #666;
+        font-weight: bold;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="date"],
+      .form-group input[type="number"],
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Added for better box sizing */
+      }
+
+      .form-group input[type="checkbox"] {
+        margin-right: 10px;
+      }
+
+      .form-group label.checkbox-label {
+        display: inline-block;
+        margin-right: 20px;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .submit-btn {
+        background-color: #a00000; /* Adjust the color to match the screenshot */
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .submit-btn:hover {
+        background-color: #880000;
+        transition: background-color 0.3s;
+      }
+      .seating-choice-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .seating-choice {
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        width: 30%;
+        text-align: center;
+        cursor: pointer;
+        transition: border 0.3s;
+      }
+
+      .seating-choice img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .seating-choice.selected {
+        border-color: #a00000; /* Adjust the color to match the screenshot */
+      }
+
+      /* Hide the actual radio button */
+      .seating-choice input[type="radio"] {
+        display: none;
+      }
+
+      .seating-choice label {
+        display: block;
+        cursor: pointer;
+      }
     </style>
 </head>
 <body>
@@ -59,7 +210,7 @@
         <div class="navbar-brand">
           <a class="navbar-item" href="#">
             <img src="Image /logo.jpeg" class="d-inline-block align-top" alt="" />
-            <span class="ml-2 is-size-3" href="#">Employers Tracking</span>
+            <span class="ml-2 is-size-3" href="#", id="homeNavItem">Employers Tracking</span>
           </a>
   
           <a
@@ -76,9 +227,7 @@
         </div>
   
         <div id="navbarNavDropdown" class="navbar-menu">
-          <div class="navbar-start is-size-4">
-            <a class="navbar-item" href="#" id="homeNavItem">Home</a>
-  
+          <div class="navbar-start is-size-4">  
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link"> Employers </a>
   
