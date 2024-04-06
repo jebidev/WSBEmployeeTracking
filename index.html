@@ -22,27 +22,15 @@
         max-height: 70px;
       }
 
-      .background-image {
+      .background-image-home {
         background-image: url("Image/Business Building.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         min-height: 70vh;
       }
-
-      .text-container {
-        position: absolute;
-        top: 46%; /* Adjust as needed to vertically center the text */
-        left: 0%; /* Adjust to move the text container to the left */
-        transform: translateY(-50%);
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.6
-        ); /* Adjust the alpha value (0.7) for transparency */
-        min-height: 60vh;
-        width: calc(70% - 2in);
+      #registrationOpener {
+        display: none;
       }
       #registrationContainer {
             display: none;
@@ -58,9 +46,14 @@
         }
         #employerEngagementContainer {
             display: none;
+        }
+        #calendarOpener {
+            display: none;
         }        
-
-      .background-image {
+        #calendarContainer {
+            display: none
+        }
+      .background-image-registration {
         background-image: url("Image/Career Fair.jpeg");
         background-size: cover;
         background-position: center;
@@ -211,32 +204,14 @@
         display: block;
         cursor: pointer;
       }
-      .background-image {
+      .background-image-eventsReg {
         background-image: url("Image/school area.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         height: 20vh;
       }
-
-      .text-container {
-        position: absolute;
-        top: 21%;
-        left: 50%; /* Set left position to 50% */
-        transform: translate(
-          -50%,
-          -50%
-        ); /* Center horizontally and vertically */
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.6
-        ); /* Adjust the alpha value (0.6) for transparency */
-        min-height: 10vh;
-        width: calc(70% - 1in);
-      }
-      .background-image {
+      .background-image-engage {
         background-image: url("Image/events.jpeg");
         background-size: cover;
         background-position: center;
@@ -244,22 +219,140 @@
         height: 20vh;
       }
 
-      .text-container {
+      .background-image-calendar {
+        background-image: url("Image/meeting room.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 20vh;
+      }
+      /*CSS for Calendar*/
+      .calendar_body {
+        display: flex;
+        margin-top: 50px;
+        justify-content: center;
+        background-color: #fffcff;
+      }
+      .calendar_button {
+        width: 75px;
+        cursor: pointer;
+        box-shadow: 0px 0px 2px gray;
+        border: none;
+        outline: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+      }
+      #header {
+        padding: 10px;
+        color: #d36c6c;
+        font-size: 26px;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: space-between;
+      }
+      #header button {
+        background-color: #92a1d1;
+      }
+      #container {
+        width: 770px;
+      }
+      #weekdays {
+        width: 100%;
+        display: flex;
+        color: #247ba0;
+      }
+      #weekdays div {
+        width: 100px;
+        padding: 10px;
+      }
+      #calendar {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .day {
+        width: 100px;
+        padding: 10px;
+        height: 100px;
+        cursor: pointer;
+        box-sizing: border-box;
+        background-color: white;
+        margin: 5px;
+        box-shadow: 0px 0px 3px #cbd4c2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .day:hover {
+        background-color: #e8faed;
+      }
+
+      .day + #currentDay {
+        background-color: #e8f4fa;
+      }
+      .event {
+        font-size: 10px;
+        padding: 3px;
+        background-color: #58bae4;
+        color: white;
+        border-radius: 5px;
+        max-height: 55px;
+        overflow: hidden;
+      }
+      .padding {
+        cursor: default !important;
+        background-color: #fffcff !important;
+        box-shadow: none !important;
+      }
+      #newEventModal,
+      #deleteEventModal {
+        display: none;
+        z-index: 20;
+        padding: 25px;
+        background-color: #e8f4fa;
+        box-shadow: 0px 0px 3px black;
+        border-radius: 5px;
+        width: 350px;
+        top: 100px;
+        left: calc(50% - 175px);
         position: absolute;
-        top: 21%;
-        left: 50%; /* Set left position to 50% */
-        transform: translate(
-          -50%,
-          -50%
-        ); /* Center horizontally and vertically */
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.6
-        ); /* Adjust the alpha value (0.6) for transparency */
-        min-height: 10vh;
-        width: calc(70% - 1in);
+        font-family: sans-serif;
+      }
+      #eventTitleInput {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 25px;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 3px gray;
+      }
+      #eventTitleInput.error {
+        border: 2px solid red;
+      }
+      #cancelButton,
+      #deleteButton {
+        background-color: #d36c6c;
+      }
+      #saveButton,
+      #closeButton {
+        background-color: #92a1d1;
+      }
+      #eventText {
+        font-size: 14px;
+      }
+      #modalBackDrop {
+        display: none;
+        top: 0px;
+        left: 0px;
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
       }
     </style>
 </head>
@@ -297,7 +390,7 @@
               <div class="navbar-dropdown is-size-6">
                 <a class="navbar-item" href="#" id="registrationNavItem">Registration Form</a
                 >
-                <a class="navbar-item">Calendar</a>
+                <a class="navbar-item" href="#" id="calendarNavItem">Calendar</a>
               </div>
             </div>
   
@@ -351,7 +444,7 @@
 
     <!-- Main content -->
     <main>
-        <section class="section background-image" id="openingSection">
+        <section class="section background-image-home" id="openingSection">
             <div class="text-container pl-6 p-6">
                 <h1 class="title is-size-1">Welcome to The Employers Tracking!</h1>
                 <p class="subtitle is-size-3">About the Website Goes Here</p>
@@ -801,6 +894,11 @@
               </div>
         </section>
  <!-- Registration Form -->
+ <section class="section background-image-registration" id="registrationOpener">
+    <div class="text-container pl-6 p-5 has-text-centered">
+      <h1 class="title is-size-1">Register Your Events Here!</h1>
+    </div>
+  </section>
  <section class="section" id="registrationContainer">
     <h1 class="title is-size-2 p-5">Registration Form</h1>
     <div class="form-container">
@@ -1022,7 +1120,7 @@
     </div>
 </section>
 <!-- Events Page -->
-<section class="section background-image" id="eventsRegisterOpener">
+<section class="section background-image-eventsReg" id="eventsRegisterOpener">
     <div class="text-container pl-6 p-5 has-text-centered">
         <h1 class="title is-size-1">Time to Welcome Employers!</h1>
     </div>
@@ -1348,14 +1446,13 @@
               </div>
             </div>
           </section>
-
-<section class="section background-image" id="employerEngagementOpener">
+<section class="section background-image-engage" id="employerEngagementOpener">
     <div class="text-container pl-6 p-5 has-text-centered">
         <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
-        <h1 class="title is-size-2 p-5">Employers Engagement Visualization</h1>
     </div>
 </section>
 <section class="section" id="employerEngagementContainer">
+    <h1 class="title is-size-2 p-5">Employers Engagement Visualization</h1>
     <div class="columns">
         <!-- Filter Sidebar -->
         <div class="column is-3">
@@ -1432,7 +1529,53 @@
         </div>
       </div>
 </section>
+<!-- Calendar Page -->
+<section class="section background-image-calendar" id="calendarOpener">
+    <div class="text-container pl-6 p-5 has-text-centered">
+      <h1 class="title is-size-1">Welcome to The Employers Tracking!</h1>
+    </div>
+  </section>
+  <section class="calendar_body", id="calendarContainer">
+    <div id="container">
+      <div id="header"> 
+        <div id="monthDisplay"></div>
+        <div>
+          <button class="calendar_button" id="backButton">Back</button>
+          <button class="calendar_button" id="nextButton">Next</button>
+        </div>
+      </div>
+      <div id="weekdays">
+        <div>Sunday</div>
+        <div>Monday</div>
+        <div>Tuesday</div>
+        <div>Wednesday</div>
+        <div>Thursday</div>
+        <div>Friday</div>
+        <div>Saturday</div>
+      </div>
+      <div id="calendar"></div>
+    </div>
+    <div id="newEventModal">
+      <h2>New Event</h2>
 
+      <input id="eventTitleInput" placeholder="Event Title" />
+
+      <button id="saveButton">Save</button>
+      <button id="cancelButton">Cancel</button>
+    </div>
+
+    <div id="deleteEventModal">
+      <h2>Event</h2>
+
+      <p id="eventText"></p>
+
+      <button id="deleteButton">Delete</button>
+      <button id="closeButton">Close</button>
+    </div>
+
+    <div id="modalBackDrop"></div>
+    <!--JS for Calendar-->
+  </section>
         </main>
 
     <!-- Footer -->
@@ -1457,46 +1600,72 @@
             event.preventDefault();
             document.getElementById('openingSection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('registrationOpener').style.display = 'block';
             document.getElementById('registrationContainer').style.display = 'block';
             document.getElementById('eventsRegisterContainer').style.display = 'none';
             document.getElementById('eventsRegisterOpener').style.display = 'none';
             document.getElementById('employerEngagementOpener').style.display = 'none';
             document.getElementById('employerEngagementContainer').style.display = 'none';
+            document.getElementById('calendarOpener').style.display = 'none';
+            document.getElementById('calendarContainer').style.display = 'none';
         });
         // Open the Main Contents when Home is hit on the navbar
         document.getElementById('homeNavItem').addEventListener('click', function(event) {
             event.preventDefault();
             document.getElementById('openingSection').style.display = 'block';
             document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('registrationOpener').style.display = 'none';
             document.getElementById('registrationContainer').style.display = 'none';
             document.getElementById('eventsRegisterContainer').style.display = 'none';
             document.getElementById('eventsRegisterOpener').style.display = 'none';
             document.getElementById('employerEngagementOpener').style.display = 'none';
             document.getElementById('employerEngagementContainer').style.display = 'none';
+            document.getElementById('calendarOpener').style.display = 'none';
+            document.getElementById('calendarContainer').style.display = 'none';
         });
         // Open the Events Register Page when clicked on navbar
         document.getElementById('EventsRegisterNavItem').addEventListener('click', function(event) {
             event.preventDefault();
             document.getElementById('openingSection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('registrationOpener').style.display = 'none';
             document.getElementById('registrationContainer').style.display = 'none';
             document.getElementById('eventsRegisterContainer').style.display = 'block';
             document.getElementById('eventsRegisterOpener').style.display = 'block';
             document.getElementById('employerEngagementOpener').style.display = 'none';
             document.getElementById('employerEngagementContainer').style.display = 'none';
+            document.getElementById('calendarOpener').style.display = 'none';
+            document.getElementById('calendarContainer').style.display = 'none';
         });
         // Open the Employer Engagement Page when hit on navbar
         document.getElementById('EmployerEngagementNavItem').addEventListener('click', function(event) {
             event.preventDefault();
             document.getElementById('openingSection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('registrationOpener').style.display = 'none';
             document.getElementById('registrationContainer').style.display = 'none';
             document.getElementById('eventsRegisterContainer').style.display = 'none';
             document.getElementById('eventsRegisterOpener').style.display = 'none';
             document.getElementById('employerEngagementOpener').style.display = 'block';
             document.getElementById('employerEngagementContainer').style.display = 'block';
-
+            document.getElementById('calendarOpener').style.display = 'none';
+            document.getElementById('calendarContainer').style.display = 'none';
+        });
+        //Open the calendar page
+        document.getElementById('calendarNavItem').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('openingSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('registrationOpener').style.display = 'none';
+            document.getElementById('registrationContainer').style.display = 'none';
+            document.getElementById('eventsRegisterContainer').style.display = 'none';
+            document.getElementById('eventsRegisterOpener').style.display = 'none';
+            document.getElementById('employerEngagementOpener').style.display = 'none';
+            document.getElementById('employerEngagementContainer').style.display = 'none';
+            document.getElementById('calendarOpener').style.display = 'block';
+            document.getElementById('calendarContainer').style.display = 'block';
         });
     </script>
+    <script src="./Script.js"></script>
 </body>
 </html>
