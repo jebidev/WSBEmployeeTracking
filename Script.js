@@ -208,3 +208,134 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const registrationForm = document.getElementById("registrationForm");
+
+  registrationForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Basic field validations
+    const employerContactNumber = document
+      .getElementById("employerContactNumber")
+      .value.trim();
+    const eventName = document.getElementById("eventName").value.trim();
+    const eventOverview = document.getElementById("eventOverview").value.trim();
+    const eventDescription = document
+      .getElementById("eventDescription")
+      .value.trim();
+    const eventCategory = document.getElementById("eventCategory").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const eventCapacity = document.getElementById("eventCapacity").value.trim();
+
+    // Validate required fields are not empty
+    if (
+      !employerContactNumber ||
+      !eventName ||
+      !eventOverview ||
+      !eventDescription ||
+      !eventCategory ||
+      !location ||
+      !eventCapacity
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // Date validation
+    const eventDateInput = document.getElementById("eventDate");
+    const eventDateValue = new Date(eventDateInput.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset hours for today's date to ensure correct comparison
+
+    if (eventDateValue < today) {
+      alert("Please enter a date after the current day.");
+      return; // Stop the function if the date is not valid
+    }
+
+    // Assuming all validations passed
+    const regformData = {
+      employerContactNumber,
+      eventName,
+      eventDate: eventDateInput.value,
+      eventOverview,
+      eventDescription,
+      eventCategory,
+      location,
+      eventCapacity,
+      // Collecting checkboxes by their names
+      disposables: Array.from(
+        document.querySelectorAll('input[name="disposables"]:checked')
+      ).map((cb) => cb.value),
+      // For simplicity, removed the radio button validation. Add it back as needed.
+    };
+
+    console.log(regformData);
+    alert("Your event has been sent for approval to the admin team.");
+  });
+});
+
+function toggleModal(modalId, show) {
+  const modal = document.getElementById(modalId);
+  if (show) {
+    modal.classList.add("is-active");
+  } else {
+    modal.classList.remove("is-active");
+  }
+}
+
+function submitSignInForm() {
+  // Handle the sign-in/create user form submission here.
+  // Validate input fields, make API calls if necessary, etc.
+
+  console.log("Form Submitted"); // Placeholder action
+  toggleModal("signInModal", false); // Close the modal upon submission
+}
+
+// Example usage: to show the modal
+document
+  .getElementById("yourSignInButtonId")
+  .addEventListener("click", function () {
+    toggleModal("signInModal", true);
+  });
+
+// <div class="form-group">
+//               <label for="eventCapacity">Seating Arrangement:</label>
+//               <div class="seating-choice-container">
+//                 <!-- Seating choice 1 -->
+//                 <label class="seating-choice">
+//                   <input
+//                     type="radio"
+//                     name="seatingArrangement"
+//                     value="arrangement1"
+//                     required
+//                   />
+//                   <img src="path_to_image1.jpg" alt="Arrangement 1" />
+//                   Arrangement 1
+//                 </label>
+
+//                 <!-- Seating choice 2 -->
+//                 <label class="seating-choice">
+//                   <input
+//                     type="radio"
+//                     name="seatingArrangement"
+//                     value="arrangement2"
+//                     required
+//                   />
+//                   <img src="path_to_image2.jpg" alt="Arrangement 2" />
+//                   Arrangement 2
+//                 </label>
+
+//                 <!-- Seating choice 3 -->
+//                 <label class="seating-choice">
+//                   <input
+//                     type="radio"
+//                     name="seatingArrangement"
+//                     value="arrangement3"
+//                     required
+//                   />
+//                   <img src="path_to_image3.jpg" alt="Arrangement 3" />
+//                   Arrangement 3
+//                 </label>
+//               </div>
+//             </div>

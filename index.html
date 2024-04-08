@@ -12,6 +12,14 @@
       src="https://kit.fontawesome.com/8a80b728dc.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script>
+      new Cleave("#employerContactNumber", {
+        phone: true,
+        phoneRegionCode: "US",
+      });
+    </script>
+
     <style>
       .custom-navbar {
         padding: 5px;
@@ -64,7 +72,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 70vh; /* Adjust height as needed */
+        height: 70vh; /* Adjust height as needed */
       }
 
       #registrationOpener {
@@ -91,12 +99,16 @@
       #calendarContainer {
         display: none;
       }
+
       .background-image-registration {
+        display: flex;
+        align-items: center; /* This will vertically center your content */
+        justify-content: center; /* This will horizontally center your content */
         background-image: url("Image/Career Fair.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 40vh;
+        height: 40vh; /* Adjust height as needed */
       }
 
       .text-container {
@@ -220,6 +232,17 @@
         text-align: center;
         cursor: pointer;
         transition: border 0.3s;
+      }
+
+      .form-groups-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows items to wrap if the container is too narrow */
+        gap: 20px; /* Optional: adds some space between the form groups */
+      }
+
+      .form-group {
+        flex: 1; /* Each form group will grow to fill the available space */
+        min-width: 250px; /* Prevents the form groups from becoming too narrow */
       }
 
       .seating-choice img {
@@ -494,14 +517,14 @@
             </div>
           </div>
 
-          <!-- Sign Out Button -->
+          <!-- Sign Up Button -->
           <div class="navbar-item">
             <button
               class="button"
               style="background-color: rgba(197, 35, 40, 255); color: white"
               href="#"
             >
-              Sign Out
+              Sign Up
             </button>
           </div>
         </div>
@@ -960,6 +983,59 @@
             </div>
           </div>
         </div>
+
+        <!-- Sign In/Create User Modal -->
+        <div class="modal" id="signInModal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Sign In/Create User</p>
+              <button
+                class="delete"
+                aria-label="close"
+                onclick="toggleModal('signInModal', false)"
+              ></button>
+            </header>
+            <section class="modal-card-body">
+              <!-- Sign In/Create User Form Content -->
+              <form id="signInForm">
+                <!-- Form Fields Like Email, Password, etc. -->
+                <div class="field">
+                  <label class="label">Email</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="email"
+                      placeholder="e.g. alex@example.com"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Password</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="password"
+                      placeholder="********"
+                    />
+                  </div>
+                </div>
+                <!-- Add additional fields as needed -->
+              </form>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-success" onclick="submitSignInForm()">
+                Sign In
+              </button>
+              <button
+                class="button"
+                onclick="toggleModal('signInModal', false)"
+              >
+                Cancel
+              </button>
+            </footer>
+          </div>
+        </div>
       </section>
       <!-- Registration Form -->
       <section
@@ -967,35 +1043,32 @@
         id="registrationOpener"
       >
         <div class="text-container pl-6 p-6 mt-6">
-          <p class="subtitle is-size-3">Register Your Events Here!</p>
+          <p class="subtitle is-size-2">Register Your Events Here!</p>
+          <p class="subtitle is-size-">
+            This form allows employers to easily create and submit events.
+            Please fill in the details below to get started.
+          </p>
         </div>
       </section>
       <section class="section" id="registrationContainer">
-        <h1 class="title is-size-2">Registration Form</h1>
         <div class="form-container">
           <form id="registrationForm">
             <!-- Registration form fields -->
-            <form>
-              <div class="form-group">
-                <label for="employerContactNumber"
-                  >Employer Contact Number:</label
-                >
-                <input
-                  type="tel"
-                  id="employerContactNumber"
-                  name="employerContactNumber"
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                  placeholder="123-456-7890"
-                />
-              </div>
+            <div class="form-group">
+              <label for="employerContactNumber"
+                >Employer Contact Number:</label
+              >
+              <input
+                type="tel"
+                id="employerContactNumber"
+                name="employerContactNumber"
+                placeholder="123-456-7890"
+              />
+            </div>
 
+            <div class="form-groups-container">
               <div class="form-group">
                 <label for="eventName">Event Name:</label>
-                <input type="text" id="eventName" name="eventName" />
-              </div>
-
-              <div class="form-group">
-                <label for="eventName">Description of the Event:</label>
                 <input type="text" id="eventName" name="eventName" />
               </div>
 
@@ -1003,195 +1076,171 @@
                 <label for="eventDate">Event Date:</label>
                 <input type="date" id="eventDate" name="eventDate" />
               </div>
+            </div>
 
-              <div class="form-group">
-                <label for="eventTopic">Event Category</label>
-                <select id="eventTopic" name="eventTopic">
-                  <!-- Topics provided by the user -->
-                  <option value="topic1">Select a event category</option>
-                  <option value="topic1">Hiring</option>
-                  <option value="topic2">Office Hour</option>
-                  <option value="topic3">Networking</option>
-                  <option value="topic3">Info Sessions</option>
+            <div class="form-group">
+              <label for="eventOverview">Event Overview (max 60 words):</label>
+              <input
+                type="text"
+                id="eventOverview"
+                name="eventOverview"
+                placeholder="Up to 60 words"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="eventDescription"
+                >Employer & Event Description:</label
+              >
+              <textarea
+                id="eventDescription"
+                name="eventDescription"
+                rows="7"
+                cols="50"
+                style="width: 100%; padding: 1%"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="eventCategory">Event Category</label>
+              <select id="eventCategory" name="eventTopic">
+                <option value="Hiring">Hiring</option>
+                <option value="Office Hour">Office Hour</option>
+                <option value="Networking">Networking</option>
+                <option value="Info Sessions">Info Sessions</option>
+              </select>
+            </div>
+
+            <section style="display: flex; justify-content: space-between">
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="location">Location:</label>
+                <select id="location" name="location" style="width: 100%">
+                  <option value="Grainger Hall">Grainger Hall</option>
+                  <option value="The Pyle Center">The Pyle Center</option>
+                  <option value="Union South">Union South</option>
+                  <option value="Memorial Union">Memorial Union</option>
                 </select>
               </div>
 
-              <section style="display: flex; justify-content: space-between">
-                <div
-                  class="form-group"
-                  style="flex-grow: 1; margin-right: 10px"
-                >
-                  <label for="location">Location:</label>
-                  <select id="location" name="location" style="width: 100%">
-                    <!-- Locations provided by the user -->
-                    <option value="location1">Location 1</option>
-                    <option value="location2">Location 2</option>
-                    <option value="location3">Location 3</option>
-                  </select>
-                </div>
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="eventCapacity">Event Capacity:</label>
+                <input
+                  type="number"
+                  id="eventCapacity"
+                  name="eventCapacity"
+                  style="width: 100%"
+                />
+              </div>
+            </section>
 
-                <div
-                  class="form-group"
-                  style="flex-grow: 1; margin-right: 10px"
-                >
-                  <label for="eventCapacity">Event Capacity:</label>
-                  <input
-                    type="number"
-                    id="eventCapacity"
-                    name="eventCapacity"
-                    style="width: 100%"
-                  />
-                </div>
-              </section>
-
-              <div
-                class="form-group"
-                style="
-                  display: grid;
-                  grid-template-columns: repeat(4, 1fr);
-                  gap: 20px;
-                "
-              >
-                <!-- Beverages Column -->
-                <div>
-                  <label style="font-weight: bold">Beverages:</label>
-                  <div class="checkbox-group">
-                    <!-- Include your beverage options here -->
-                  </div>
-                </div>
-
-                <!-- Meals Column -->
-                <div>
-                  <label style="font-weight: bold">Meals:</label>
-                  <div class="checkbox-group">
-                    <!-- Include your meal options here -->
-                  </div>
-                </div>
-
-                <!-- Snacks Column -->
-                <div>
-                  <label style="font-weight: bold">Snacks:</label>
-                  <div class="checkbox-group">
-                    <!-- Include your snack options here -->
-                  </div>
-                </div>
-
-                <!-- Disposables Column -->
-                <div>
-                  <label style="font-weight: bold">Disposables:</label>
-                  <ul
-                    class="checkbox-group"
-                    style="list-style-type: none; padding-left: 0"
-                  >
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="beverage-napkins"
-                        />
-                        Beverage Napkins
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="cutlery-and-napkin-kits"
-                        />
-                        Cutlery and Napkin Kits
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="disposable-tablecloth"
-                        />
-                        Disposable Tablecloth
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="small-plates"
-                        />
-                        Small Plates (6")
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="large-plates"
-                        />
-                        Large Plates (10")
-                      </label>
-                    </li>
-
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="disposables"
-                          value="serving-utensils-serving-spoons"
-                        />
-                        Serving Spoons
-                      </label>
-                    </li>
-                    <!-- Additional disposable options can be added here -->
-                  </ul>
+            <!-- Assuming you add unique IDs for each checkbox and the corresponding labels -->
+            <div
+              class="form-group"
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+              "
+            >
+              <!-- Example for Beverages Column -->
+              <!-- Beverages Column -->
+              <div>
+                <label style="font-weight: bold">Beverages:</label>
+                <div class="checkbox-group">
+                  <!-- Include your beverage options here -->
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="eventCapacity">Seating Arrangement:</label>
-                <div class="seating-choice-container">
-                  <!-- Seating choice 1 -->
-                  <label class="seating-choice">
-                    <input
-                      type="radio"
-                      name="seatingArrangement"
-                      value="arrangement1"
-                      required
-                    />
-                    <img src="path_to_image1.jpg" alt="Arrangement 1" />
-                    Arrangement 1
-                  </label>
-
-                  <!-- Seating choice 2 -->
-                  <label class="seating-choice">
-                    <input
-                      type="radio"
-                      name="seatingArrangement"
-                      value="arrangement2"
-                      required
-                    />
-                    <img src="path_to_image2.jpg" alt="Arrangement 2" />
-                    Arrangement 2
-                  </label>
-
-                  <!-- Seating choice 3 -->
-                  <label class="seating-choice">
-                    <input
-                      type="radio"
-                      name="seatingArrangement"
-                      value="arrangement3"
-                      required
-                    />
-                    <img src="path_to_image3.jpg" alt="Arrangement 3" />
-                    Arrangement 3
-                  </label>
+              <!-- Meals Column -->
+              <div>
+                <label style="font-weight: bold">Meals:</label>
+                <div class="checkbox-group">
+                  <!-- Include your meal options here -->
                 </div>
               </div>
 
-              <button type="submit" class="submit-btn">Submit</button>
-            </form>
+              <!-- Snacks Column -->
+              <div>
+                <label style="font-weight: bold">Snacks:</label>
+                <div class="checkbox-group">
+                  <!-- Include your snack options here -->
+                </div>
+              </div>
+
+              <!-- Disposables Column -->
+              <div>
+                <label>Disposables:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="beverage-napkins"
+                      />
+                      Beverage Napkins
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="cutlery-and-napkin-kits"
+                      />
+                      Cutlery and Napkin Kits
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="disposable-tablecloth"
+                      />
+                      Disposable Tablecloth
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="small-plates"
+                      />
+                      Small Plates (6")
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="large-plates"
+                      />
+                      Large Plates (10")
+                    </label>
+                  </li>
+
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="serving-utensils-serving-spoons"
+                      />
+                      Serving Spoons
+                    </label>
+                  </li>
+                  <!-- Additional disposable options can be added here -->
+                </ul>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
           </form>
         </div>
       </section>
