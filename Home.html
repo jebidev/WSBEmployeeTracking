@@ -16,6 +16,7 @@
       .custom-navbar {
         padding: 5px;
         height: 100px;
+        z-index: 1000;
       }
 
       .custom-navbar .navbar-brand img {
@@ -44,6 +45,23 @@
         min-height: 60vh;
         width: calc(70% - 2in);
       }
+      .modal {
+        display: block; /* Makes the modal visible by default */
+        padding: 40px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1900;
+      }
+
+      .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1900;
+      }
+      .form {
+        padding: 15px;
+        background-color: white;
+      }
+
     </style>
   </head>
   <body>
@@ -105,6 +123,7 @@
             <div class="dropdown is-bottom">
               <button
                 class="button"
+                id="signinbutton"
                 style="background-color: rgba(197, 35, 40, 255); color: white"
                 aria-haspopup="true"
                 aria-controls="dropdown-menu2"
@@ -594,7 +613,15 @@
     </main>
     <!--Footer-->
     <footer></footer>
-    <!--Sign up Model-->
-    <!--Sign in Model-->
+    <!--Sign up Modal-->
+    <!--Sign in Modal-->
+    <div class="modal">
+      <form class="form">
+        <div class="field">
+          <label class="label">Username</label>
+          <input class="input" type="text" placeholder="Username">
+        </div>
+      </form>
+    </div>
   </body>
 </html>
