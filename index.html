@@ -1832,5 +1832,27 @@
         });
     </script>
     <script src="./Script.js"></script>
+    <script>
+      // TODO
+      // Copy **only** your firebaseConfig from Google Firebae and add it below
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+    apiKey: "AIzaSyCW8uA-GfbBCeOgyDRygQC8dfRip1gbBXA",
+    authDomain: "employerstracking.firebaseapp.com",
+    projectId: "employerstracking",
+    storageBucket: "employerstracking.appspot.com",
+    messagingSenderId: "691050924031",
+    appId: "1:691050924031:web:04889e09ef130be18e49ca",
+    measurementId: "G-1XMRBS0BJ0"
+  };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      // define authentication variable
+      let auth = firebase.auth();
+      let db = firebase.firestore();
+
+      // define a storage reference
+      let ref = firebase.storage().ref();
+    </script>
   </body>
 </html>
