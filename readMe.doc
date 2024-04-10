@@ -1,0 +1,44 @@
+User Stories
+- Story 1 - As an admin user (WSB staff), I need an interface that allows for easy access to all events, along with a way to accept or deny upcoming events. I would like to be able to see which employers are coming to what events, and how often they have attended events at WSB. This should be an easy to follow interface that also allows us to update any upcoming events, and view attendance for these events. This will benefit us that we have easy access to all information regarding events hosted by employers, along with quick acceptance and denial of events.
+- Story 2 - As a student user, I want to be able to see a nice event calendar for the Business School. The GUI should be easy to navigate and show me all the info about employers and events on a simple layout.
+- Story 3 - As an employer user, I want to be able to edit add/edit event details such as date, time, location, and description to keep the information accurate. I also want to be able to communicate with my attendees through a notification system that is clean and simple. 
+
+Tasks:
+    - Create prototypes of website homepage and website registration form
+    - Complete 1-Page GUI
+    - Connect website to Firebase
+    - Complete JavaScript to make website interactive (dependency on completing the 1-Page GUI)
+    - Create databases in Firebase
+    - Create individual user permissions for the admin, student, and employer levels
+    - Meet with client to discuss progress and receive feedback
+    - Begin JavaScript to use CRUD features
+
+GitHub Link: https://github.com/jebidev/WSBEmployeeTracking/tree/main
+
+Trello Link: https://trello.com/b/y2OQPaTm/is424-team-project
+
+Daily Standups:
+April 3, 2024
+What did you do yesterday?
+    - Planned out sprint
+    - Assigned roles
+    - Started working on JavaScript, but ran into a problem with multiple GUIs
+    - Pushed 1-Page GUI completion up
+What are you planning to do today?
+    - Finish 1-Page GUI
+    - Start working on JavaScript
+    - Create Firebase Connection and DBs
+Any problems are you facing?
+    - Need to push up 1-page GUI in order to work on JavaScript
+
+April 8, 2024
+What did you do yesterday?
+    - Completed 1 page GUI
+    - Created Firebase DBs
+What are you planning to do today?
+    - Continue working on JavaScript
+    - Create DBs
+    - Create Users
+    - Connect to Firebase
+Any problems are you facing?
+    - Busy schedules 
