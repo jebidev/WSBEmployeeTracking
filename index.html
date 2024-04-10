@@ -354,6 +354,19 @@
         position: absolute;
         background-color: rgba(0, 0, 0, 0.8);
       }
+
+      .modal-background {
+        padding: 200px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1900;
+      }
+
+      .form {
+        padding: 15px;
+        background-color: white;
+      }
+
     </style>
 </head>
 <body>
@@ -410,6 +423,7 @@
             <div class="navbar-item">
               <div class="dropdown is-bottom">
                 <button
+                  id="signinbutton"
                   class="button"
                   style="background-color: rgba(197, 35, 40, 255); color: white"
                   aria-haspopup="true"
@@ -1576,7 +1590,32 @@
     <div id="modalBackDrop"></div>
     <!--JS for Calendar-->
   </section>
-        </main>
+    </main>
+    <!-- Login and Authentication ping-->
+    <div id="authenticationmodal" class="">
+      <form id="loginform" class="form">
+        <div class="field">
+          <label class="label">Username</label>
+          <input class="input" type="text" placeholder="Username">
+          <div>&nbsp;</div>
+          <label class="label">Password</label>
+          <input class="input" type="password" placeholder="Username">
+          <div>&nbsp;</div>
+          <button id="modal_signin">Login</button>&nbsp;&nbsp;<button id="register">Register</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      const signInButton = document.getElementById('signinbutton');
+      const authenticationModal = document.getElementById('authenticationmodal');
+      const loginForm = document.getElementById('loginform');
+
+      //Show sign-in modal
+      signInButton.addEventListener('click', function() {
+        authenticationModal.classList.add('modal-background');
+      });
+    </script>
+
 
     <!-- Footer -->
     <footer>
