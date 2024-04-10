@@ -15,7 +15,7 @@ Tasks:
 
 GitHub Link: https://github.com/jebidev/WSBEmployeeTracking/tree/main
 
-Scrum Master: 
+Scrum Master: Jebina Devadas
 Trello Link: https://trello.com/b/y2OQPaTm/is424-team-project
 
 Daily Standups:
@@ -46,9 +46,17 @@ Any problems are you facing?
 
 April 10, 2024
 What did you do yesterday?
+    - Worked on JavaScript
+    - Added Firebase Connection
+    - Added images for room sizing in registration form
+    - Worked on User Permissions
 What are you planning to do today?
+    - Pulling Data from Firebase for events page
+    - JavaScript for Sign-in Modal
+    - JavaScript for functionality
 Any problems are you facing?
-
+    - Merge problems with html_updates branch
+    - Scheduling meetings can be tough due to busy schedules
 
 Spring Review (April 14, 2024):
 What did you learn from doing our first sprint?
