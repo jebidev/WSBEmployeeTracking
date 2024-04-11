@@ -148,30 +148,6 @@ function initButtons() {
 initButtons();
 load();
 
-// document.querySelectorAll(".save-event-button").forEach((button) => {
-//   button.addEventListener("click", () => {
-//     // Select the icon within the clicked button
-//     const icon = button.querySelector(".fas");
-
-//     // Toggle color classes
-//     if (icon.classList.contains("icon-white")) {
-//       icon.classList.remove("icon-white");
-//       icon.classList.add("icon-red");
-//     } else {
-//       icon.classList.remove("icon-red");
-//       icon.classList.add("icon-white");
-//     }
-
-//     // Apply the jump animation
-//     icon.classList.add("jump");
-
-//     // Remove the animation class after it completes to allow it to run again on next click
-//     icon.addEventListener("animationend", () => {
-//       icon.classList.remove("jump");
-//     });
-//   });
-// });
-
 document.addEventListener("DOMContentLoaded", () => {
   // Toggle dropdowns
   document.querySelectorAll(".navbar-link").forEach((link) => {
@@ -341,7 +317,7 @@ function submitSignInForm() {
 //             </div>
 
 function show_events_home(){
-  db.collection('events').get().then(res => {
+  db.collection('events').where("event_status", "==", "Approved").get().then(res => {
       let data = res.docs
       let htmlColumn1 = ``
       let htmlColumn2 = ``
@@ -425,6 +401,141 @@ function show_events_home(){
       });
   });
 }
-
-// call show_people
 show_events_home();
+
+function show_register_events() {
+  db.collection('events').get().then(res => {
+    let data = res.docs
+    let htmlColumn1 = ``
+    let htmlColumn2 = ``
+    let index = 0
+    data.forEach(d => {
+      const eventId = d.id; // Get the event ID
+
+      // Determine the text to display on the button based on the event status
+      let buttonText1 = '';
+      let buttonText2 = '';
+      if (d.data().event_status === 'Approved') {
+        buttonText1 = 'Approved';
+      } else {
+        buttonText1 = 'Accept';
+      }
+      if (d.data().event_status === 'Declined') {
+        buttonText2 = 'Declined';
+      } else {
+        buttonText2 = 'Decline';
+      }
+
+      const boxHtml = `<div class="box">
+          <div class="content">
+            <!--Company name and logo-->
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">${d.data().company_name}</p>
+              </div>
+            </div>
+            <!--Event Name-->
+            <p class="title is-5 p-5">${d.data().event_name}</p>
+            <!--Event Description-->
+            <p>${d.data().event_description}</p>
+            <!--Event and Medium Type-->
+            <div class="field is-grouped">
+              <p class="Type">
+                <span class="tag is-light">${d.data().event_medium}</span>
+                <span class="tag is-light">${d.data().event_type}</span>
+              </p>
+            </div>
+            <!--Event Date-->
+            <p>
+              <span class="has-text-weight-semibold">Date:</span>
+              ${d.data().event_date}
+            </p>
+            <!--Accept or Approved Button-->
+            <button
+              class="button is-primary accept-button"
+              data-event-id="${eventId}"
+              style="
+                background-color: rgba(197, 35, 40, 255);
+                color: white;
+              "
+            >
+              ${buttonText1}
+            </button>
+            <!-- Decline Button -->
+            <button
+              class="button is-primary decline-button"
+              data-event-id="${eventId}"
+              style="
+                background-color: rgba(197, 35, 40, 255);
+                color: white;
+              "
+            >
+            ${buttonText2}
+            </button>
+          </div>
+        </div>`;
+
+      if (index % 2 === 0) {
+        htmlColumn1 += boxHtml
+      } else {
+        htmlColumn2 += boxHtml;
+      }
+
+      index++
+    })
+    //append html variable to the document
+    document.querySelector('#column1_events').innerHTML += htmlColumn1
+    document.querySelector('#column2_events').innerHTML += htmlColumn2
+
+    // Attach event listeners to the buttons after they are added to the DOM
+    attachButtonListeners();
+  })
+}
+
+// Function to attach event listeners to Accept and Approved buttons
+function attachButtonListeners() {
+  document.querySelectorAll('.accept-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const eventId = button.getAttribute('data-event-id'); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+
+      // If the button says "Accept", update the event status to "Approved" in Firestore
+      if (eventStatus === 'Accept') {
+        db.collection('events').doc(eventId).update({ event_status: 'Approved' })
+          .then(() => {
+            console.log('Event status updated to Approved');
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = 'Approved'; // Change the button text to "Approved"
+          })
+          .catch(error => {
+            console.error('Error updating event status:', error);
+          });
+      }
+    });
+  });
+  document.querySelectorAll('.decline-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const eventId = button.getAttribute('data-event-id'); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+
+      // If the button says "Decline", update the event status to "Approved" in Firestore
+      if (eventStatus === 'Decline') {
+        db.collection('events').doc(eventId).update({ event_status: 'Declined' })
+          .then(() => {
+            console.log('Event status updated to Declined');
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = 'Declined'; // Change the button text to "Approved"
+          })
+          .catch(error => {
+            console.error('Error updating event status:', error);
+          });
+      }
+    });
+  })
+}
+show_register_events()
