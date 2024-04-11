@@ -148,29 +148,29 @@ function initButtons() {
 initButtons();
 load();
 
-document.querySelectorAll(".save-event-button").forEach((button) => {
-  button.addEventListener("click", () => {
-    // Select the icon within the clicked button
-    const icon = button.querySelector(".fas");
+// document.querySelectorAll(".save-event-button").forEach((button) => {
+//   button.addEventListener("click", () => {
+//     // Select the icon within the clicked button
+//     const icon = button.querySelector(".fas");
 
-    // Toggle color classes
-    if (icon.classList.contains("icon-white")) {
-      icon.classList.remove("icon-white");
-      icon.classList.add("icon-red");
-    } else {
-      icon.classList.remove("icon-red");
-      icon.classList.add("icon-white");
-    }
+//     // Toggle color classes
+//     if (icon.classList.contains("icon-white")) {
+//       icon.classList.remove("icon-white");
+//       icon.classList.add("icon-red");
+//     } else {
+//       icon.classList.remove("icon-red");
+//       icon.classList.add("icon-white");
+//     }
 
-    // Apply the jump animation
-    icon.classList.add("jump");
+//     // Apply the jump animation
+//     icon.classList.add("jump");
 
-    // Remove the animation class after it completes to allow it to run again on next click
-    icon.addEventListener("animationend", () => {
-      icon.classList.remove("jump");
-    });
-  });
-});
+//     // Remove the animation class after it completes to allow it to run again on next click
+//     icon.addEventListener("animationend", () => {
+//       icon.classList.remove("jump");
+//     });
+//   });
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
   // Toggle dropdowns
@@ -293,11 +293,11 @@ function submitSignInForm() {
 }
 
 // Example usage: to show the modal
-document
-  .getElementById("yourSignInButtonId")
-  .addEventListener("click", function () {
-    toggleModal("signInModal", true);
-  });
+// document
+//   .getElementById("yourSignInButtonId")
+//   .addEventListener("click", function () {
+//     toggleModal("signInModal", true);
+//   });
 
 // <div class="form-group">
 //               <label for="eventCapacity">Seating Arrangement:</label>
@@ -339,3 +339,92 @@ document
 //                 </label>
 //               </div>
 //             </div>
+
+function show_events_home(){
+  db.collection('events').get().then(res => {
+      let data = res.docs
+      let htmlColumn1 = ``
+      let htmlColumn2 = ``
+      let index = 0
+      data.forEach(d => {
+          const boxHtml = `<div class="box">
+          <div class="content">
+            <!--Company name and logo-->
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">${d.data().company_name}</p>
+              </div>
+            </div>
+            <!--Event Name-->
+            <p class="title is-5 p-5">${d.data().event_name}</p>
+            <!--Event Description-->
+            <p>${d.data().event_description}</p>
+            <!--Event and Medium Type-->
+            <div class="field is-grouped">
+              <p class="Type">
+                <span class="tag is-light">${d.data().event_medium}</span>
+                <span class="tag is-light">${d.data().event_type}</span>
+              </p>
+            </div>
+            <!--Event Date-->
+            <p>
+              <span class="has-text-weight-semibold">Date:</span>
+              ${d.data().event_date}
+            </p>
+            <!--Save Button-->
+            <button
+            class="button is-primary save-event-button"
+            style="background-color: lightgray"
+          >
+            <span class="icon is-small">
+              <i class="fas fa-bookmark icon-white"></i>
+              <!-- Initial class for white color -->
+            </span>
+          </button>
+          </div>
+        </div>`;
+
+        if (index%2===0) {
+          htmlColumn1 += boxHtml
+        } else{
+          htmlColumn2 += boxHtml;
+        }
+
+        index++
+      })
+      //append html variable to the document
+      document.querySelector('#column1').innerHTML += htmlColumn1
+      document.querySelector('#column2').innerHTML += htmlColumn2
+
+      document.querySelectorAll(".save-event-button").forEach(button => {
+        button.addEventListener("click", () => {
+          const icon = button.querySelector(".fas");
+
+          // Toggle color classes
+          if (icon.classList.contains("icon-white")) {
+            icon.classList.remove("icon-white");
+            icon.classList.add("icon-red");
+          } else {
+            icon.classList.remove("icon-red");
+            icon.classList.add("icon-white");
+          }
+
+          // Apply the jump animation
+          icon.classList.add("jump");
+
+          // Remove the animation class after it completes to allow it to run again on next click
+          icon.addEventListener("animationend", () => {
+            icon.classList.remove("jump");
+          });
+        });
+      });
+  });
+}
+
+// call show_people
+show_events_home();
