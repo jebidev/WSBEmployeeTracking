@@ -20,6 +20,11 @@
       });
     </script>
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+
     <style>
       .custom-navbar {
         padding: 5px;
@@ -44,6 +49,16 @@
 
       .jump {
         animation: tinyJump 0.5s;
+      }
+
+      .calendar_button {
+        border: 1px solid red; /* Adds a red border */
+        background-color: red;
+        cursor: pointer;
+        font-size: 0.75em; /* Makes the icon/text smaller */
+        color: red; /* Text/icon color */
+        padding: 5px 10px; /* Smaller padding */
+        border-radius: 5px; /* Optional: adds rounded corners */
       }
 
       /* Icon Colors */
@@ -218,21 +233,35 @@
         background-color: #880000;
         transition: background-color 0.3s;
       }
+
       .seating-choice-container {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
+        justify-content: center; /* Aligns items horizontally at the center */
+        flex-wrap: wrap; /* Allows items to wrap onto the next line */
       }
 
       .seating-choice {
         border: 2px solid #ccc;
         border-radius: 4px;
         padding: 10px;
-        width: 30%;
-        text-align: center;
+        margin: 10px;
+        text-align: center; /* Aligns text to the center */
         cursor: pointer;
-        transition: border 0.3s;
+        display: flex; /* Makes it a flex container */
+        flex-direction: column; /* Stacks items vertically */
+        justify-content: center; /* Aligns items vertically at the center */
+        align-items: center; /* Aligns items horizontally at the center */
+        flex: 1; /* Ensures that each choice takes equal space */
       }
+
+      .seating-choice img {
+        width: 250px; /* Fixed width for all images */
+        max-height: 100px; /* Fixed height for all images */
+        object-fit: contain; /* Keeps the aspect ratio of the image */
+        margin-bottom: 10px; /* Space between the image and the text below it */
+      }
+
+      /* Adjust the width and height as necessary to fit your design */
 
       .form-groups-container {
         display: flex;
@@ -265,19 +294,20 @@
         display: block;
         cursor: pointer;
       }
+
       .background-image-eventsReg {
         background-image: url("Image/school area.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 20vh;
+        height: 40vh;
       }
       .background-image-engage {
         background-image: url("Image/events.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 20vh;
+        height: 40vh;
       }
 
       .background-image-calendar {
@@ -285,7 +315,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 20vh;
+        height: 40vh;
       }
       .icon-white {
         color: white;
@@ -344,7 +374,7 @@
       }
       #weekdays div {
         width: 100px;
-        padding: 10px;
+        margin: 3%;
       }
       #calendar {
         width: 100%;
@@ -380,6 +410,18 @@
         border-radius: 5px;
         max-height: 55px;
         overflow: hidden;
+      }
+
+      .notification-content {
+        background: white;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        max-width: 600px;
+        margin: 10% auto;
+        text-align: center;
+        color: #a00000;
       }
       .padding {
         cursor: default !important;
@@ -450,27 +492,29 @@
         <a class="navbar-item" href="#">
           <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
           <span class="ml-2 is-size-4" href="#" , id="homeNavItem"
-            >Employer Tracking</span>
+            >Employer Tracking</span
+          >
         </a>
         <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-4" href="#" , id="registrationNavItem"
-            >Registration Form</span>
+          <span class="ml-2 is-size-5" href="#" , id="registrationNavItem"
+            >Registration Form</span
+          >
         </a>
         <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-4" href="#" , id="calendarNavItem"
-            >Calendar</span>
+          <span class="ml-2 is-size-5" href="#" , id="calendarNavItem"
+            >Calendar</span
+          >
         </a>
         <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-4" href="#" , id="EventsRegisterNavItem"
-            >Events Administration</span>
+          <span class="ml-2 is-size-5" href="#" , id="EventsRegisterNavItem"
+            >Events Administration</span
+          >
         </a>
         <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-4" href="#" , id="EmployerEngagementNavItem"
-            >Employer Engagement</span>
+          <span class="ml-2 is-size-5" href="#" , id="EmployerEngagementNavItem"
+            >Employer Engagement</span
+          >
         </a>
-            </div>
-          </div>
-        </div>
 
         <div class="navbar-end">
           <!-- Sign In Button -->
@@ -516,7 +560,10 @@
           <h1 class="title is-size-1 mt-6 pt-6">
             Welcome to Employer Tracking!
           </h1>
-          <p class="subtitle is-size-3">This page is the designated spot for all events associated with employers at UW-Madison</p>
+          <p class="subtitle is-size-3">
+            This page is the designated spot for all events associated with
+            employers at UW-Madison
+          </p>
         </div>
       </section>
       <section id="mainContent" class="section">
@@ -1015,6 +1062,24 @@
           </div>
         </div>
       </section>
+
+      <!-- Notification Modal -->
+      <div id="notificationModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div class="notification-content">
+            <button
+              class="delete"
+              aria-label="close"
+              onclick="closeNotificationModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p id="notificationMessage"></p>
+          </div>
+        </div>
+      </div>
+
       <!-- Registration Form -->
       <section
         class="section background-image-registration"
@@ -1122,27 +1187,150 @@
             >
               <!-- Example for Beverages Column -->
               <!-- Beverages Column -->
+              <!-- Beverages Column -->
               <div>
-                <label style="font-weight: bold">Beverages:</label>
-                <div class="checkbox-group">
-                  <!-- Include your beverage options here -->
-                </div>
+                <label>Beverages:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label>
+                      <input type="checkbox" name="beverages" value="tea" />
+                      Tea
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="beverages" value="coffee" />
+                      Coffee
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="beverages" value="water" />
+                      Water
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="beverages"
+                        value="cold-drinks"
+                      />
+                      Cold Drinks
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="beverages" value="juice" />
+                      Juice
+                    </label>
+                  </li>
+                </ul>
               </div>
 
               <!-- Meals Column -->
               <div>
-                <label style="font-weight: bold">Meals:</label>
-                <div class="checkbox-group">
-                  <!-- Include your meal options here -->
-                </div>
+                <label>Meals:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label>
+                      <input type="checkbox" name="meals" value="pizza" />
+                      Pizza
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="meals" value="burritos" />
+                      Burritos
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="meals" value="salads" />
+                      Salads
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="meals" value="cut-fruit" />
+                      Cut Fruit
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" name="meals" value="sushi" />
+                      Sushi
+                    </label>
+                  </li>
+                </ul>
               </div>
 
               <!-- Snacks Column -->
+
+              <!-- Snacks Column -->
               <div>
-                <label style="font-weight: bold">Snacks:</label>
-                <div class="checkbox-group">
-                  <!-- Include your snack options here -->
-                </div>
+                <label>Snacks:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="choco-chip-cookies"
+                      />
+                      Choco Chip Cookies
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="crackers-and-cheese"
+                      />
+                      Crackers and Cheese
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="cupcakes-and-donuts"
+                      />
+                      Cupcakes and Donuts
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="candy-and-chocolate"
+                      />
+                      Candy and Chocolate
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="potato-chips"
+                      />
+                      Potato Chips
+                    </label>
+                  </li>
+                </ul>
               </div>
 
               <!-- Disposables Column -->
@@ -1215,6 +1403,82 @@
                   </li>
                   <!-- Additional disposable options can be added here -->
                 </ul>
+              </div>
+            </div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", (event) => {
+                // Add click event to each seating choice
+                document
+                  .querySelectorAll(".seating-choice")
+                  .forEach((choice) => {
+                    choice.addEventListener("click", function () {
+                      // Remove 'selected' from all choices
+                      document
+                        .querySelectorAll(".seating-choice")
+                        .forEach((c) => c.classList.remove("selected"));
+
+                      // Add 'selected' to clicked choice
+                      this.classList.add("selected");
+
+                      // Check the radio button inside the clicked choice
+                      this.querySelector('input[type="radio"]').checked = true;
+                    });
+                  });
+              });
+            </script>
+
+            <div class="form-group">
+              <label for="eventCapacity">Seating Arrangement:</label>
+              <div class="seating-choice-container">
+                <!-- Seating choice 1 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement1"
+                    name="seatingArrangement"
+                    value="to8"
+                  />
+                  <img src="Image/tables of 8.png" alt="Tables of 8" />
+                  <span>Tables of 8</span>
+                </label>
+
+                <!-- Seating choice 2 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement2"
+                    name="seatingArrangement"
+                    value="ushape"
+                  />
+                  <img src="Image/U-shape.png" alt="U-shape" />
+                  <span>U-shape</span>
+                </label>
+
+                <!-- Seating choice 3 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement2"
+                    name="seatingArrangement"
+                    value="theater"
+                  />
+                  <img src="Image/theater.png" alt="Theater" />
+                  <span>Theater</span>
+                </label>
+
+                <!-- Seating choice 4 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement4"
+                    name="seatingArrangement"
+                    value="classroom"
+                    required
+                  />
+                  <img src="Image/classroom.png" alt="Classroom" />
+                  <span>Classroom</span>
+                </label>
               </div>
             </div>
 
@@ -1556,7 +1820,7 @@
         id="employerEngagementOpener"
       >
         <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
+          <h1 class="mt-3 is-size-1">Tracking Employers Engagement!</h1>
         </div>
       </section>
       <section class="section" id="employerEngagementContainer">
@@ -1645,12 +1909,14 @@
       </section>
       <section class="calendar_body" , id="calendarContainer">
         <div id="container">
-          <div id="header">
-            <div id="monthDisplay"></div>
-            <div>
-              <button class="calendar_button" id="backButton">Back</button>
-              <button class="calendar_button" id="nextButton">Next</button>
-            </div>
+          <div class="is-size-1" id="monthDisplay"></div>
+          <div>
+            <button class="calendar_button" id="backButton">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="calendar_button" id="nextButton">
+              <i class="fas fa-arrow-right"></i>
+            </button>
           </div>
           <div id="weekdays">
             <div>Sunday</div>
@@ -1661,6 +1927,7 @@
             <div>Friday</div>
             <div>Saturday</div>
           </div>
+
           <div id="calendar"></div>
         </div>
         <div id="newEventModal">
@@ -1809,28 +2076,35 @@
           document.getElementById("calendarContainer").style.display = "block";
         });
     </script>
-    <script src="./Script.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+
     <script>
       // TODO
       // Copy **only** your firebaseConfig from Google Firebae and add it below
       // Your web app's Firebase configuration
       const firebaseConfig = {
-    apiKey: "AIzaSyCW8uA-GfbBCeOgyDRygQC8dfRip1gbBXA",
-    authDomain: "employerstracking.firebaseapp.com",
-    projectId: "employerstracking",
-    storageBucket: "employerstracking.appspot.com",
-    messagingSenderId: "691050924031",
-    appId: "1:691050924031:web:04889e09ef130be18e49ca",
-    measurementId: "G-1XMRBS0BJ0"
-  };
+        apiKey: "AIzaSyCW8uA-GfbBCeOgyDRygQC8dfRip1gbBXA",
+        authDomain: "employerstracking.firebaseapp.com",
+        projectId: "employerstracking",
+        storageBucket: "employerstracking.appspot.com",
+        messagingSenderId: "691050924031",
+        appId: "1:691050924031:web:04889e09ef130be18e49ca",
+        measurementId: "G-1XMRBS0BJ0",
+      };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      // define authentication variable
+      const analytics = firebase.analytics();
+
       let auth = firebase.auth();
       let db = firebase.firestore();
-
-      // define a storage reference
       let ref = firebase.storage().ref();
     </script>
+
+    <script src="Script.js"></script>
   </body>
 </html>
