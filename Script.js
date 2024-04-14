@@ -222,6 +222,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventDateInput = document.getElementById("eventDate");
     const eventDateValue = new Date(eventDateInput.value);
     const today = new Date();
+    const seatingArrangement = document.querySelector(
+      'input[name="seatingArrangement"]:checked'
+    )?.value;
+
     today.setHours(0, 0, 0, 0); // Reset hours for today's date to ensure correct comparison
 
     if (eventDateValue < today) {
@@ -243,13 +247,46 @@ document.addEventListener("DOMContentLoaded", () => {
       disposables: Array.from(
         document.querySelectorAll('input[name="disposables"]:checked')
       ).map((cb) => cb.value),
-      // For simplicity, removed the radio button validation. Add it back as needed.
+
+      meals: Array.from(
+        document.querySelectorAll('input[name="meals"]:checked')
+      ).map((cb) => cb.value),
+
+      snacks: Array.from(
+        document.querySelectorAll('input[name="snacks"]:checked')
+      ).map((cb) => cb.value),
+
+      beverages: Array.from(
+        document.querySelectorAll('input[name="beverages"]:checked')
+      ).map((cb) => cb.value),
+
+      seatingArrangement,
     };
 
     console.log(regformData);
-    alert("Your event has been sent for approval to the admin team.");
+
+    db.collection("events")
+      .add(regformData)
+      .then(() =>
+        openNotificationModal(
+          "Your event has been sent for approval to the admin team."
+        )
+      )
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+        openNotificationModal("There was an error submitting your event.");
+      });
   });
 });
+
+function openNotificationModal(message) {
+  document.getElementById("notificationMessage").textContent = message;
+  document.getElementById("notificationModal").classList.add("is-active");
+}
+
+function closeNotificationModal() {
+  document.getElementById("notificationModal").classList.remove("is-active");
+}
 
 function toggleModal(modalId, show) {
   const modal = document.getElementById(modalId);
@@ -274,47 +311,6 @@ function submitSignInForm() {
 //   .addEventListener("click", function () {
 //     toggleModal("signInModal", true);
 //   });
-
-// <div class="form-group">
-//               <label for="eventCapacity">Seating Arrangement:</label>
-//               <div class="seating-choice-container">
-//                 <!-- Seating choice 1 -->
-//                 <label class="seating-choice">
-//                   <input
-//                     type="radio"
-//                     name="seatingArrangement"
-//                     value="arrangement1"
-//                     required
-//                   />
-//                   <img src="path_to_image1.jpg" alt="Arrangement 1" />
-//                   Arrangement 1
-//                 </label>
-
-//                 <!-- Seating choice 2 -->
-//                 <label class="seating-choice">
-//                   <input
-//                     type="radio"
-//                     name="seatingArrangement"
-//                     value="arrangement2"
-//                     required
-//                   />
-//                   <img src="path_to_image2.jpg" alt="Arrangement 2" />
-//                   Arrangement 2
-//                 </label>
-
-//                 <!-- Seating choice 3 -->
-//                 <label class="seating-choice">
-//                   <input
-//                     type="radio"
-//                     name="seatingArrangement"
-//                     value="arrangement3"
-//                     required
-//                   />
-//                   <img src="path_to_image3.jpg" alt="Arrangement 3" />
-//                   Arrangement 3
-//                 </label>
-//               </div>
-//             </div>
 
 function show_events_home(){
   db.collection('events').where("event_status", "==", "Approved").get().then(res => {
