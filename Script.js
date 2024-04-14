@@ -195,22 +195,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const employerContactNumber = document
       .getElementById("employerContactNumber")
       .value.trim();
-    const eventName = document.getElementById("eventName").value.trim();
-    const eventOverview = document.getElementById("eventOverview").value.trim();
-    const eventDescription = document
+    const event_name = document.getElementById("eventName").value.trim();
+    const event_overview = document.getElementById("eventOverview").value.trim();
+    const event_description = document
       .getElementById("eventDescription")
       .value.trim();
-    const eventCategory = document.getElementById("eventCategory").value.trim();
+    const event_category = document.getElementById("eventCategory").value.trim();
     const location = document.getElementById("location").value.trim();
     const eventCapacity = document.getElementById("eventCapacity").value.trim();
 
     // Validate required fields are not empty
     if (
       !employerContactNumber ||
-      !eventName ||
-      !eventOverview ||
-      !eventDescription ||
-      !eventCategory ||
+      !event_name ||
+      !event_overview ||
+      !event_description ||
+      !event_category ||
       !location ||
       !eventCapacity
     ) {
@@ -236,11 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Assuming all validations passed
     const regformData = {
       employerContactNumber,
-      eventName,
-      eventDate: eventDateInput.value,
-      eventOverview,
-      eventDescription,
-      eventCategory,
+      event_name,
+      event_date: eventDateInput.value,
+      event_overview,
+      event_description,
+      event_category,
       location,
       eventCapacity,
       // Collecting checkboxes by their names
@@ -340,7 +340,7 @@ function show_events_home(){
             <div class="field is-grouped">
               <p class="Type">
                 <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_type}</span>
+                <span class="tag is-light">${d.data().event_category}</span>
               </p>
             </div>
             <!--Event Date-->
