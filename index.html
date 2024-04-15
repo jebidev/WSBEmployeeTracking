@@ -367,6 +367,17 @@
         background-color: white;
       }
 
+      .close-button {
+        float: right;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-button:hover {
+        color: white;
+        background-color: red;
+      }
+
     </style>
 </head>
 <body>
@@ -1591,29 +1602,74 @@
     <!--JS for Calendar-->
   </section>
     </main>
-    <!-- Login and Authentication ping-->
-    <div id="authenticationmodal" class="">
-      <form id="loginform" class="form">
-        <div class="field">
-          <label class="label">Username</label>
-          <input class="input" type="text" placeholder="Username">
-          <div>&nbsp;</div>
-          <label class="label">Password</label>
-          <input class="input" type="password" placeholder="Username">
-          <div>&nbsp;</div>
-          <button id="modal_signin">Login</button>&nbsp;&nbsp;<button id="register">Register</button>
-        </div>
-      </form>
+<!-- Login Modal -->
+<div id="authenticationmodal" class="">
+<!-- Close button -->
+<button id="close-modal-button" class="close-button">X</button>
+  <form id="loginform" class="form">
+    <div class="field">
+      <!-- Rest of the form -->
+      <label class="label">Email</label>
+      <input class="input" type="text" placeholder="Email">
+      <div>&nbsp;</div>
+      <label class="label">Password</label>
+      <input class="input" type="password" placeholder="Password">
+      <div>&nbsp;</div>
+      <button id="modal_signin">Login</button>&nbsp;&nbsp;<button id="register">Register</button>
     </div>
+  </form>
+</div>
+<!-- Registration Modal -->
+<div id="registration_modal" class="modal-background">
+  <!-- Close button -->
+  <button id="close-registration_button" class="close-button">X</button>
+  <!-- Registration Form Content -->
+  <form id="registration_form" class="form">
+    <h1 class="title">Register</h1>
+    <label class="label">Email</label>
+    <input class="input" type="text" placeholder="Email">
+    <div>&nbsp;</div>
+    <label class="label">Password</label>
+    <input class="input" type="password" placeholder="Password">
+    <div>&nbsp;</div>
+    <button id="create_account_button">Create an account</button>
+</form>
+</div>
+
     <script>
+      // Sign in modal code
       const signInButton = document.getElementById('signinbutton');
       const authenticationModal = document.getElementById('authenticationmodal');
       const loginForm = document.getElementById('loginform');
+      const fuckthis = document.getElementById('close-modal-button');
+      const register = document.getElementById('register');
+
+      // Registration Modal Code
+      const close_registration = document.getElementById('close-registration_button');
+      const registrationModal = document.getElementById('registration_modal');
 
       //Show sign-in modal
       signInButton.addEventListener('click', function() {
         authenticationModal.classList.add('modal-background');
       });
+
+      // Close sign in modal
+      fuckthis.addEventListener('click', function() {
+        authenticationModal.classList.remove('modal-background');
+      });
+
+      // Show registration modal
+      register.addEventListener('click', function() {
+        authenticationModal.classList.remove('modal-background');
+        registrationModal.classList.add('modal-background');
+      });
+
+      // Close registration modal
+      close_registration.addEventListener('click', function() {
+      registrationModal.classList.remove('modal-background');
+      });
+
+
     </script>
 
 
@@ -1624,15 +1680,6 @@
 
     <!-- JavaScript -->
     <script>
-        // Smooth scrolling to section when a navbar item is clicked
-        document.querySelectorAll('.navbar-item').forEach(item => {
-            item.addEventListener('click', event => {
-                event.preventDefault();
-                const targetId = event.target.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
 
         // Show the RegistrationForm section when the navbar item is clicked
         document.getElementById('registrationNavItem').addEventListener('click', function(event) {
