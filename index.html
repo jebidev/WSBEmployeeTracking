@@ -1602,26 +1602,6 @@
 </script>
 
 <script>
-// Firebase stuff
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-const firebaseConfig = {
-  apiKey: "AIzaSyCW8uA-GfbBCeOgyDRygQC8dfRip1gbBXA",
-  authDomain: "employerstracking.firebaseapp.com",
-  projectId: "employerstracking",
-  storageBucket: "employerstracking.appspot.com",
-  messagingSenderId: "691050924031",
-  appId: "1:691050924031:web:04889e09ef130be18e49ca",
-  measurementId: "G-1XMRBS0BJ0"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-
-// Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
-
 // Register an account
 create_account.addEventListener('click', function() {
   var registration_email = document.getElementById('registration_email').value;
