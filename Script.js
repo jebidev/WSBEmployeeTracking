@@ -130,27 +130,29 @@ function initButtons() {
   document.getElementById("nextButton").addEventListener("click", () => {
     nav++;
     load();
-    console.log("newmonth");
-    call_events(2024, 4);
-    console.log("after call events");
+    const { month, year } = calculateMonthYear(nav);
+    call_events(year, month - 1);
   });
 
   document.getElementById("backButton").addEventListener("click", () => {
     nav--;
-    console.log("navvvv", nav);
-
     load();
-    console.log("oldmonth");
-
-    call_events(2024, 2);
+    const { month, year } = calculateMonthYear(nav);
+    call_events(year, month - 1);
   });
+}
 
-  document.getElementById("saveButton").addEventListener("click", saveEvent);
-  document.getElementById("cancelButton").addEventListener("click", closeModal);
-  document
-    .getElementById("deleteButton")
-    .addEventListener("click", deleteEvent);
-  document.getElementById("closeButton").addEventListener("click", closeModal);
+function calculateMonthYear(navOffset) {
+  // Create a date object representing the current date/time
+  const now = new Date();
+  // Get the current month (0-11) and add the navigation offset
+  now.setMonth(now.getMonth() + navOffset);
+  // Extract the month and year from the date object
+  const month = now.getMonth() + 1; // JavaScript months are 0-indexed, add 1 for human-readable month (1-12)
+  const year = now.getFullYear();
+
+  console.log("returning ", year, month);
+  return { month, year };
 }
 
 initButtons();
@@ -559,7 +561,7 @@ show_register_events();
 // calendar functions
 function call_events(currentyear, currentmonth) {
   function fetchApprovedEvents() {
-    console.log("Fetching events from Firestore...");
+    console.log("Fetching events from Firestore...", currentyear, currentmonth);
     db.collection("events")
       .where("event_status", "==", "Approved")
       .get()
@@ -575,7 +577,6 @@ function call_events(currentyear, currentmonth) {
           };
         });
 
-        console.log("Processed approved events:", approvedEvents);
         approved_calendar_events = approvedEvents.map((event) => ({
           event_date: event.event_date ? new Date(event.event_date) : null,
           event_name: event.event_name,
@@ -637,8 +638,6 @@ function call_events(currentyear, currentmonth) {
           }
         }
       });
-
-      console.log("approvedEvents new", approved_calendar_events);
 
       calendarContainer.appendChild(dayElement);
     }
