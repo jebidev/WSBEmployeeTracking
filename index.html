@@ -1236,7 +1236,7 @@
                 <label class="seating-choice">
                   <input
                     type="radio"
-                    id="arrangement2"
+                    id="arrangement3"
                     name="seatingArrangement"
                     value="theater"
                   />
@@ -1563,73 +1563,6 @@
 </form>
 
 </div>
-
-<script>// Your existing modal handling code remains unchanged
-
-  // Sign in modal code
-
-  // Sign in modal elements
-  
-  const sign_in_button = document.getElementById('signinbutton');
-  const login_modal = document.getElementById('login_modal');
-  const fuckthis = document.getElementById('close-modal-button');
-  const register = document.getElementById('register');
-
-  // Registration modal elements
-  const registration_modal = document.getElementById('registration_modal');
-  const close_registration = document.getElementById('close_registration_button');
-  const create_account = document.getElementById('create_account_button');
-
-  //Show sign-in modal
-  sign_in_button.addEventListener('click', function() {
-    login_modal.classList.add('modal-background');
-  });
-
-  // Close sign in modal
-  fuckthis.addEventListener('click', function() {
-    login_modal.classList.remove('modal-background');
-  });
-
-  // Show registration modal
-  register.addEventListener('click', function() {
-    registration_modal.classList.add('modal-background');
-    login_modal.classList.remove('modal-background');
-  });
-
-  // Close registration modal
-  close_registration.addEventListener('click', function() {
-    registration_modal.classList.remove('modal-background');
-  });
-
-</script>
-
-<script>
-
-// Register an account
-create_account.addEventListener('click', function() {
-  var registration_email = document.getElementById('registration_email').value;
-  var registration_password = document.getElementById('registration_password').value;
-  // Create a new user with the provided email and password
-  createUserWithEmailAndPassword(auth, registration_email, registration_password)
-    .then((userCredential) => {
-      // Signed in 
-      var user = userCredential.user;
-      console.log("User registered successfully:", user);
-      // You can add here additional actions after successful registration, such as updating the UI or redirecting
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // Handle errors here, such as displaying a message to the user
-      console.error("Error in user registration:", errorCode, errorMessage);
-    });
-
-});
-
-</script>
-
-
-
     <!-- Footer -->
     <footer>
       <!-- Your footer content -->
@@ -1637,15 +1570,15 @@ create_account.addEventListener('click', function() {
 
     <!-- JavaScript -->
     <script>
-      // Smooth scrolling to section when a navbar item is clicked
-      document.querySelectorAll(".navbar-item").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          event.preventDefault();
-          const targetId = event.target.getAttribute("href").substring(1);
-          const targetSection = document.getElementById(targetId);
-          targetSection.scrollIntoView({ behavior: "smooth" });
-        });
-      });
+      // // Smooth scrolling to section when a navbar item is clicked
+      // document.querySelectorAll(".navbar-item").forEach((item) => {
+      //   item.addEventListener("click", (event) => {
+      //     event.preventDefault();
+      //     const targetId = event.target.getAttribute("href").substring(1);
+      //     const targetSection = document.getElementById(targetId);
+      //     targetSection.scrollIntoView({ behavior: "smooth" });
+      //   });
+      // });
 
       // Show the RegistrationForm section when the navbar item is clicked
       document
@@ -1788,5 +1721,7 @@ create_account.addEventListener('click', function() {
     </script>
 
     <script src="Script.js"></script>
+    <script src="userhandling.js"></script>
   </body>
 </html>
+<div id="message_bar" class="has-text-centered messagebarbg">f</div>
