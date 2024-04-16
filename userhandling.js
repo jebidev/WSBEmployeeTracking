@@ -13,23 +13,23 @@ const create_account = document.getElementById('create_account_button');
 
 //Show sign-in modal
 sign_in_button.addEventListener('click', function() {
-  login_modal.classList.add('modal-background');
+  login_modal.classList.add('is-active');
 });
 
 // Close sign in modal
 fuckthis.addEventListener('click', function() {
-  login_modal.classList.remove('modal-background');
+  login_modal.classList.remove('is-active');
 });
 
 // Show registration modal
 register.addEventListener('click', function() {
-  registration_modal.classList.add('modal-background');
-  login_modal.classList.remove('modal-background');
+  registration_modal.classList.add('is-active');
+  login_modal.classList.remove('is-active');
 });
 
 // Close registration modal
 close_registration.addEventListener('click', function() {
-  registration_modal.classList.remove('modal-background');
+  registration_modal.classList.remove('is-active');
 });
 
   // Register an account
@@ -39,7 +39,7 @@ document.getElementById('create_account_button').addEventListener('click', funct
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       console.log("User created:", userCredential.user);
-      registration_modal.classList.remove('modal-background');
+      registration_modal.classList.remove('is-active');
     })
     .catch((error) => {
       console.error("Error creating user:", error.message);
