@@ -71,7 +71,7 @@
       }
 
       .save-event-button {
-        background-color: rgba(197, 35, 40, 255); /* Original color */
+        background-color: black; /* Original color */
         border-color: black; /* Updated border color to black */
         border: 1.5px solid rgb(140, 138, 138) !important; /* Ensure border width, style, and color are set */
         border-radius: 50%;
@@ -405,7 +405,7 @@
       .event {
         font-size: 10px;
         padding: 3px;
-        background-color: #58bae4;
+        background-color: red;
         color: white;
         border-radius: 5px;
         max-height: 55px;
@@ -461,7 +461,7 @@
       }
       #saveButton,
       #closeButton {
-        background-color: #92a1d1;
+        background-color: black;
       }
       #eventText {
         font-size: 14px;
@@ -476,82 +476,81 @@
         position: absolute;
         background-color: rgba(0, 0, 0, 0.8);
       }
+
+      navbar.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-end {
+    /* Pulls Sign In and Sign Up to the right */
+    display: flex;
+    gap: 10px; /* Adjust gap as needed */
+  }
+
+  .sub-navbar {
+    text-align: center; /* This will center the sub-navbar items */
+  }
+
+  .sub-navbar-menu {
+    display: inline-block; /* Allows the menu to size according to its content */
+    margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
+  }
+
+  .sub-navbar-item {
+    margin: 0 15px; /* Gives space between the sub-navbar items */
+  }
+
+  .button {
+    /* Additional styles for buttons if needed */
+    background-color: rgba(197, 35, 40, 255);
+    color: white;
+  }
+
     </style>
   </head>
   <body>
     <!-- Header -->
-    <nav
-      class="navbar custom-navbar"
-      role="navigation"
-      aria-label="main navigation"
-      class="navbar custom-navbar"
-      role="navigation"
-      aria-label="main navigation"
-    >
+    <!-- Main Top Navbar -->
+    <nav class="navbar custom-navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
           <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
-          <span class="ml-2 is-size-4" href="#" , id="homeNavItem"
-            >Employer Tracking</span
-          >
+          <span class="ml-2 is-size-4" href="#" id="homeNavItem" style="font-weight:600;">Employer Tracking</span>
         </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="registrationNavItem"
-            >Registration Form</span
-          >
-        </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="calendarNavItem"
-            >Calendar</span
-          >
-        </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="EventsRegisterNavItem"
-            >Events Administration</span
-          >
-        </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="EmployerEngagementNavItem"
-            >Employer Engagement</span
-          >
-        </a>
-
-        <div class="navbar-end">
-          <!-- Sign In Button -->
-          <div class="navbar-item">
-            <div class="dropdown is-bottom">
-              <button
-                class="button"
-                style="background-color: rgba(197, 35, 40, 255); color: white"
-                aria-haspopup="true"
-                aria-controls="dropdown-menu2"
-                href="#"
-              >
-                Sign In
-              </button>
-              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                <div class="dropdown-content">
-                  <a href="#" class="dropdown-item">Student</a>
-                  <a href="#" class="dropdown-item">Employer</a>
-                  <a href="#" class="dropdown-item">Admit</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sign Up Button -->
-          <div class="navbar-item">
-            <button
-              class="button"
-              style="background-color: rgba(197, 35, 40, 255); color: white"
-              href="#"
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
+      </div>
+    
+      <!-- Navbar End for Sign In and Sign Up Buttons -->
+      <div class="navbar-end">
+        <button class="button sign-in-btn" href="#">
+          Sign In
+        </button>
+        <button class="button sign-up-btn" href="#">
+          Sign Up
+        </button>
       </div>
     </nav>
+    
+    <!-- Sub-navbar -->
+   <!-- Sub-navbar -->
+<nav class="navbar custom-subnavbar is-warning" role="navigation" aria-label="secondary navigation">
+  <div class="navbar-menu" style="display: flex; justify-content: center; width: 100%;">
+    <a class="navbar-item" href="#">
+      <span class="ml-2 is-size-5 " style="color: black;" href="#" id="registrationNavItem">Registration Form</span>
+    </a>
+    <a class="navbar-item" href="#">
+      <span class="ml-2 is-size-5" style="color: black;" href="#" id="calendarNavItem">Calendar</span>
+    </a>
+    <a class="navbar-item" href="#">
+      <span class="ml-2 is-size-5" style="color: black;"href="#" id="EventsRegisterNavItem">Events Administration</span>
+    </a>
+    <a class="navbar-item" href="#">
+      <span class="ml-2 is-size-5" style="color: black;"href="#" id="EmployerEngagementNavItem">Employer Engagement</span>
+    </a>
+  </div>
+</nav>
+
 
     <!-- Main content -->
     <main>

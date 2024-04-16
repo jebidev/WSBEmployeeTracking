@@ -364,7 +364,7 @@ function show_events_home() {
             <!--Save Button-->
             <button
             class="button is-primary save-event-button"
-            style="background-color: lightgray"
+            style="background-color: black"
           >
             <span class="icon is-small">
               <i class="fas fa-bookmark icon-white"></i>
