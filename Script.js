@@ -130,11 +130,19 @@ function initButtons() {
   document.getElementById("nextButton").addEventListener("click", () => {
     nav++;
     load();
+    console.log("newmonth");
+    call_events(2024, 4);
+    console.log("after call events");
   });
 
   document.getElementById("backButton").addEventListener("click", () => {
     nav--;
+    console.log("navvvv", nav);
+
     load();
+    console.log("oldmonth");
+
+    call_events(2024, 2);
   });
 
   document.getElementById("saveButton").addEventListener("click", saveEvent);
@@ -191,87 +199,89 @@ document.addEventListener("DOMContentLoaded", () => {
   registrationForm.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent the default form submission
 
-    // Basic field validations
+    // Retrieve and trim values from input fields
     const employerContactNumber = document
       .getElementById("employerContactNumber")
       .value.trim();
-    const eventName = document.getElementById("eventName").value.trim();
-    const eventOverview = document.getElementById("eventOverview").value.trim();
-    const eventDescription = document
+    const event_name = document.getElementById("eventName").value.trim();
+    const event_overview = document
+      .getElementById("eventOverview")
+      .value.trim();
+    const event_description = document
       .getElementById("eventDescription")
       .value.trim();
-    const eventCategory = document.getElementById("eventCategory").value.trim();
+    const event_category = document
+      .getElementById("eventCategory")
+      .value.trim();
     const location = document.getElementById("location").value.trim();
-    const eventCapacity = document.getElementById("eventCapacity").value.trim();
+    const event_capacity = document
+      .getElementById("eventCapacity")
+      .value.trim();
 
     // Validate required fields are not empty
     if (
       !employerContactNumber ||
-      !eventName ||
-      !eventOverview ||
-      !eventDescription ||
-      !eventCategory ||
+      !event_name ||
+      !event_overview ||
+      !event_description ||
+      !event_category ||
       !location ||
-      !eventCapacity
+      !event_capacity
     ) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    // Date validation
+    // Handle event date
     const eventDateInput = document.getElementById("eventDate");
     const eventDateValue = new Date(eventDateInput.value);
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize today's date for comparison
+
+    if (eventDateValue < today) {
+      alert("Please enter a date after the current day.");
+      return; // Stop further processing if date is in the past
+    }
+
     const seatingArrangement = document.querySelector(
       'input[name="seatingArrangement"]:checked'
     )?.value;
 
-    today.setHours(0, 0, 0, 0); // Reset hours for today's date to ensure correct comparison
-
-    if (eventDateValue < today) {
-      alert("Please enter a date after the current day.");
-      return; // Stop the function if the date is not valid
-    }
-
-    // Assuming all validations passed
+    // Prepare form data
     const regformData = {
       employerContactNumber,
-      eventName,
-      eventDate: eventDateInput.value,
-      eventOverview,
-      eventDescription,
-      eventCategory,
+      event_name,
+      event_date: eventDateInput.value, // Directly use Date object here
+      event_overview,
+      event_description,
+      event_category,
       location,
-      eventCapacity,
-      // Collecting checkboxes by their names
+      event_capacity,
       disposables: Array.from(
         document.querySelectorAll('input[name="disposables"]:checked')
       ).map((cb) => cb.value),
-
       meals: Array.from(
         document.querySelectorAll('input[name="meals"]:checked')
       ).map((cb) => cb.value),
-
       snacks: Array.from(
         document.querySelectorAll('input[name="snacks"]:checked')
       ).map((cb) => cb.value),
-
       beverages: Array.from(
         document.querySelectorAll('input[name="beverages"]:checked')
       ).map((cb) => cb.value),
-
       seatingArrangement,
     };
 
     console.log(regformData);
 
+    // Submit event data to Firestore
     db.collection("events")
       .add(regformData)
-      .then(() =>
+      .then(() => {
         openNotificationModal(
           "Your event has been sent for approval to the admin team."
-        )
-      )
+        );
+      })
       .catch((error) => {
         console.error("Error adding document: ", error);
         openNotificationModal("There was an error submitting your event.");
@@ -312,14 +322,17 @@ function submitSignInForm() {
 //     toggleModal("signInModal", true);
 //   });
 
-function show_events_home(){
-  db.collection('events').where("event_status", "==", "Approved").get().then(res => {
-      let data = res.docs
-      let htmlColumn1 = ``
-      let htmlColumn2 = ``
-      let index = 0
-      data.forEach(d => {
-          const boxHtml = `<div class="box">
+function show_events_home() {
+  db.collection("events")
+    .where("event_status", "==", "Approved")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const boxHtml = `<div class="box">
           <div class="content">
             <!--Company name and logo-->
             <div class="media">
@@ -361,19 +374,19 @@ function show_events_home(){
           </div>
         </div>`;
 
-        if (index%2===0) {
-          htmlColumn1 += boxHtml
-        } else{
+        if (index % 2 === 0) {
+          htmlColumn1 += boxHtml;
+        } else {
           htmlColumn2 += boxHtml;
         }
 
-        index++
-      })
+        index++;
+      });
       //append html variable to the document
-      document.querySelector('#column1').innerHTML += htmlColumn1
-      document.querySelector('#column2').innerHTML += htmlColumn2
+      document.querySelector("#column1").innerHTML += htmlColumn1;
+      document.querySelector("#column2").innerHTML += htmlColumn2;
 
-      document.querySelectorAll(".save-event-button").forEach(button => {
+      document.querySelectorAll(".save-event-button").forEach((button) => {
         button.addEventListener("click", () => {
           const icon = button.querySelector(".fas");
 
@@ -395,34 +408,36 @@ function show_events_home(){
           });
         });
       });
-  });
+    });
 }
 show_events_home();
 
 function show_register_events() {
-  db.collection('events').get().then(res => {
-    let data = res.docs
-    let htmlColumn1 = ``
-    let htmlColumn2 = ``
-    let index = 0
-    data.forEach(d => {
-      const eventId = d.id; // Get the event ID
+  db.collection("events")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const eventId = d.id; // Get the event ID
 
-      // Determine the text to display on the button based on the event status
-      let buttonText1 = '';
-      let buttonText2 = '';
-      if (d.data().event_status === 'Approved') {
-        buttonText1 = 'Approved';
-      } else {
-        buttonText1 = 'Accept';
-      }
-      if (d.data().event_status === 'Declined') {
-        buttonText2 = 'Declined';
-      } else {
-        buttonText2 = 'Decline';
-      }
+        // Determine the text to display on the button based on the event status
+        let buttonText1 = "";
+        let buttonText2 = "";
+        if (d.data().event_status === "Approved") {
+          buttonText1 = "Approved";
+        } else {
+          buttonText1 = "Accept";
+        }
+        if (d.data().event_status === "Declined") {
+          buttonText2 = "Declined";
+        } else {
+          buttonText2 = "Decline";
+        }
 
-      const boxHtml = `<div class="box">
+        const boxHtml = `<div class="box">
           <div class="content">
             <!--Company name and logo-->
             <div class="media">
@@ -476,62 +491,162 @@ function show_register_events() {
           </div>
         </div>`;
 
-      if (index % 2 === 0) {
-        htmlColumn1 += boxHtml
-      } else {
-        htmlColumn2 += boxHtml;
-      }
+        if (index % 2 === 0) {
+          htmlColumn1 += boxHtml;
+        } else {
+          htmlColumn2 += boxHtml;
+        }
 
-      index++
-    })
-    //append html variable to the document
-    document.querySelector('#column1_events').innerHTML += htmlColumn1
-    document.querySelector('#column2_events').innerHTML += htmlColumn2
+        index++;
+      });
+      //append html variable to the document
+      document.querySelector("#column1_events").innerHTML += htmlColumn1;
+      document.querySelector("#column2_events").innerHTML += htmlColumn2;
 
-    // Attach event listeners to the buttons after they are added to the DOM
-    attachButtonListeners();
-  })
+      // Attach event listeners to the buttons after they are added to the DOM
+      attachButtonListeners();
+    });
 }
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document.querySelectorAll('.accept-button').forEach(button => {
-    button.addEventListener('click', () => {
-      const eventId = button.getAttribute('data-event-id'); // Get the event ID
+  document.querySelectorAll(".accept-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
       const eventStatus = button.textContent.trim(); // Get the current text content of the button
 
       // If the button says "Accept", update the event status to "Approved" in Firestore
-      if (eventStatus === 'Accept') {
-        db.collection('events').doc(eventId).update({ event_status: 'Approved' })
+      if (eventStatus === "Accept") {
+        db.collection("events")
+          .doc(eventId)
+          .update({ event_status: "Approved" })
           .then(() => {
-            console.log('Event status updated to Approved');
+            console.log("Event status updated to Approved");
             // You can add further logic here, like updating UI, etc.
-            button.textContent = 'Approved'; // Change the button text to "Approved"
+            button.textContent = "Approved"; // Change the button text to "Approved"
           })
-          .catch(error => {
-            console.error('Error updating event status:', error);
+          .catch((error) => {
+            console.error("Error updating event status:", error);
           });
       }
     });
   });
-  document.querySelectorAll('.decline-button').forEach(button => {
-    button.addEventListener('click', () => {
-      const eventId = button.getAttribute('data-event-id'); // Get the event ID
+  document.querySelectorAll(".decline-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
       const eventStatus = button.textContent.trim(); // Get the current text content of the button
 
       // If the button says "Decline", update the event status to "Approved" in Firestore
-      if (eventStatus === 'Decline') {
-        db.collection('events').doc(eventId).update({ event_status: 'Declined' })
+      if (eventStatus === "Decline") {
+        db.collection("events")
+          .doc(eventId)
+          .update({ event_status: "Declined" })
           .then(() => {
-            console.log('Event status updated to Declined');
+            console.log("Event status updated to Declined");
             // You can add further logic here, like updating UI, etc.
-            button.textContent = 'Declined'; // Change the button text to "Approved"
+            button.textContent = "Declined"; // Change the button text to "Approved"
           })
-          .catch(error => {
-            console.error('Error updating event status:', error);
+          .catch((error) => {
+            console.error("Error updating event status:", error);
           });
       }
     });
-  })
+  });
 }
-show_register_events()
+show_register_events();
+
+// calendar!!!
+// calendar functions
+function call_events(currentyear, currentmonth) {
+  function fetchApprovedEvents() {
+    console.log("Fetching events from Firestore...");
+    db.collection("events")
+      .where("event_status", "==", "Approved")
+      .get()
+      .then((querySnapshot) => {
+        approvedEvents = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          const parsedDate = new Date(data.event_date);
+          return {
+            id: doc.id,
+            event_name: data.event_name,
+            event_date: isNaN(parsedDate) ? null : parsedDate,
+            ...data,
+          };
+        });
+
+        console.log("Processed approved events:", approvedEvents);
+        approved_calendar_events = approvedEvents.map((event) => ({
+          event_date: event.event_date ? new Date(event.event_date) : null,
+          event_name: event.event_name,
+        }));
+
+        console.log("approved_calendar_events", approved_calendar_events);
+
+        // Generate the calendar here
+        console.log("calling ", currentmonth, currentyear);
+        generateCalendar(currentmonth, currentyear);
+      })
+      .catch((error) => {
+        console.error("Error fetching events: ", error);
+      });
+  }
+
+  // Call fetchApprovedEvents on document ready
+  fetchApprovedEvents();
+
+  function generateCalendar(month, year) {
+    console.log("generatingg month year", month, year);
+    const calendarContainer = document.getElementById("calendar");
+    calendarContainer.innerHTML = ""; // Clear existing calendar entries
+
+    let daysInMonth = new Date(year, month + 1, 0).getDate(); // Calculate the number of days in the month
+
+    // Ensure we have a valid approvedEvents array loaded
+    if (!approved_calendar_events) {
+      console.error("No approved events available");
+      return;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      let dayElement = document.createElement("div");
+      dayElement.className = "day";
+
+      // Format the date as YYYY-MM-DD for comparison
+      let dateString = `${year}-${(month + 1).toString().padStart(2, "0")}-${day
+        .toString()
+        .padStart(2, "0")}`;
+      dayElement.setAttribute("data-date", dateString);
+
+      // Set the day number as content
+      let dayNumberSpan = document.createElement("span");
+      dayNumberSpan.textContent = day;
+      dayElement.appendChild(dayNumberSpan);
+
+      // Find any approved events for this date
+      approved_calendar_events.forEach((event) => {
+        if (event.event_date) {
+          // Convert event.date to YYYY-MM-DD string format
+          let eventDateStr = event.event_date.toISOString().substring(0, 10);
+          if (eventDateStr === dateString) {
+            // Compare event date with formatted date string
+            let eventElement = document.createElement("div");
+            eventElement.textContent = event.event_name; // Use the event name
+            eventElement.className = "event";
+            dayElement.appendChild(eventElement); // Append the event name to the day element
+          }
+        }
+      });
+
+      console.log("approvedEvents new", approved_calendar_events);
+
+      calendarContainer.appendChild(dayElement);
+    }
+  }
+}
+
+call_events(2024, 3);
+
+let today = new Date();
+// generateCalendar(today.getMonth(), today.getFullYear());
+console.log("GOSSIP", today.getMonth(), today.getFullYear());
