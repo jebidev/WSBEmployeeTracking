@@ -1675,12 +1675,9 @@
     registration_modal.classList.remove('modal-background');
   });
 
-  // Register an account
-  create_account.addEventListener('click', function() {
-    var registration_email = document.getElementById('registration_email').value;
-    var registration_password = document.getElementById('registration_password').value;
-  })
+</script>
 
+<script>
 // Firebase stuff
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -1700,8 +1697,28 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
+const create_account = document.getElementById('create_account_button');
 
+// Register an account
+create_account.addEventListener('click', function() {
+  var registration_email = document.getElementById('registration_email').value;
+  var registration_password = document.getElementById('registration_password').value;
+  // Create a new user with the provided email and password
+  createUserWithEmailAndPassword(auth, registration_email, registration_password)
+    .then((userCredential) => {
+      // Signed in 
+      var user = userCredential.user;
+      console.log("User registered successfully:", user);
+      // You can add here additional actions after successful registration, such as updating the UI or redirecting
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // Handle errors here, such as displaying a message to the user
+      console.error("Error in user registration:", errorCode, errorMessage);
+    });
 
+});
 
 </script>
 
