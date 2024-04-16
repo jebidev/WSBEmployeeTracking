@@ -216,6 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .getElementById("eventCategory")
       .value.trim();
     const location = document.getElementById("location").value.trim();
+    const event_medium = document.getElementById("event_medium").value.trim();
+
     const event_capacity = document
       .getElementById("eventCapacity")
       .value.trim();
@@ -228,7 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
       !event_description ||
       !event_category ||
       !location ||
-      !event_capacity
+      !event_capacity ||
+      !event_medium
     ) {
       alert("Please fill in all required fields.");
       return;
@@ -258,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event_description,
       event_category,
       location,
+      event_medium,
       event_capacity,
       disposables: Array.from(
         document.querySelectorAll('input[name="disposables"]:checked')
