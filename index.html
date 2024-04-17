@@ -27,8 +27,8 @@
 
     <style>
       .custom-navbar {
-        padding: 5px;
-        height: 100px;
+        padding: 10px;
+        height: 80px;
       }
 
       .custom-navbar .navbar-brand img {
@@ -478,86 +478,113 @@
       }
 
       navbar.custom-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .navbar-end {
-    /* Pulls Sign In and Sign Up to the right */
-    display: flex;
-    gap: 10px; /* Adjust gap as needed */
-  }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-  .sub-navbar {
-    text-align: center; /* This will center the sub-navbar items */
-  }
+      .navbar-end {
+        /* Pulls Sign In and Sign Up to the right */
+        margin-top: 10px;
+        display: flex;
+        gap: 10px; /* Adjust gap as needed */
+      }
 
-  .sub-navbar-menu {
-    display: inline-block; /* Allows the menu to size according to its content */
-    margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
-  }
+      .sub-navbar {
+        text-align: center; /* This will center the sub-navbar items */
+      }
 
-  .sub-navbar-item {
-    margin: 0 15px; /* Gives space between the sub-navbar items */
-  }
+      .sub-navbar-menu {
+        display: inline-block; /* Allows the menu to size according to its content */
+        margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
+      }
 
-  .button {
-    /* Additional styles for buttons if needed */
-    background-color: rgba(197, 35, 40, 255);
-    color: white;
-  }
+      .sub-navbar-item {
+        margin: 0 15px; /* Gives space between the sub-navbar items */
+      }
 
-  .navbar-item:focus, .navbar-item span:focus {
-    outline: none;
-    background: none;
-}
-.navbar-item:hover, .navbar-item span:hover {
-    background: #f5f5f5;
-}
+      .button {
+        /* Additional styles for buttons if needed */
+        background-color: rgba(197, 35, 40, 255);
+        color: white;
+      }
+
+      .navbar-item:focus,
+      .navbar-item span:focus {
+        outline: none;
+        background: none;
+      }
+      .navbar-item:hover,
+      .navbar-item span:hover {
+        background: #f5f5f5;
+      }
     </style>
   </head>
   <body>
     <!-- Header -->
     <!-- Main Top Navbar -->
-    <nav class="navbar custom-navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar custom-navbar" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
           <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
-          <span class="ml-2 is-size-4" href="#" id="homeNavItem" style="font-weight:600;">Employer Tracking</span>
+          <span
+            class="ml-2 is-size-4"
+            id="homeNavItem"
+            style="font-weight: 600; color: rgb(110, 110, 241)"
+            >Employer Tracking</span
+          >
         </a>
       </div>
-    
+
       <!-- Navbar End for Sign In and Sign Up Buttons -->
       <div class="navbar-end">
-        <button class="button sign-in-btn" href="#">
-          Sign In
-        </button>
-        <button class="button sign-up-btn" href="#">
-          Sign Up
-        </button>
+        <button class="button sign-in-btn">Sign In</button>
+        <button class="button sign-up-btn">Sign Up</button>
       </div>
     </nav>
-    
-    <!-- Sub-navbar -->
-   <!-- Sub-navbar -->
-<nav class="navbar custom-subnavbar is-warning" role="navigation" aria-label="secondary navigation">
-  <div class="navbar-menu" style="display: flex; justify-content: center; width: 100%;">
-    <a class="navbar-item" href="#">
-      <span class="ml-2 is-size-5 " style="color: black;" href="#" id="registrationNavItem">Registration Form</span>
-    </a>
-    <a class="navbar-item" href="#">
-      <span class="ml-2 is-size-5" style="color: black;" href="#" id="calendarNavItem">Calendar</span>
-    </a>
-    <a class="navbar-item" href="#">
-      <span class="ml-2 is-size-5" style="color: black;"href="#" id="EventsRegisterNavItem">Events Administration</span>
-    </a>
-    <a class="navbar-item" href="#">
-      <span class="ml-2 is-size-5" style="color: black;"href="#" id="EmployerEngagementNavItem">Employer Engagement</span>
-    </a>
-  </div>
-</nav>
 
+    <!-- Sub-navbar -->
+    <!-- Sub-navbar -->
+    <nav
+      class="navbar custom-subnavbar is-warning"
+      role="navigation"
+      aria-label="secondary navigation"
+    >
+      <div
+        class="navbar-menu"
+        style="display: flex; justify-content: center; width: 100%"
+      >
+        <a class="navbar-item">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="registrationNavItem"
+            >Registration Form</span
+          >
+        </a>
+        <a class="navbar-item" href="#">
+          <span class="ml-2 is-size-5" style="color: black" id="calendarNavItem"
+            >Calendar</span
+          >
+        </a>
+        <a class="navbar-item" href="#">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="EventsRegisterNavItem"
+            >Events Administration</span
+          >
+        </a>
+        <a class="navbar-item" href="#">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="EmployerEngagementNavItem"
+            >Employer Engagement</span
+          >
+        </a>
+      </div>
+    </nav>
 
     <!-- Main content -->
     <main>
@@ -761,62 +788,11 @@
             <div class="columns">
               <div class="column is-6" id="column1">
                 <!--First Column-->
-          </div>
-          <div class="column is-6" id="column2">
-            <!--Second Column-->
-      </div>
-        </div>
-      </div>
-        <!-- Sign In/Create User Modal -->
-        <div class="modal" id="signInModal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Sign In/Create User</p>
-              <button
-                class="delete"
-                aria-label="close"
-                onclick="toggleModal('signInModal', false)"
-              ></button>
-            </header>
-            <section class="modal-card-body">
-              <!-- Sign In/Create User Form Content -->
-              <form id="signInForm">
-                <!-- Form Fields Like Email, Password, etc. -->
-                <div class="field">
-                  <label class="label">Email</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="email"
-                      placeholder="e.g. alex@example.com"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Password</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="password"
-                      placeholder="********"
-                    />
-                  </div>
-                </div>
-                <!-- Add additional fields as needed -->
-              </form>
-            </section>
-            <footer class="modal-card-foot">
-              <button class="button is-success" onclick="submitSignInForm()">
-                Sign In
-              </button>
-              <button
-                class="button"
-                onclick="toggleModal('signInModal', false)"
-              >
-                Cancel
-              </button>
-            </footer>
+              </div>
+              <div class="column is-6" id="column2">
+                <!--Second Column-->
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1372,12 +1348,12 @@
             <div class="columns">
               <div class="column is-6" id="column1_events">
                 <!--First Column-->
+              </div>
+              <div class="column is-6" id="column2_events">
+                <!--Second Column-->
+              </div>
+            </div>
           </div>
-          <div class="column is-6" id="column2_events">
-            <!--Second Column-->
-      </div>
-        </div>
-      </div>
         </div>
       </section>
       <section
@@ -1518,23 +1494,8 @@
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <!-- Your footer content -->
-    </footer>
-
     <!-- JavaScript -->
     <script>
-      // Smooth scrolling to section when a navbar item is clicked
-      document.querySelectorAll(".navbar-item").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          event.preventDefault();
-          const targetId = event.target.getAttribute("href").substring(1);
-          const targetSection = document.getElementById(targetId);
-          targetSection.scrollIntoView({ behavior: "smooth" });
-        });
-      });
-
       // Show the RegistrationForm section when the navbar item is clicked
       document
         .getElementById("registrationNavItem")
@@ -1641,7 +1602,7 @@
           document.getElementById("calendarContainer").style.display = "block";
         });
     </script>
-   <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
