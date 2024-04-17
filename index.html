@@ -514,23 +514,23 @@
         outline: none;
         background: none;
       }
-      .navbar-item:hover,
-      .navbar-item span:hover {
-        background: #f5f5f5;
-      }
     </style>
   </head>
   <body>
     <!-- Header -->
     <!-- Main Top Navbar -->
-    <nav class="navbar custom-navbar" aria-label="main navigation">
+    <nav
+      class="navbar custom-navbar"
+      style="background-color: rgb(197, 35, 40)"
+      aria-label="main navigation"
+    >
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
           <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
           <span
-            class="ml-2 is-size-4"
+            class="ml-2 is-size-3"
             id="homeNavItem"
-            style="font-weight: 600; color: rgb(110, 110, 241)"
+            style="font-weight: 600; color: white"
             >Employer Tracking</span
           >
         </a>
@@ -538,8 +538,18 @@
 
       <!-- Navbar End for Sign In and Sign Up Buttons -->
       <div class="navbar-end">
-        <button class="button sign-in-btn">Sign In</button>
-        <button class="button sign-up-btn">Sign Up</button>
+        <button
+          class="button sign-in-btn is-warning"
+          style="background-color: white; color: black"
+        >
+          Sign In
+        </button>
+        <button
+          class="button sign-up-btn"
+          style="background-color: white; color: black"
+        >
+          Sign Up
+        </button>
       </div>
     </nav>
 
@@ -562,12 +572,12 @@
             >Registration Form</span
           >
         </a>
-        <a class="navbar-item" href="#">
+        <a class="navbar-item">
           <span class="ml-2 is-size-5" style="color: black" id="calendarNavItem"
             >Calendar</span
           >
         </a>
-        <a class="navbar-item" href="#">
+        <a class="navbar-item">
           <span
             class="ml-2 is-size-5"
             style="color: black"
@@ -575,7 +585,7 @@
             >Events Administration</span
           >
         </a>
-        <a class="navbar-item" href="#">
+        <a class="navbar-item">
           <span
             class="ml-2 is-size-5"
             style="color: black"
