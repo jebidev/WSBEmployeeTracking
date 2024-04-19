@@ -516,7 +516,7 @@
       }
 
       body nav .navbar-item .notification-dropdown {
-        position: static;
+        position: absolute;
         background-color: #fff;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1000; /* Very high to ensure it's on top */
@@ -527,15 +527,7 @@
         top: 100%;
       }
 
-      .navbar.custom-navbar {
-        z-index: 30; /* Ensure the navbar is properly layered */
-        position: relative;
-      }
-
       .notification-dropdown ul {
-        position: relative;
-        z-index: 5000 !important; /* Increased z-index */
-
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -578,7 +570,7 @@
       </div>
 
       <!-- Navbar End for Sign In and Sign Up Buttons -->
-      <div class="navbar-end">
+      <div class="navbar-end has-dropdown">
         <a class="navbar-item">
           <span class="icon">
             <i
