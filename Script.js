@@ -418,6 +418,47 @@ function show_events_home() {
 }
 show_events_home();
 
+document
+  .getElementById("notificationBell")
+  .addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent the link from navigating
+    const notificationList = document.getElementById("notificationList");
+    const dropdown = document.querySelector(".notification-dropdown");
+
+    // Simulate fetching notifications (you would replace this with an actual API call)
+    const notifications = [];
+
+    // Clear existing notifications
+    notificationList.innerHTML = "";
+
+    // Check if there are notifications and display them
+    if (notifications.length > 0) {
+      notifications.forEach((notification) => {
+        const li = document.createElement("li");
+        li.textContent = notification.text;
+        notificationList.appendChild(li);
+      });
+    } else {
+      notificationList.innerHTML = "<li>Nothing new needs attention.</li>";
+    }
+
+    // Toggle dropdown display
+    dropdown.style.display =
+      dropdown.style.display === "none" ? "block" : "none";
+  });
+
+// Optional: Hide dropdown when clicking elsewhere on the page
+document.addEventListener("click", function (event) {
+  const isClickInside = document
+    .getElementById("notificationBell")
+    .contains(event.target);
+
+  if (!isClickInside) {
+    const dropdown = document.querySelector(".notification-dropdown");
+    dropdown.style.display = "none";
+  }
+});
+
 function show_register_events() {
   db.collection("events")
     .get()

@@ -514,6 +514,39 @@
         outline: none;
         background: none;
       }
+
+      .notification-dropdown {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 100; /* Increased z-index */
+        right: 0;
+        width: 300px;
+        border-radius: 4px;
+        padding: 10px;
+        top: 100%; /* This positions it directly below the navbar item */
+      }
+
+      .notification-dropdown ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .notification-dropdown li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .notification-dropdown li:last-child {
+        border-bottom: none;
+      }
+
+      .notification-dropdown li a {
+        text-decoration: none;
+        color: black;
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -538,6 +571,18 @@
 
       <!-- Navbar End for Sign In and Sign Up Buttons -->
       <div class="navbar-end">
+        <a class="navbar-item">
+          <span class="icon">
+            <i
+              class="fa fa-bell"
+              style="color: white"
+              id="notificationBell"
+            ></i>
+          </span>
+          <div class="notification-dropdown" style="display: none">
+            <ul id="notificationList" style="color: black"></ul>
+          </div>
+        </a>
         <button
           class="button sign-in-btn is-warning"
           style="background-color: white; color: black"
@@ -553,7 +598,6 @@
       </div>
     </nav>
 
-    <!-- Sub-navbar -->
     <!-- Sub-navbar -->
     <nav
       class="navbar custom-subnavbar is-warning"
