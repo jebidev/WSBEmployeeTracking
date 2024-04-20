@@ -27,8 +27,8 @@
 
     <style>
       .custom-navbar {
-        padding: 5px;
-        height: 100px;
+        padding: 10px;
+        height: 80px;
       }
 
       .custom-navbar .navbar-brand img {
@@ -52,11 +52,11 @@
       }
 
       .calendar_button {
-        border: 1px solid red; /* Adds a red border */
-        background-color: red;
+        border: 1px solid rgb(197, 35, 40); /* Adds a red border */
+        background-color: rgb(197, 35, 40);
         cursor: pointer;
         font-size: 0.75em; /* Makes the icon/text smaller */
-        color: red; /* Text/icon color */
+        color: rgb(197, 35, 40); /* Text/icon color */
         padding: 5px 10px; /* Smaller padding */
         border-radius: 5px; /* Optional: adds rounded corners */
       }
@@ -67,11 +67,11 @@
       }
 
       .icon-red {
-        color: red;
+        color: rgb(197, 35, 40);
       }
 
       .save-event-button {
-        background-color: rgba(197, 35, 40, 255); /* Original color */
+        background-color: black; /* Original color */
         border-color: black; /* Updated border color to black */
         border: 1.5px solid rgb(140, 138, 138) !important; /* Ensure border width, style, and color are set */
         border-radius: 50%;
@@ -138,7 +138,7 @@
           255,
           255,
           255,
-          0.6
+          0.8
         ); /* Adjust the alpha value (0.6) for transparency */
         min-height: 10vh;
         width: calc(70% - 1in);
@@ -184,6 +184,7 @@
 
       .form-group {
         margin-bottom: 20px;
+        font-size: 1.2rem;
       }
 
       .form-group label {
@@ -217,7 +218,11 @@
       }
 
       .submit-btn {
-        background-color: #a00000; /* Adjust the color to match the screenshot */
+        background-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
         color: white;
         border: none;
         padding: 15px 30px;
@@ -230,7 +235,7 @@
       }
 
       .submit-btn:hover {
-        background-color: #880000;
+        background-color: rgb(197, 35, 40);
         transition: background-color 0.3s;
       }
 
@@ -282,7 +287,11 @@
       }
 
       .seating-choice.selected {
-        border-color: #a00000; /* Adjust the color to match the screenshot */
+        border-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
       }
 
       /* Hide the actual radio button */
@@ -322,7 +331,7 @@
       }
 
       .icon-red {
-        color: red;
+        color: rgb(197, 35, 40);
       }
 
       /*CSS for Calendar*/
@@ -331,7 +340,7 @@
         justify-content: center;
         align-items: center; /* Ensure items are vertically centered */
         margin-top: 50px;
-        background-color: #fffcff;
+        background-color: #f9f9f9;
         width: 100%; /* Ensure the body takes full width */
       }
 
@@ -405,7 +414,7 @@
       .event {
         font-size: 10px;
         padding: 3px;
-        background-color: #58bae4;
+        background-color: rgb(197, 35, 40);
         color: white;
         border-radius: 5px;
         max-height: 55px;
@@ -421,7 +430,7 @@
         max-width: 600px;
         margin: 10% auto;
         text-align: center;
-        color: #a00000;
+        color: rgb(197, 35, 40);
       }
       .padding {
         cursor: default !important;
@@ -453,7 +462,7 @@
         box-shadow: 0px 0px 3px gray;
       }
       #eventTitleInput.error {
-        border: 2px solid red;
+        border: 2px solid rgb(197, 35, 40);
       }
       #cancelButton,
       #deleteButton {
@@ -461,7 +470,7 @@
       }
       #saveButton,
       #closeButton {
-        background-color: #92a1d1;
+        background-color: black;
       }
       #eventText {
         font-size: 14px;
@@ -500,42 +509,164 @@
         background-color: red;
       }
 
+
+      navbar.custom-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .navbar-end {
+        /* Pulls Sign In and Sign Up to the right */
+        margin-top: 10px;
+        display: flex;
+        gap: 10px; /* Adjust gap as needed */
+      }
+
+      .sub-navbar {
+        text-align: center; /* This will center the sub-navbar items */
+      }
+
+      .sub-navbar-menu {
+        display: inline-block; /* Allows the menu to size according to its content */
+        margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
+      }
+
+      .sub-navbar-item {
+        margin: 0 15px; /* Gives space between the sub-navbar items */
+      }
+
+      .button {
+        /* Additional styles for buttons if needed */
+        background-color: rgba(197, 35, 40, 255);
+        color: white;
+      }
+
+      .navbar-item:focus,
+      .navbar-item span:focus {
+        outline: none;
+        background: none;
+      }
+
+      body nav .navbar-item .notification-dropdown {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1000; /* Very high to ensure it's on top */
+        right: 0;
+        width: 300px;
+        border-radius: 4px;
+        padding: 10px;
+        top: 100%;
+      }
+
+      .notification-dropdown ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .notification-dropdown li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .notification-dropdown li:last-child {
+        border-bottom: none;
+      }
+
+      .notification-dropdown li a {
+        text-decoration: none;
+        color: black;
+        display: block;
+      }
     </style>
   </head>
   <body>
     <!-- Header -->
+    <!-- Main Top Navbar -->
     <nav
       class="navbar custom-navbar"
-      role="navigation"
-      aria-label="main navigation"
-      class="navbar custom-navbar"
-      role="navigation"
+      style="background-color: rgb(197, 35, 40)"
       aria-label="main navigation"
     >
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
           <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
-          <span class="ml-2 is-size-4" href="#" , id="homeNavItem"
+          <span
+            class="ml-2 is-size-3"
+            id="homeNavItem"
+            style="font-weight: 600; color: white"
             >Employer Tracking</span
           >
         </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="registrationNavItem"
+      </div>
+
+      <!-- Navbar End for Sign In and Sign Up Buttons -->
+      <div class="navbar-end has-dropdown">
+        <a class="navbar-item">
+          <span class="icon">
+            <i
+              class="fa fa-bell"
+              style="color: white; font-size: 1.5em"
+              id="notificationBell"
+            ></i>
+          </span>
+          <div class="notification-dropdown" style="display: none">
+            <ul id="notificationList" style="color: black"></ul>
+          </div>
+        </a>
+        <button
+          class="button sign-in-btn is-warning"
+          style="background-color: white; color: black"
+        >
+          Sign In
+        </button>
+        <button
+          class="button sign-up-btn"
+          style="background-color: white; color: black"
+        >
+          Sign Up
+        </button>
+      </div>
+    </nav>
+
+    <!-- Sub-navbar -->
+    <nav
+      class="navbar custom-subnavbar"
+      role="navigation"
+      aria-label="secondary navigation"
+    >
+      <div
+        class="navbar-menu"
+        style="display: flex; justify-content: center; width: 100%"
+      >
+        <a class="navbar-item">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="registrationNavItem"
             >Registration Form</span
           >
         </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="calendarNavItem"
+        <a class="navbar-item">
+          <span class="ml-2 is-size-5" style="color: black" id="calendarNavItem"
             >Calendar</span
           >
         </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="EventsRegisterNavItem"
+        <a class="navbar-item">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="EventsRegisterNavItem"
             >Events Administration</span
           >
         </a>
-        <a class="navbar-item" href="#">
-          <span class="ml-2 is-size-5" href="#" , id="EmployerEngagementNavItem"
+        <a class="navbar-item">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            id="EmployerEngagementNavItem"
             >Employer Engagement</span
           >
         </a>
@@ -545,7 +676,6 @@
           <div class="navbar-item">
             <div class="dropdown is-bottom">
               <button
-                id="signinbutton"
                 class="button"
                 style="background-color: rgba(197, 35, 40, 255); color: white"
                 aria-haspopup="true"
@@ -581,13 +711,25 @@
     <!-- Main content -->
     <main>
       <section class="section background-image-home" id="openingSection">
-        <div class="text-container pl-6 p-6 mt-6">
-          <h1 class="title is-size-1 mt-6 pt-6">
+        <div class="text-container pl-6 p-5 mt-6">
+          <h1 class="title is-size-1 mt-6 pt-6 has-text-centered">
             Welcome to Employer Tracking!
           </h1>
-          <p class="subtitle is-size-3">
-            This page is the designated spot for all events associated with
-            employers at UW-Madison
+          <p class="subtitle">
+            Welcome to our School of Business employer tracking platform, where
+            ambition meets opportunity! Employers can effortlessly register
+            their forthcoming events, spanning from career expos to networking
+            sessions, offering students a portal to explore diverse professional
+            pathways. With user-friendly features, employers can specify event
+            details such as date, time, category, and participating
+            organizations, ensuring optimal visibility and interaction.
+            Meanwhile, students can peruse a myriad of events tailored to their
+            interests and career aspirations, easily enrolling to participate
+            and engage with potential employers. Our platform serves as a vital
+            link between industry frontrunners and aspiring talent, nurturing
+            meaningful connections and facilitating the journey towards
+            rewarding careers. Join us today and unlock a realm of
+            possibilities!
           </p>
         </div>
       </section>
@@ -780,62 +922,11 @@
             <div class="columns">
               <div class="column is-6" id="column1">
                 <!--First Column-->
-          </div>
-          <div class="column is-6" id="column2">
-            <!--Second Column-->
-      </div>
-        </div>
-      </div>
-        <!-- Sign In/Create User Modal -->
-        <div class="modal" id="signInModal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Sign In/Create User</p>
-              <button
-                class="delete"
-                aria-label="close"
-                onclick="toggleModal('signInModal', false)"
-              ></button>
-            </header>
-            <section class="modal-card-body">
-              <!-- Sign In/Create User Form Content -->
-              <form id="signInForm">
-                <!-- Form Fields Like Email, Password, etc. -->
-                <div class="field">
-                  <label class="label">Email</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="email"
-                      placeholder="e.g. alex@example.com"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Password</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="password"
-                      placeholder="********"
-                    />
-                  </div>
-                </div>
-                <!-- Add additional fields as needed -->
-              </form>
-            </section>
-            <footer class="modal-card-foot">
-              <button class="button is-success" onclick="submitSignInForm()">
-                Sign In
-              </button>
-              <button
-                class="button"
-                onclick="toggleModal('signInModal', false)"
-              >
-                Cancel
-              </button>
-            </footer>
+              </div>
+              <div class="column is-6" id="column2">
+                <!--Second Column-->
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -862,15 +953,14 @@
         class="section background-image-registration"
         id="registrationOpener"
       >
-        <div class="text-container pl-6 p-6 mt-6">
-          <p class="subtitle is-size-2">Register Your Events Here!</p>
-          <p class="subtitle is-size-">
-            This form allows employers to easily create and submit events.
-            Please fill in the details below to get started.
-          </p>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <p class="title is-size-1">Register Your Events Here!</p>
         </div>
       </section>
       <section class="section" id="registrationContainer">
+        <h1 class="title is-size-2 p-5">
+          Please fill in the details below to get started.
+        </h1>
         <div class="form-container">
           <form id="registrationForm">
             <!-- Registration form fields -->
@@ -939,6 +1029,15 @@
                   <option value="The Pyle Center">The Pyle Center</option>
                   <option value="Union South">Union South</option>
                   <option value="Memorial Union">Memorial Union</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="event_medium">Medium:</label>
+                <select id="event_medium" name="medium" style="width: 100%">
+                  <option value="In-Person">In-Person</option>
+                  <option value="Virtual">Virtual</option>
+                  <option value="Hybrid">Hybrid</option>
                 </select>
               </div>
 
@@ -1268,7 +1367,7 @@
         class="section background-image-eventsReg"
         id="eventsRegisterOpener"
       >
-        <div class="text-container pl-6 p-5 has-text-centered">
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
           <h1 class="title is-size-1">Time to Welcome Employers!</h1>
         </div>
       </section>
@@ -1382,20 +1481,20 @@
             <div class="columns">
               <div class="column is-6" id="column1_events">
                 <!--First Column-->
+              </div>
+              <div class="column is-6" id="column2_events">
+                <!--Second Column-->
+              </div>
+            </div>
           </div>
-          <div class="column is-6" id="column2_events">
-            <!--Second Column-->
-      </div>
-        </div>
-      </div>
         </div>
       </section>
       <section
         class="section background-image-engage"
         id="employerEngagementOpener"
       >
-        <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="mt-3 is-size-1">Tracking Employers Engagement!</h1>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
         </div>
       </section>
       <section class="section" id="employerEngagementContainer">
@@ -1478,8 +1577,8 @@
       </section>
       <!-- Calendar Page -->
       <section class="section background-image-calendar" id="calendarOpener">
-        <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="title is-size-1">Welcome to Employer Tracking!</h1>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title is-size-1">Come Explore the Dates!</h1>
         </div>
       </section>
       <section class="calendar_body" , id="calendarContainer">
@@ -1698,7 +1797,7 @@
           document.getElementById("calendarContainer").style.display = "block";
         });
     </script>
-   <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
@@ -1733,6 +1832,44 @@
     </script>
 
     <script src="Script.js"></script>
+
+    <footer
+      class="footer"
+      style="
+        background: rgb(197, 35, 40);
+        color: white;
+        font-weight: bold;
+        border: 2px;
+        padding: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <div>
+        <p style="font-size: 2em">Employer Tracking</p>
+        <p>Wisconsin School of Business</p>
+        <p>Email: employertracking@wis.edu</p>
+        <p>Contract Number: (XXX)-XXX-XXXX</p>
+      </div>
+      <div>
+        <a
+          href="mailto:employertracking@wis.edu"
+          style="color: white; margin-right: 20px"
+        >
+          <i class="far fa-envelope" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Email icon -->
+        </a>
+        <a
+          href="https://www.instagram.com/wisconsinschoolofbusiness/"
+          target="_blank"
+          style="color: white"
+        >
+          <i class="fab fa-instagram" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Instagram icon -->
+        </a>
+      </div>
+    </footer>
     <script src="userhandling.js"></script>
   </body>
 </html>
