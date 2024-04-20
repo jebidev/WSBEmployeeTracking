@@ -52,11 +52,11 @@
       }
 
       .calendar_button {
-        border: 1px solid red; /* Adds a red border */
-        background-color: red;
+        border: 1px solid rgb(197, 35, 40); /* Adds a red border */
+        background-color: rgb(197, 35, 40);
         cursor: pointer;
         font-size: 0.75em; /* Makes the icon/text smaller */
-        color: red; /* Text/icon color */
+        color: rgb(197, 35, 40); /* Text/icon color */
         padding: 5px 10px; /* Smaller padding */
         border-radius: 5px; /* Optional: adds rounded corners */
       }
@@ -67,7 +67,7 @@
       }
 
       .icon-red {
-        color: red;
+        color: rgb(197, 35, 40);
       }
 
       .save-event-button {
@@ -138,7 +138,7 @@
           255,
           255,
           255,
-          0.6
+          0.8
         ); /* Adjust the alpha value (0.6) for transparency */
         min-height: 10vh;
         width: calc(70% - 1in);
@@ -184,6 +184,7 @@
 
       .form-group {
         margin-bottom: 20px;
+        font-size: 1.2rem;
       }
 
       .form-group label {
@@ -217,7 +218,11 @@
       }
 
       .submit-btn {
-        background-color: #a00000; /* Adjust the color to match the screenshot */
+        background-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
         color: white;
         border: none;
         padding: 15px 30px;
@@ -230,7 +235,7 @@
       }
 
       .submit-btn:hover {
-        background-color: #880000;
+        background-color: rgb(197, 35, 40);
         transition: background-color 0.3s;
       }
 
@@ -282,7 +287,11 @@
       }
 
       .seating-choice.selected {
-        border-color: #a00000; /* Adjust the color to match the screenshot */
+        border-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
       }
 
       /* Hide the actual radio button */
@@ -322,7 +331,7 @@
       }
 
       .icon-red {
-        color: red;
+        color: rgb(197, 35, 40);
       }
 
       /*CSS for Calendar*/
@@ -405,7 +414,7 @@
       .event {
         font-size: 10px;
         padding: 3px;
-        background-color: red;
+        background-color: rgb(197, 35, 40);
         color: white;
         border-radius: 5px;
         max-height: 55px;
@@ -421,7 +430,7 @@
         max-width: 600px;
         margin: 10% auto;
         text-align: center;
-        color: #a00000;
+        color: rgb(197, 35, 40);
       }
       .padding {
         cursor: default !important;
@@ -453,7 +462,7 @@
         box-shadow: 0px 0px 3px gray;
       }
       #eventTitleInput.error {
-        border: 2px solid red;
+        border: 2px solid rgb(197, 35, 40);
       }
       #cancelButton,
       #deleteButton {
@@ -600,7 +609,7 @@
 
     <!-- Sub-navbar -->
     <nav
-      class="navbar custom-subnavbar is-warning"
+      class="navbar custom-subnavbar"
       role="navigation"
       aria-label="secondary navigation"
     >
@@ -643,13 +652,25 @@
     <!-- Main content -->
     <main>
       <section class="section background-image-home" id="openingSection">
-        <div class="text-container pl-6 p-6 mt-6">
+        <div class="text-container pl-6 p-5 mt-6">
           <h1 class="title is-size-1 mt-6 pt-6">
             Welcome to Employer Tracking!
           </h1>
-          <p class="subtitle is-size-3">
-            This page is the designated spot for all events associated with
-            employers at UW-Madison
+          <p class="subtitle">
+            Welcome to our School of Business employer tracking platform, where
+            ambition meets opportunity! Employers can effortlessly register
+            their forthcoming events, spanning from career expos to networking
+            sessions, offering students a portal to explore diverse professional
+            pathways. With user-friendly features, employers can specify event
+            details such as date, time, category, and participating
+            organizations, ensuring optimal visibility and interaction.
+            Meanwhile, students can peruse a myriad of events tailored to their
+            interests and career aspirations, easily enrolling to participate
+            and engage with potential employers. Our platform serves as a vital
+            link between industry frontrunners and aspiring talent, nurturing
+            meaningful connections and facilitating the journey towards
+            rewarding careers. Join us today and unlock a realm of
+            possibilities!
           </p>
         </div>
       </section>
@@ -873,15 +894,14 @@
         class="section background-image-registration"
         id="registrationOpener"
       >
-        <div class="text-container pl-6 p-6 mt-6">
-          <p class="subtitle is-size-2">Register Your Events Here!</p>
-          <p class="subtitle is-size-">
-            This form allows employers to easily create and submit events.
-            Please fill in the details below to get started.
-          </p>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <p class="title is-size-1">Register Your Events Here!</p>
         </div>
       </section>
       <section class="section" id="registrationContainer">
+        <h1 class="title is-size-2 p-5">
+          Please fill in the details below to get started.
+        </h1>
         <div class="form-container">
           <form id="registrationForm">
             <!-- Registration form fields -->
@@ -1288,7 +1308,7 @@
         class="section background-image-eventsReg"
         id="eventsRegisterOpener"
       >
-        <div class="text-container pl-6 p-5 has-text-centered">
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
           <h1 class="title is-size-1">Time to Welcome Employers!</h1>
         </div>
       </section>
@@ -1414,8 +1434,8 @@
         class="section background-image-engage"
         id="employerEngagementOpener"
       >
-        <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="mt-3 is-size-1">Tracking Employers Engagement!</h1>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title mt-3 is-size-1">Tracking Employers Engagement!</h1>
         </div>
       </section>
       <section class="section" id="employerEngagementContainer">
@@ -1498,8 +1518,8 @@
       </section>
       <!-- Calendar Page -->
       <section class="section background-image-calendar" id="calendarOpener">
-        <div class="text-container pl-6 p-5 has-text-centered">
-          <h1 class="title is-size-1">Welcome to Employer Tracking!</h1>
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title is-size-1">Come Explore the Dates!</h1>
         </div>
       </section>
       <section class="calendar_body" , id="calendarContainer">
@@ -1691,5 +1711,43 @@
     </script>
 
     <script src="Script.js"></script>
+
+    <footer
+      class="footer"
+      style="
+        background: rgb(197, 35, 40);
+        color: white;
+        font-weight: bold;
+        border: 2px;
+        padding: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <div>
+        <p style="font-size: 2em">Employer Tracking</p>
+        <p>Wisconsin School of Business</p>
+        <p>Email: employertracking@wis.edu</p>
+        <p>Contract Number: (XXX)-XXX-XXXX</p>
+      </div>
+      <div>
+        <a
+          href="mailto:employertracking@wis.edu"
+          style="color: white; margin-right: 20px"
+        >
+          <i class="far fa-envelope" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Email icon -->
+        </a>
+        <a
+          href="https://www.instagram.com/wisconsinschoolofbusiness/"
+          target="_blank"
+          style="color: white"
+        >
+          <i class="fab fa-instagram" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Instagram icon -->
+        </a>
+      </div>
+    </footer>
   </body>
 </html>
