@@ -36,9 +36,26 @@ close_registration.addEventListener('click', function() {
 document.getElementById('create_account_button').addEventListener('click', function() {
   const email = document.getElementById('registration_email').value;
   const password = document.getElementById('registration_password').value;
+  const userType = document.getElementById('user_types').value; // Retrieve the user type from the select dropdown
+
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       console.log("User created:", userCredential.user);
+
+      // Reference to Firestore
+      const db = firebase.firestore();
+
+      // Storing additional data in Firestore: Email and User Type
+      db.collection('users').doc(userCredential.user.uid).set({
+        email: email,
+        userType: userType
+      }).then(() => {
+        console.log("User data with email and type stored in Firestore.");
+      }).catch((error) => {
+        console.error("Error storing user data in Firestore:", error.message);
+      });
+
+      // Close the registration modal
       registration_modal.classList.remove('is-active');
     })
     .catch((error) => {
