@@ -535,7 +535,9 @@ function show_register_events() {
             <button
               class="button is-primary accept-button"
               data-event-id="${eventId}"
-              style="
+              data-event-name="${
+                d.data().event_name
+              }" // Add this line              style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
@@ -546,7 +548,8 @@ function show_register_events() {
             <button
               class="button is-primary decline-button"
               data-event-id="${eventId}"
-              style="
+              data-event-name="${d.data().event_name}" // Add this line
+                        style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
