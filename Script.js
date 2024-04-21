@@ -708,3 +708,18 @@ let today = new Date();
 console.log("GOSSIP", today.getMonth(), today.getFullYear());
 
 call_events(today.getFullYear(), today.getMonth());
+
+// Fetch company options from the database
+db.collection('events').get().then(snapshot => {
+  const companySelect = document.getElementById('companySelect').querySelector('select');
+
+  snapshot.forEach(doc => {
+    const companyName = doc.data().company_name;
+    const option = document.createElement('option');
+    option.value = companyName;
+    option.textContent = companyName;
+    companySelect.appendChild(option);
+  });
+}).catch(error => {
+  console.error('Error fetching companies: ', error);
+});
