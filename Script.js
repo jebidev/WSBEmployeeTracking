@@ -357,46 +357,46 @@ function show_events_home() {
       let index = 0;
       data.forEach((d) => {
         const boxHtml = `<div class="box">
-          <div class="content">
-            <!--Company name and logo-->
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">${d.data().company_name}</p>
-              </div>
+        <div class="content">
+          <!--Company name and logo-->
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                <img src="Image/business_logo.jpeg" alt="Company Logo" />
+              </figure>
             </div>
-            <!--Event Name-->
-            <p class="title is-5 p-5">${d.data().event_name}</p>
-            <!--Event Description-->
-            <p>${d.data().event_description}</p>
-            <!--Event and Medium Type-->
-            <div class="field is-grouped">
-              <p class="Type">
-                <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_category}</span>
-              </p>
+            <div class="media-content">
+              <p class="title is-4">${d.data().company_name}</p>
             </div>
-            <!--Event Date-->
-            <p>
-              <span class="has-text-weight-semibold">Date:</span>
-              ${d.data().event_date}
+          </div>
+          <!--Event Name-->
+          <p class="title is-5 p-5">${d.data().event_name}</p>
+          <!--Event Description-->
+          <p>${d.data().event_description}</p>
+          <!--Event and Medium Type-->
+          <div class="field is-grouped">
+            <p class="Type">
+              <span class="tag is-light">${d.data().event_medium}</span>
+              <span class="tag is-light">${d.data().event_category}</span>
             </p>
-            <!--Save Button-->
-            <button
-            class="button is-primary save-event-button"
-            style="background-color: black"
-          >
+          </div>
+          <!--Event Date-->
+          <p>
+            <span class="has-text-weight-semibold">Date:</span>
+            ${d.data().event_date}
+          </p>
+          <!--Save Button-->
+          <button class="button is-primary save-event-button" style="background-color: black">
             <span class="icon is-small">
               <i class="fas fa-bookmark icon-white"></i>
-              <!-- Initial class for white color -->
             </span>
           </button>
-          </div>
-        </div>`;
+          <!--Register Button-->
+          <button class="button is-primary register-button" style="background-color: blue; color: white">
+            Register
+          </button>
+        </div>
+      </div>`;
 
         if (index % 2 === 0) {
           htmlColumn1 += boxHtml;
@@ -409,6 +409,8 @@ function show_events_home() {
       //append html variable to the document
       document.querySelector("#column1").innerHTML += htmlColumn1;
       document.querySelector("#column2").innerHTML += htmlColumn2;
+
+      attachEventListeners(); // Call to attach listeners after rendering
 
       document.querySelectorAll(".save-event-button").forEach((button) => {
         button.addEventListener("click", () => {
@@ -433,7 +435,24 @@ function show_events_home() {
         });
       });
     });
+
+  function attachEventListeners() {
+    document.querySelectorAll(".register-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        if (this.textContent === "Register") {
+          this.textContent = "Registered"; // Change button text to "Registered"
+          this.style.backgroundColor = "red"; // Change button color to red
+          this.style.color = "white"; // Ensure text color is white for better visibility
+        } else {
+          this.textContent = "Register"; // Change button text back to "Register"
+          this.style.backgroundColor = "blue"; // Change button color back to blue
+          this.style.color = "white"; // Ensure text color remains white
+        }
+      });
+    });
+  }
 }
+
 show_events_home();
 
 document
