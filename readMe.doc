@@ -21,3 +21,33 @@ GitHub Link: https://github.com/jebidev/WSBEmployeeTracking/tree/main
 
 Scrum Master: Jing Wang
 Trello Link: https://trello.com/b/y2OQPaTm/is424-team-project
+
+Daily Standups:
+April 19, 2024
+What did you do yesterday?
+    - Continued working on user permissions
+    - updated calender JS
+    - added room capacity to Firebase
+    - added footer to website
+What are you planning to do today?
+    - Finishing up user permissions and login/sign up
+    - working on filtering for the website
+    - working on the notifications for the website
+    - discussing with client if we should remove the visualizations page
+Any problems are you facing?
+    - hard to find time for meetings due to other exams and commitments
+    - running into issues with login and sign up which effects other features
+
+April 21, 2024
+What did you do yesterday?
+    - Adjusted styles for the website
+    - worked on filtering for main page and event registration page
+    - calendar is completed
+    - notification system is completed (waiting on users)
+    - login is completed
+What are you planning to do today?
+    - continue working on filtering
+    - fix some bugs in the code
+Any problems are you facing?
+    - notification bugs
+    - 
