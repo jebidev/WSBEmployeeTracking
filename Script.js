@@ -356,6 +356,12 @@ function show_events_home() {
       }
     });
 
+    const selectedMedium = [];
+    document.querySelectorAll('.medium-checkbox').forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedMedium.push(checkbox.value);
+      }
+    });
     // Fetch events based on the selected company and categories
     db.collection("events")
       .where("event_status", "==", "Approved")
@@ -369,7 +375,8 @@ function show_events_home() {
           // Check if the selected company matches the event's company name, or if no company is selected
           if (
             (selectedCompany === '' || d.data().company_name === selectedCompany) &&
-            (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category))
+            (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
+            (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium))
           ) {
             const boxHtml = `<div class="box">
               <div class="content">
