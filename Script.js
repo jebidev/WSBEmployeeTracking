@@ -348,6 +348,15 @@ function show_events_home() {
     // Fetch the selected company name from the dropdown
     const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
 
+    // Get selected categories
+    const selectedCategories = [];
+    document.querySelectorAll('.category-checkbox').forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedCategories.push(checkbox.value);
+      }
+    });
+
+    // Fetch events based on the selected company and categories
     db.collection("events")
       .where("event_status", "==", "Approved")
       .get()
@@ -358,7 +367,10 @@ function show_events_home() {
         let index = 0;
         data.forEach((d) => {
           // Check if the selected company matches the event's company name, or if no company is selected
-          if (!selectedCompany || d.data().company_name === selectedCompany) {
+          if (
+            (selectedCompany === '' || d.data().company_name === selectedCompany) &&
+            (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category))
+          ) {
             const boxHtml = `<div class="box">
               <div class="content">
                 <!--Company name and logo-->
@@ -440,6 +452,7 @@ function show_events_home() {
       });
   });
 }
+
 
 show_events_home();
 
