@@ -223,7 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .value.trim();
     const location = document.getElementById("location").value.trim();
     const event_medium = document.getElementById("event_medium").value.trim();
-
     const event_capacity = document
       .getElementById("eventCapacity")
       .value.trim();
@@ -239,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       !event_capacity ||
       !event_medium
     ) {
-      alert("Please fill in all required fields.");
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -262,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const regformData = {
       employerContactNumber,
       event_name,
-      event_date: eventDateInput.value, // Directly use Date object here
+      event_date: eventDateInput.value,
       event_overview,
       event_description,
       event_category,
@@ -290,13 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
     db.collection("events")
       .add(regformData)
       .then(() => {
-        openNotificationModal(
-          "Your event has been sent for approval to the admin team."
-        );
+        showNotification("Your event has been submitted for approval.");
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
-        openNotificationModal("There was an error submitting your event.");
+        showNotification("There was an error submitting your event.");
       });
   });
 });
@@ -308,6 +305,21 @@ function openNotificationModal(message) {
 
 function closeNotificationModal() {
   document.getElementById("notificationModal").classList.remove("is-active");
+}
+
+function showNotification(message) {
+  // Create notification element
+  const notification = document.createElement("div");
+  notification.className = "notification-toast";
+  notification.textContent = message;
+
+  // Append to body
+  document.body.appendChild(notification);
+
+  // Automatically remove notification after 5 seconds
+  setTimeout(() => {
+    notification.remove();
+  }, 5000);
 }
 
 function toggleModal(modalId, show) {
@@ -565,47 +577,44 @@ function show_register_events() {
 function attachButtonListeners() {
   document.querySelectorAll(".accept-button").forEach((button) => {
     button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+      const eventId = button.getAttribute("data-event-id");
+      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
 
-      // If the button says "Accept", update the event status to "Approved" in Firestore
-      if (eventStatus === "Accept") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Approved" })
-          .then(() => {
-            console.log("Event status updated to Approved");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Approved"; // Change the button text to "Approved"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
+      db.collection("events")
+        .doc(eventId)
+        .update({ event_status: "Approved" })
+        .then(() => {
+          console.log("Event status updated to Approved");
+          button.textContent = "Approved";
+          showNotification(`Your event "${eventName}" has been approved.`);
+        })
+        .catch((error) => {
+          console.error("Error updating event status:", error);
+          showNotification(`Error approving event "${eventName}".`);
+        });
     });
   });
   document.querySelectorAll(".decline-button").forEach((button) => {
     button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+      const eventId = button.getAttribute("data-event-id");
+      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
 
-      // If the button says "Decline", update the event status to "Approved" in Firestore
-      if (eventStatus === "Decline") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Declined" })
-          .then(() => {
-            console.log("Event status updated to Declined");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Declined"; // Change the button text to "Approved"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
+      db.collection("events")
+        .doc(eventId)
+        .update({ event_status: "Declined" })
+        .then(() => {
+          console.log("Event status updated to Declined");
+          button.textContent = "Declined";
+          showNotification(`Your event "${eventName}" has been declined.`);
+        })
+        .catch((error) => {
+          console.error("Error updating event status:", error);
+          showNotification(`Error declining event "${eventName}".`);
+        });
     });
   });
 }
+
 show_register_events();
 
 // calendar!!!
