@@ -343,123 +343,155 @@ db.collection('events').get().then(snapshot => {
 });
 
 function show_events_home() {
-  // Add event listener to the submit button
-  document.getElementById("submitFilter").addEventListener("click", () => {
-    // Fetch the selected company name from the dropdown
-    const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
-
-    // Get selected categories
-    const selectedCategories = [];
-    document.querySelectorAll('.category-checkbox').forEach((checkbox) => {
-      if (checkbox.checked) {
-        selectedCategories.push(checkbox.value);
-      }
-    });
-
-    const selectedMedium = [];
-    document.querySelectorAll('.medium-checkbox').forEach((checkbox) => {
-      if (checkbox.checked) {
-        selectedMedium.push(checkbox.value);
-      }
-    });
-    // Fetch events based on the selected company and categories
-    db.collection("events")
-      .where("event_status", "==", "Approved")
-      .get()
-      .then((res) => {
-        let data = res.docs;
-        let htmlColumn1 = ``;
-        let htmlColumn2 = ``;
-        let index = 0;
-        data.forEach((d) => {
-          // Check if the selected company matches the event's company name, or if no company is selected
-          if (
-            (selectedCompany === '' || d.data().company_name === selectedCompany) &&
-            (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
-            (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium))
-          ) {
-            const boxHtml = `<div class="box">
-              <div class="content">
-                <!--Company name and logo-->
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                    </figure>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4">${d.data().company_name}</p>
-                  </div>
-                </div>
-                <!--Event Name-->
-                <p class="title is-5 p-5">${d.data().event_name}</p>
-                <!--Event Description-->
-                <p>${d.data().event_description}</p>
-                <!--Event and Medium Type-->
-                <div class="field is-grouped">
-                  <p class="Type">
-                    <span class="tag is-light">${d.data().event_medium}</span>
-                    <span class="tag is-light">${d.data().event_category}</span>
-                  </p>
-                </div>
-                <!--Event Date-->
-                <p>
-                  <span class="has-text-weight-semibold">Date:</span>
-                  ${d.data().event_date}
-                </p>
-                <!--Save Button-->
-                <button
-                  class="button is-primary save-event-button"
-                  style="background-color: black"
-                >
-                  <span class="icon is-small">
-                    <i class="fas fa-bookmark icon-white"></i>
-                    <!-- Initial class for white color -->
-                  </span>
-                </button>
-              </div>
-            </div>`;
-
-            if (index % 2 === 0) {
-              htmlColumn1 += boxHtml;
-            } else {
-              htmlColumn2 += boxHtml;
-            }
-
-            index++;
-          }
-        });
-        //append html variable to the document
-        document.querySelector("#column1").innerHTML = htmlColumn1; // Clear previous content and set new content
-        document.querySelector("#column2").innerHTML = htmlColumn2; // Clear previous content and set new content
-
-        // Add event listeners to save buttons
-        document.querySelectorAll(".save-event-button").forEach((button) => {
-          button.addEventListener("click", () => {
-            const icon = button.querySelector(".fas");
-
-            // Toggle color classes
-            if (icon.classList.contains("icon-white")) {
-              icon.classList.remove("icon-white");
-              icon.classList.add("icon-red");
-            } else {
-              icon.classList.remove("icon-red");
-              icon.classList.add("icon-white");
-            }
-
-            // Apply the jump animation
-            icon.classList.add("jump");
-
-            // Remove the animation class after it completes to allow it to run again on next click
-            icon.addEventListener("animationend", () => {
-              icon.classList.remove("jump");
-            });
-          });
-        });
+  // Fetch all events when the page loads
+  db.collection("events")
+    .where("event_status", "==", "Approved")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
+        if (index % 2 === 0) {
+          htmlColumn1 += boxHtml;
+        } else {
+          htmlColumn2 += boxHtml;
+        }
+        index++;
       });
+      // Append HTML to the document
+      document.querySelector("#column1").innerHTML = htmlColumn1;
+      document.querySelector("#column2").innerHTML = htmlColumn2;
+
+      // Add event listeners to save buttons
+      attachSaveEventListeners();
+    });
+
+  // Add event listener to the submit button
+  document.getElementById("submitFilter").addEventListener("click", applyFilters);
+}
+
+function generateEventBoxHtml(eventDoc) {
+  // Generate HTML for each event
+  return `<div class="box">
+            <div class="content">
+              <!--Company name and logo-->
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">${eventDoc.data().company_name}</p>
+                </div>
+              </div>
+              <!--Event Name-->
+              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+              <!--Event Description-->
+              <p>${eventDoc.data().event_description}</p>
+              <!--Event and Medium Type-->
+              <div class="field is-grouped">
+                <p class="Type">
+                  <span class="tag is-light">${eventDoc.data().event_medium}</span>
+                  <span class="tag is-light">${eventDoc.data().event_category}</span>
+                </p>
+              </div>
+              <!--Event Date-->
+              <p>
+                <span class="has-text-weight-semibold">Date:</span>
+                ${eventDoc.data().event_date}
+              </p>
+              <!--Save Button-->
+              <button class="button is-primary save-event-button" style="background-color: black">
+                <span class="icon is-small">
+                  <i class="fas fa-bookmark icon-white"></i>
+                  <!-- Initial class for white color -->
+                </span>
+              </button>
+            </div>
+          </div>`;
+}
+
+function attachSaveEventListeners() {
+  // Add event listeners to save buttons
+  document.querySelectorAll(".save-event-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const icon = button.querySelector(".fas");
+
+      // Toggle color classes
+      if (icon.classList.contains("icon-white")) {
+        icon.classList.remove("icon-white");
+        icon.classList.add("icon-red");
+      } else {
+        icon.classList.remove("icon-red");
+        icon.classList.add("icon-white");
+      }
+
+      // Apply the jump animation
+      icon.classList.add("jump");
+
+      // Remove the animation class after it completes to allow it to run again on next click
+      icon.addEventListener("animationend", () => {
+        icon.classList.remove("jump");
+      });
+    });
   });
 }
 
+function applyFilters() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
+
+  // Get selected categories
+  const selectedCategories = [];
+  document.querySelectorAll('.category-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedCategories.push(checkbox.value);
+    }
+  });
+
+  const selectedMedium = [];
+  document.querySelectorAll('.medium-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedMedium.push(checkbox.value);
+    }
+  });
+
+  // Fetch events based on the selected company and categories
+  db.collection("events")
+    .where("event_status", "==", "Approved")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        if (
+          (selectedCompany === '' || d.data().company_name === selectedCompany) &&
+          (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
+          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium))
+        ) {
+          const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
+        }
+      });
+      // Append HTML to the document
+      document.querySelector("#column1").innerHTML = htmlColumn1;
+      document.querySelector("#column2").innerHTML = htmlColumn2;
+
+      // Add event listeners to save buttons
+      attachSaveEventListeners();
+    });
+}
 
 show_events_home();
 
@@ -504,8 +536,37 @@ document.addEventListener("click", function (event) {
   }
 });
 
+// show values from db in dropdown
+db.collection('events').get().then(snapshot => {
+  const companySelect = document.getElementById('companySelect2').querySelector('select');
+
+  snapshot.forEach(doc => {
+    const companyName = doc.data().company_name;
+    const option = document.createElement('option');
+    option.value = companyName;
+    option.textContent = companyName;
+    companySelect.appendChild(option);
+  });
+}).catch(error => {
+  console.error('Error fetching companies: ', error);
+});
+
+// Function to fetch and display events
 function show_register_events() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
+
+  // Get selected categories
+  const selectedCategories2 = [];
+  document.querySelectorAll('.category2-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedCategories2.push(checkbox.value);
+    }
+  });
+
+  // Fetch events based on the selected company and categories
   db.collection("events")
+    .where("event_status", "==", "Approved")
     .get()
     .then((res) => {
       let data = res.docs;
@@ -529,75 +590,70 @@ function show_register_events() {
           buttonText2 = "Decline";
         }
 
-        const boxHtml = `<div class="box">
-          <div class="content">
-            <!--Company name and logo-->
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">${d.data().company_name}</p>
-              </div>
-            </div>
-            <!--Event Name-->
-            <p class="title is-5 p-5">${d.data().event_name}</p>
-            <!--Event Description-->
-            <p>${d.data().event_description}</p>
-            <!--Event and Medium Type-->
-            <div class="field is-grouped">
-              <p class="Type">
-                <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_type}</span>
-              </p>
-            </div>
-            <!--Event Date-->
-            <p>
-              <span class="has-text-weight-semibold">Date:</span>
-              ${d.data().event_date}
-            </p>
-            <!--Accept or Approved Button-->
-            <button
-              class="button is-primary accept-button"
-              data-event-id="${eventId}"
-              style="
-                background-color: rgba(197, 35, 40, 255);
-                color: white;
-              "
-            >
-              ${buttonText1}
-            </button>
-            <!-- Decline Button -->
-            <button
-              class="button is-primary decline-button"
-              data-event-id="${eventId}"
-              style="
-                background-color: rgba(197, 35, 40, 255);
-                color: white;
-              "
-            >
-            ${buttonText2}
-            </button>
-          </div>
-        </div>`;
-
-        if (index % 2 === 0) {
-          htmlColumn1 += boxHtml;
-        } else {
-          htmlColumn2 += boxHtml;
+        // Check if the event matches the selected company and categories
+        if (
+          (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
+          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category))
+        ) {
+          const boxHtml = generateEventBoxHtml(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
         }
-
-        index++;
       });
-      //append html variable to the document
-      document.querySelector("#column1_events").innerHTML += htmlColumn1;
-      document.querySelector("#column2_events").innerHTML += htmlColumn2;
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
 
-      // Attach event listeners to the buttons after they are added to the DOM
+      // Add event listeners to the buttons after they are added to the DOM
       attachButtonListeners();
     });
+}
+
+// Function to generate HTML for each event
+function generateEventBoxHtml(eventDoc, eventId, buttonText1, buttonText2) {
+  return `<div class="box">
+            <div class="content">
+              <!--Company name and logo-->
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">${eventDoc.data().company_name}</p>
+                </div>
+              </div>
+              <!--Event Name-->
+              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+              <!--Event Description-->
+              <p>${eventDoc.data().event_description}</p>
+              <!--Event and Medium Type-->
+              <div class="field is-grouped">
+                <p class="Type">
+                  <span class="tag is-light">${eventDoc.data().event_medium}</span>
+                  <span class="tag is-light">${eventDoc.data().event_category}</span>
+                </p>
+              </div>
+              <!--Event Date-->
+              <p>
+                <span class="has-text-weight-semibold">Date:</span>
+                ${eventDoc.data().event_date}
+              </p>
+              <!--Accept or Approved Button-->
+              <button class="button is-primary accept-button" data-event-id="${eventId}" style="background-color: rgba(197, 35, 40, 255); color: white;">
+                ${buttonText1}
+              </button>
+              <!-- Decline Button -->
+              <button class="button is-primary decline-button" data-event-id="${eventId}" style="background-color: rgba(197, 35, 40, 255); color: white;">
+                ${buttonText2}
+              </button>
+            </div>
+          </div>`;
 }
 
 // Function to attach event listeners to Accept and Approved buttons
@@ -636,7 +692,7 @@ function attachButtonListeners() {
           .then(() => {
             console.log("Event status updated to Declined");
             // You can add further logic here, like updating UI, etc.
-            button.textContent = "Declined"; // Change the button text to "Approved"
+            button.textContent = "Declined"; // Change the button text to "Declined"
           })
           .catch((error) => {
             console.error("Error updating event status:", error);
@@ -645,7 +701,11 @@ function attachButtonListeners() {
     });
   });
 }
+
+// Call the function to show events immediately when the page is loaded
 show_register_events();
+
+
 
 // calendar!!!
 // calendar functions

@@ -1312,28 +1312,13 @@
                   >
                 </div>
 
-                <!-- Search -->
-                <div class="field">
-                  <label class="label has-text-white">Search</label>
-                  <div class="control has-icons-left">
-                    <input type="text" class="input" placeholder="Search..." />
-                    <span class="icon is-left">
-                      <i class="fas fa-search"></i>
-                    </span>
-                  </div>
-                </div>
-
                 <!-- Dropdown for company names -->
                 <div class="field">
                   <label class="label has-text-white">Company</label>
                   <div class="control">
-                    <div class="select is-fullwidth">
+                    <div class="select is-fullwidth" id="companySelect2">
                       <select>
-                        <option>Select a company...</option>
-                        <option>Company A</option>
-                        <option>Company B</option>
-                        <option>Company C</option>
-                        <!-- Add more options as needed -->
+                        <option value="">Select a company...</option>
                       </select>
                     </div>
                   </div>
@@ -1346,25 +1331,25 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="hiringCheckbox" value="Hiring"/>
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="officeHourCheckbox" value="Office Hour"/>
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="networkingCheckbox" value="Networking"/>
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -1376,7 +1361,7 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth">
+                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter2">
                       Apply
                     </button>
                   </div>
