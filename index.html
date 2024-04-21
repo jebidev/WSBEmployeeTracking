@@ -684,7 +684,7 @@
           <div class="column is-3">
             <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
               <h1 class="is-size-3 has-text-white">Filter</h1>
-              <form action="#">
+              <form action="#" id="filterForm">
                 <!-- Checkbox for saved events -->
                 <div class="field">
                   <input
@@ -715,36 +715,7 @@
                     <div class="select is-fullwidth" id="companySelect">
                       <select>
                         <option value="">Select a company...</option>
-                        <!-- Add more options as needed -->
                       </select>
-                    </div>
-                  </div>
-                  <div class="control">
-                    <div class="field is-grouped-multiline">
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">EY</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">KPMG</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">PWC</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Deloitte</span>
-                        </label>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -816,40 +787,12 @@
                   <div class="control">
                     <input type="date" class="input" />
                   </div>
-                  <div class="control">
-                    <div class="field is-grouped-multiline">
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Upcoming Events</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Today</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Next 20 Days</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Past Events</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth">
+                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter">
                       Apply
                     </button>
                   </div>
