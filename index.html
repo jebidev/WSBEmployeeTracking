@@ -261,9 +261,10 @@
 
       .seating-choice img {
         width: 250px; /* Fixed width for all images */
-        max-height: 100px; /* Fixed height for all images */
+        height: auto; /* Fixed height for all images */
         object-fit: contain; /* Keeps the aspect ratio of the image */
         margin-bottom: 10px; /* Space between the image and the text below it */
+        margin-right: 50px;
       }
 
       /* Adjust the width and height as necessary to fit your design */
@@ -284,6 +285,7 @@
         height: auto;
         display: block;
         margin-bottom: 10px;
+        transform: translateX(50px);
       }
 
       .seating-choice.selected {
@@ -558,6 +560,7 @@
         border-radius: 4px;
         padding: 10px;
         top: 100%;
+        display: block;
       }
 
       .notification-dropdown ul {
@@ -865,6 +868,12 @@
                           <span class="has-text-white">In-Person</span>
                         </label>
                       </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Hybrid</span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -974,18 +983,29 @@
                 id="employerContactNumber"
                 name="employerContactNumber"
                 placeholder="123-456-7890"
+                style="font-size: 15px"
               />
             </div>
 
             <div class="form-groups-container">
               <div class="form-group">
                 <label for="eventName">Event Name:</label>
-                <input type="text" id="eventName" name="eventName" />
+                <input
+                  type="text"
+                  id="eventName"
+                  name="eventName"
+                  style="font-size: 15px"
+                />
               </div>
 
               <div class="form-group">
                 <label for="eventDate">Event Date:</label>
-                <input type="date" id="eventDate" name="eventDate" />
+                <input
+                  type="date"
+                  id="eventDate"
+                  name="eventDate"
+                  style="font-size: 15px"
+                />
               </div>
             </div>
 
@@ -996,6 +1016,7 @@
                 id="eventOverview"
                 name="eventOverview"
                 placeholder="Up to 60 words"
+                style="font-size: 15px"
               />
             </div>
 
@@ -1008,13 +1029,17 @@
                 name="eventDescription"
                 rows="7"
                 cols="50"
-                style="width: 100%; padding: 1%"
+                style="width: 100%; padding: 1%; font-size: 15px"
               ></textarea>
             </div>
 
             <div class="form-group">
               <label for="eventCategory">Event Category</label>
-              <select id="eventCategory" name="eventTopic">
+              <select
+                id="eventCategory"
+                name="eventTopic"
+                style="font-size: 15px"
+              >
                 <option value="Hiring">Hiring</option>
                 <option value="Office Hour">Office Hour</option>
                 <option value="Networking">Networking</option>
@@ -1025,7 +1050,11 @@
             <section style="display: flex; justify-content: space-between">
               <div class="form-group" style="flex-grow: 1; margin-right: 10px">
                 <label for="location">Location:</label>
-                <select id="location" name="location" style="width: 100%">
+                <select
+                  id="location"
+                  name="location"
+                  style="width: 100%; font-size: 15px"
+                >
                   <option value="Grainger Hall">Grainger Hall</option>
                   <option value="The Pyle Center">The Pyle Center</option>
                   <option value="Union South">Union South</option>
@@ -1035,7 +1064,11 @@
 
               <div class="form-group" style="flex-grow: 1; margin-right: 10px">
                 <label for="event_medium">Medium:</label>
-                <select id="event_medium" name="medium" style="width: 100%">
+                <select
+                  id="event_medium"
+                  name="medium"
+                  style="width: 100%; font-size: 15px"
+                >
                   <option value="In-Person">In-Person</option>
                   <option value="Virtual">Virtual</option>
                   <option value="Hybrid">Hybrid</option>
@@ -1048,7 +1081,7 @@
                   type="number"
                   id="eventCapacity"
                   name="eventCapacity"
-                  style="width: 100%"
+                  style="width: 100%; font-size: 15px"
                 />
               </div>
             </section>
@@ -1548,6 +1581,12 @@
                         <label class="checkbox">
                           <input type="checkbox" />
                           <span class="has-text-white">In-Person</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          <span class="has-text-white">Hybrid</span>
                         </label>
                       </div>
                     </div>

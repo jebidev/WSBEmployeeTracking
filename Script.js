@@ -37,25 +37,30 @@ function openModal(date) {
 
 function load() {
   const dt = new Date();
-
   if (nav !== 0) {
     dt.setMonth(new Date().getMonth() + nav);
   }
 
   const day = dt.getDate();
+  console.log("Day", day);
   const month = dt.getMonth();
   const year = dt.getFullYear();
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  // Getting the first day of the month
   const dateString = firstDayOfMonth.toLocaleDateString("en-us", {
     weekday: "long",
     year: "numeric",
     month: "numeric",
     day: "numeric",
   });
+
+  console.log("Weekday from Date:", dateString.split(", ")[0]); // Log to check what you are actually parsing
+
   const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
+  console.log("paddingDays", paddingDays);
 
   document.getElementById("monthDisplay").innerText = `${dt.toLocaleDateString(
     "en-us",
@@ -75,7 +80,7 @@ function load() {
       const eventForDay = events.find((e) => e.date === dayString);
 
       if (i - paddingDays === day && nav === 0) {
-        daySquare.id = "currentDay";
+        daySquare.id = "currentDay"; // Highlight the current day
       }
 
       if (eventForDay) {
@@ -131,6 +136,7 @@ function initButtons() {
     nav++;
     load();
     const { month, year } = calculateMonthYear(nav);
+
     call_events(year, month - 1);
   });
 
@@ -138,10 +144,10 @@ function initButtons() {
     nav--;
     load();
     const { month, year } = calculateMonthYear(nav);
+
     call_events(year, month - 1);
   });
 }
-
 function calculateMonthYear(navOffset) {
   // Create a date object representing the current date/time
   const now = new Date();
@@ -642,16 +648,24 @@ function call_events(currentyear, currentmonth) {
   fetchApprovedEvents();
 
   function generateCalendar(month, year) {
-    console.log("generatingg month year", month, year);
+    console.log("Generating month, year:", month, year);
     const calendarContainer = document.getElementById("calendar");
     calendarContainer.innerHTML = ""; // Clear existing calendar entries
 
     let daysInMonth = new Date(year, month + 1, 0).getDate(); // Calculate the number of days in the month
+    let firstDayOfMonth = new Date(year, month, 1).getDay(); // Get the first day of the month (0 = Sunday, 1 = Monday, etc.)
 
     // Ensure we have a valid approvedEvents array loaded
     if (!approved_calendar_events) {
       console.error("No approved events available");
       return;
+    }
+
+    // Add padding for days before the first day of the month
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      let paddingDayElement = document.createElement("div");
+      paddingDayElement.className = "day padding";
+      calendarContainer.appendChild(paddingDayElement);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -689,8 +703,8 @@ function call_events(currentyear, currentmonth) {
   }
 }
 
-call_events(2024, 3);
-
 let today = new Date();
 // generateCalendar(today.getMonth(), today.getFullYear());
 console.log("GOSSIP", today.getMonth(), today.getFullYear());
+
+call_events(today.getFullYear(), today.getMonth());
