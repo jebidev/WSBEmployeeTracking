@@ -29,6 +29,7 @@
     />
 
     <style>
+      
       .custom-navbar {
         padding: 10px;
         height: 80px;
@@ -738,6 +739,14 @@
         background-color: #555; /* Darker background on hover */
         cursor: pointer; /* Pointer cursor on hover */
       }
+      #navbarmenu_id {
+        align-items: center; /* Align items vertically */
+        justify-content: center; /* Center items horizontally */
+        display: flex; /* Use flexbox for alignment */
+        padding: 0; /* Reset any padding */
+        margin: 0; /* Reset any margin */
+      }
+
     </style>
   </head>
   <body>
@@ -807,7 +816,7 @@
       aria-label="secondary navigation"
     >
       <div
-        class="navbar-menu"
+        class="navbar-menu" id="navbarmenu_id"
         style="display: flex; justify-content: center; width: 100%"
       >
         <a class="navbar-item">
@@ -815,15 +824,10 @@
             >Home</span
           >
         </a>
-        <a class="navbar-item">
-          <span
-            class="ml-2 is-size-5"
-            style="color: black"
-            id="registrationNavItem"
-            >Registration Form</span
-          >
+        <a class="navbar-item has-text-centered	" id="registrationNavItem">
+          <span class="ml-2 is-size-5" style="color: black">Registration Form</span>
         </a>
-        <a class="navbar-item">
+              <a class="navbar-item">
           <span class="ml-2 is-size-5" style="color: black" id="calendarNavItem"
             >Calendar</span
           >

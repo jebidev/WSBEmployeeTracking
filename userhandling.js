@@ -290,6 +290,7 @@ document.getElementById('create_employer_account').addEventListener('click', fun
 
 // Handle showing and hiding sign in buttons
 firebase.auth().onAuthStateChanged(function(user) {
+
   if (user) {
     // User is signed in.
     const userEmail = user.email; // Assuming the user has an email. Adjust according to your user model.
@@ -313,23 +314,51 @@ firebase.auth().onAuthStateChanged(function(user) {
     db.collection('users').doc(user.uid).get().then(doc => {
       if (doc.exists) {
         const userData = doc.data();
-        let welcomeMessage = "";
-        if (userData.userType === 'employer') {
-          // Display company name for employers
-          welcomeMessage = `Welcome ${userData.companyName}!`; 
-        } else {
-          // Display first name for students and admins
-          welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`; 
+
+        // Set welcome message
+        let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
+
+        // Adjust navbar visibility based on user type
+        switch (userData.userType) {
+          case 'admin':
+            // Admins see everything
+            document.getElementById('registrationNavItem').style.display = 'block';
+            document.getElementById('EmployerEngagementNavItem').style.display = 'block';
+            document.getElementById('EventsRegisterNavItem').style.display = 'block';
+            break;
+          case 'employer':
+            // Employers see only registration and employer engagement
+            document.getElementById('registrationNavItem').style.display = 'block';
+            document.getElementById('EmployerEngagementNavItem').style.display = 'block';
+            document.getElementById('EventsRegisterNavItem').style.display = 'none'; // Hide Events Administration
+            break;
+          case 'student':
+          default:
+            // Students (and other unspecified user types) don't see these sections
+            document.getElementById('registrationNavItem').style.display = 'none';
+            document.getElementById('EmployerEngagementNavItem').style.display = 'none';
+            document.getElementById('EventsRegisterNavItem').style.display = 'none';
+            break;
         }
+        
         configure_message_bar(welcomeMessage);
+
       } else {
         console.log("No additional user data found.");
+        // Default visibility when no user data found
+        document.getElementById('registrationNavItem').style.display = 'none';
+        document.getElementById('EmployerEngagementNavItem').style.display = 'none';
+        document.getElementById('EventsRegisterNavItem').style.display = 'none';
       }
     }).catch(error => {
       console.error("Error fetching user data:", error);
     });
   } else {
     // No user is signed in.
-    configure_message_bar("Please sign in or register"); // Display a default message when no user is logged in.
+    configure_message_bar("Please sign in or register");
+    // Default visibility when no user is signed in
+    document.getElementById('registrationNavItem').style.display = 'none';
+    document.getElementById('EmployerEngagementNavItem').style.display = 'none';
+    document.getElementById('EventsRegisterNavItem').style.display = 'none';
   }
 });
