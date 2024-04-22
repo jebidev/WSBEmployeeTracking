@@ -676,38 +676,7 @@
         </a>
 
         <div class="navbar-end">
-          <!-- Sign In Button -->
-          <div class="navbar-item">
-            <div class="dropdown is-bottom">
-              <button
-                class="button"
-                style="background-color: rgba(197, 35, 40, 255); color: white"
-                aria-haspopup="true"
-                aria-controls="dropdown-menu2"
-                href="#"
-              >
-                Sign In
-              </button>
-              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                <div class="dropdown-content">
-                  <a href="#" class="dropdown-item">Student</a>
-                  <a href="#" class="dropdown-item">Employer</a>
-                  <a href="#" class="dropdown-item">Admit</a>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Sign Up Button -->
-          <div class="navbar-item">
-            <button
-              class="button"
-              style="background-color: rgba(197, 35, 40, 255); color: white"
-              href="#"
-            >
-              Sign Up
-            </button>
-          </div>
         </div>
       </div>
     </nav>
@@ -1694,25 +1663,85 @@
     <!-- Close button -->
     <button id="close_registration_button" class="close-button">X</button>
   <!-- Registration Form Content -->
-  <form id="registration_form" class="form">
-    <h1 class="title">Register</h1>
-    <label class="label">Email</label>
-    <input class="input" type="text" id="registration_email" placeholder="Email">
-    <div>&nbsp;</div>
-    <label class="label">Password</label>
-    <input class="input" type="password" id="registration_password" placeholder="Password"> 
-    <div>&nbsp;</div>
-    <label for="user_type">What are you registering as?</label>
-    <select name="users" id="user_types">
-      <option value="student">Student</option>
-      <option value="employer">Employer</option>
-      <option value="admin">Admin</option>
-    </select>
-    <div>&nbsp;</div>
-    <button type="button" id="create_account_button">Create an account</button> 
-  </form>
+    <form id="registration_form" class="form">
+      <h1 class="title">Register</h1>
+      <label class="label">Email</label>
+      <input class="input" type="text" id="registration_email" placeholder="Email">
+      <div>&nbsp;</div>
+      <label class="label">Password</label>
+      <input class="input" type="password" id="registration_password" placeholder="Password"> 
+      <div>&nbsp;</div>
+      <label for="user_type">What are you registering as?</label>
+      <select name="users" id="user_types">
+        <option value="student">Student</option>
+        <option value="employer">Employer</option>
+        <option value="admin">Admin</option>
+      </select>
+      <div>&nbsp;</div>
+      <button type="button" id="create_account_button">Create an account</button> 
+      <button type="button" id="nextpage">Next Page</button>
+    </form>
   </div>
 </div>
+
+<!-- Registration Modal 2: Student -->
+<div id="registration_modal_2_student" class="modal">
+  <div class="modal-background">
+    <!-- Close button -->
+    <button id="close_modal_2_student" class="close-button">X</button>
+      <!-- Registration Modal 2 Content -->
+      <!-- Student Registration -->
+        <form id="student_registration_form" class="form">
+          <label class="label">First Name</label>
+          <input class="input" type="text" id="student_first_name" placeholder="First Name">
+          <div>&nbsp;</div>
+          <label class="label">Last Name</label>
+          <input class="input" type="text" id="student_last_name" placeholder="Last Name">  
+          <div>&nbsp;</div>
+          <button type="button" id="create_account_button">Create an account</button> 
+        </form>
+    </div>
+</div>
+
+<!-- Registration Modal 2: Employer -->
+<div id="registration_modal_2_employer" class="modal">
+  <div class="modal-background">
+    <!-- Close button -->
+    <button id="close_modal_2_employer" class="close-button">X</button>
+      <!-- Registration Modal 2 Content -->
+        <form id="company_registration_form" class="form">
+          <label class="label">Company Name</label>
+          <input class="input" type="text" id="company_name" placeholder="Company Name">
+          <div>&nbsp;</div>
+          <label class="label">Company Logo</label>
+          <input type="file" id="company_logo" placeholder="Last Name">  
+          <div>&nbsp;</div>
+          <button type="button" id="create_account_button">Create an account</button> 
+        </form>
+    </div>
+</div>
+
+<!-- Registration Modal 2: Admin -->
+<div id="registration_modal_2_admin" class="modal">
+  <div class="modal-background">
+    <!-- Close button -->
+    <button id="close_modal_2_admin" class="close-button">X</button>
+      <!-- Registration Modal 2 Content -->
+        <form id="admin_registration_form" class="form">
+          <label class="label">First Name</label>
+          <input class="input" type="text" id="admin_first_name" placeholder="First Name">
+          <div>&nbsp;</div>
+          <label class="label">Last Name</label>
+          <input class="input" type="text" id="admin_last_name" placeholder="Last Name">  
+          <div>&nbsp;</div>
+          <label class="label">Access Code</label>
+          <input class="input" type="text" id="admin_access_code" placeholder="Access Code">  
+          <div>&nbsp;</div>
+          <button type="button" id="create_account_button">Create an account</button> 
+        </form>
+    </div>
+</div>
+
 
     <!-- Footer -->
     <footer>

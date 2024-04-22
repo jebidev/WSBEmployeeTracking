@@ -3,7 +3,7 @@
 // Sign in modal elements
 const sign_in_button = document.getElementById('signinbutton');
 const login_modal = document.getElementById('login_modal');
-const fuckthis = document.getElementById('close-modal-button');
+const close_modal_signin = document.getElementById('close-modal-button');
 const register = document.getElementById('register');
 
 // Registration modal elements
@@ -17,7 +17,7 @@ sign_in_button.addEventListener('click', function() {
 });
 
 // Close sign in modal
-fuckthis.addEventListener('click', function() {
+close_modal_signin.addEventListener('click', function() {
   login_modal.classList.remove('is-active');
 });
 
@@ -73,4 +73,56 @@ modal_signin.addEventListener('click', function() {
       console.log("User logged in:", userCredential.user);
       login_modal.classList.remove('is-active');
     });
+});
+
+// Elements for user type selection and modal triggers
+const userTypesDropdown = document.getElementById('user_types');
+const nextButton = document.getElementById('nextpage');
+
+// Registration modal elements
+const registrationModalStudent = document.getElementById('registration_modal_2_student');
+const registrationModalEmployer = document.getElementById('registration_modal_2_employer');
+const registrationModalAdmin = document.getElementById('registration_modal_2_admin');
+
+// Close modal buttons
+const closeStudentModal = document.getElementById('close_modal_2_student');
+const closeEmployerModal = document.getElementById('close_modal_2_employer');
+const closeAdminModal = document.getElementById('close_modal_2_admin');
+
+// Event listener for 'Next Page' button to open the correct modal based on user type
+nextButton.addEventListener('click', function() {
+    const userType = userTypesDropdown.value;
+
+    // Close the general registration modal
+    registration_modal.classList.remove('is-active');
+
+    // Open the specific modal based on user type
+    switch (userType) {
+        case 'student':
+            registrationModalStudent.classList.add('is-active');
+            break;
+        case 'employer':
+            registrationModalEmployer.classList.add('is-active');
+            break;
+        case 'admin':
+            registrationModalAdmin.classList.add('is-active');
+            break;
+    }
+});
+
+// Close modal functions
+function closeModal(modal) {
+    modal.classList.remove('is-active');
+}
+
+closeStudentModal.addEventListener('click', function() {
+    closeModal(registrationModalStudent);
+});
+
+closeEmployerModal.addEventListener('click', function() {
+    closeModal(registrationModalEmployer);
+});
+
+closeAdminModal.addEventListener('click', function() {
+    closeModal(registrationModalAdmin);
 });
