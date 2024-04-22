@@ -29,7 +29,6 @@
     />
 
     <style>
-      
       .custom-navbar {
         padding: 10px;
         height: 80px;
@@ -599,7 +598,6 @@
         background-color: red;
       }
 
-
       navbar.custom-navbar {
         display: flex;
         justify-content: space-between;
@@ -620,6 +618,16 @@
       .sub-navbar-menu {
         display: inline-block; /* Allows the menu to size according to its content */
         margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
+      }
+
+      .navbar-menu {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .navbar-item {
+        display: flex;
+        align-items: center;
       }
 
       .sub-navbar-item {
@@ -746,7 +754,6 @@
         padding: 0; /* Reset any padding */
         margin: 0; /* Reset any margin */
       }
-
     </style>
   </head>
   <body>
@@ -804,7 +811,6 @@
         >
           Sign Out
         </button>
-
       </div>
     </nav>
     <!-- Message Bars -->
@@ -816,7 +822,8 @@
       aria-label="secondary navigation"
     >
       <div
-        class="navbar-menu" id="navbarmenu_id"
+        class="sub-navbar-menu"
+        id="navbarmenu_id"
         style="display: flex; justify-content: center; width: 100%"
       >
         <a class="navbar-item">
@@ -824,10 +831,16 @@
             >Home</span
           >
         </a>
-        <a class="navbar-item has-text-centered	" id="registrationNavItem">
-          <span class="ml-2 is-size-5" style="color: black">Registration Form</span>
+        <a
+          class="navbar-item"
+          id="registrationNavItem"
+          style="display: flex; justify-content: center; width: 100%"
+        >
+          <span class="ml-2 is-size-5" style="color: black"
+            >Registration Form</span
+          >
         </a>
-              <a class="navbar-item">
+        <a class="navbar-item">
           <span class="ml-2 is-size-5" style="color: black" id="calendarNavItem"
             >Calendar</span
           >
@@ -849,9 +862,7 @@
           >
         </a>
 
-        <div class="navbar-end">
-
-        </div>
+        <div class="navbar-end"></div>
       </div>
     </nav>
 
@@ -1885,122 +1896,199 @@
           <button id="closeButton">Close</button>
         </div>
 
-    <div id="modalBackDrop"></div>
-    <!--JS for Calendar-->
-  </section>
+        <div id="modalBackDrop"></div>
+        <!--JS for Calendar-->
+      </section>
     </main>
 
-<!-- Login Modal -->
-<div id="login_modal" class="modal">
-  <div id="login_modal_bg" class="modal-background">
-  <!-- Close button -->
-  <button id="close-modal-button" class="close-button">X</button>
-    <form id="loginform" class="form">
-      <div class="field">
-        <!-- Rest of the form -->
-        <label class="label">Email</label>
-        <input class="input" type="text" id="login_email" placeholder="Email">
-        <div>&nbsp;</div>
-        <label class="label">Password</label>
-        <input class="input" type="password" id="login_password" placeholder="Password">
-        <div>&nbsp;</div>
-        <button type="button" id="modal_signin">Login</button>&nbsp;&nbsp;
+    <!-- Login Modal -->
+    <div id="login_modal" class="modal">
+      <div id="login_modal_bg" class="modal-background">
+        <!-- Close button -->
+        <button id="close-modal-button" class="close-button">X</button>
+        <form id="loginform" class="form">
+          <div class="field">
+            <!-- Rest of the form -->
+            <label class="label">Email</label>
+            <input
+              class="input"
+              type="text"
+              id="login_email"
+              placeholder="bucky@wisc.edu"
+            />
+            <div>&nbsp;</div>
+            <label class="label">Password</label>
+            <input
+              class="input"
+              type="password"
+              id="login_password"
+              placeholder="bucky123"
+            />
+            <div>&nbsp;</div>
+            <button
+              type="button"
+              id="modal_signin"
+              style="background-color: red; font-size: large; color: white"
+            >
+              Login</button
+            >&nbsp;&nbsp;
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
-<!-- Registration Modal -->
-<div id="registration_modal" class="modal">
-  <div id="registration_modal_bg" class="modal-background">
-    <!-- Close button -->
-    <button id="close_registration_button" class="close-button">X</button>
-  <!-- Registration Form Content -->
-    <form id="registration_form" class="form">
-      <h1 class="title">Register</h1>
-      <label class="label">Email</label>
-      <input class="input" type="text" id="registration_email" placeholder="Email">
-      <div>&nbsp;</div>
-      <label class="label">Password</label>
-      <input class="input" type="password" id="registration_password" placeholder="Password"> 
-      <div>&nbsp;</div>
-      <label for="user_type">What are you registering as?</label>
-      <select name="users" id="user_types">
-        <option value="student">Student</option>
-        <option value="employer">Employer</option>
-        <option value="admin">Admin</option>
-      </select>
-      <div>&nbsp;</div>
-      <button type="button" id="nextpage">Next Page</button>
-    </form>
-  </div>
-</div>
+    <!-- Registration Modal -->
+    <div id="registration_modal" class="modal">
+      <div id="registration_modal_bg" class="modal-background">
+        <!-- Close button -->
+        <button id="close_registration_button" class="close-button">X</button>
+        <!-- Registration Form Content -->
+        <form id="registration_form" class="form">
+          <h1 class="title">Register</h1>
+          <label class="label">Email</label>
+          <input
+            class="input"
+            type="text"
+            id="registration_email"
+            placeholder="bucky@wisc.edu"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Password</label>
+          <input
+            class="input"
+            type="password"
+            id="registration_password"
+            placeholder="bucky123"
+          />
+          <div>&nbsp;</div>
+          <label for="user_type">What are you registering as?</label>
+          <select name="users" id="user_types">
+            <option value="student">Student</option>
+            <option value="employer">Employer</option>
+            <option value="admin">Admin</option>
+          </select>
+          <div>&nbsp;</div>
+          <button type="button" id="nextpage" class="icon-button">
+            <span class="icon">
+              <i class="fas fa-arrow-right"></i>
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
 
-<!-- Registration Modal 2: Student -->
-<div id="registration_modal_2_student" class="modal">
-  <div class="modal-background">
-    <!-- Close button -->
-    <button id="close_modal_2_student" class="close-button">X</button>
-      <!-- Registration Modal 2 Content -->
-      <!-- Student Registration -->
+    <!-- Registration Modal 2: Student -->
+    <div id="registration_modal_2_student" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_student" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
+        <!-- Student Registration -->
         <form id="student_registration_form" class="form">
           <label class="label">First Name</label>
-          <input class="input" type="text" id="student_first_name" placeholder="First Name">
+          <input
+            class="input"
+            type="text"
+            id="student_first_name"
+            placeholder="First Name"
+          />
           <div>&nbsp;</div>
           <label class="label">Last Name</label>
-          <input class="input" type="text" id="student_last_name" placeholder="Last Name">  
+          <input
+            class="input"
+            type="text"
+            id="student_last_name"
+            placeholder="Last Name"
+          />
           <div>&nbsp;</div>
-          <button type="button" id="create_student_account">Create an account</button> 
+          <button
+            type="button"
+            id="create_student_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
         </form>
+      </div>
     </div>
-</div>
 
-<!-- Registration Modal 2: Employer -->
-<div id="registration_modal_2_employer" class="modal">
-  <div class="modal-background">
-    <!-- Close button -->
-    <button id="close_modal_2_employer" class="close-button">X</button>
-      <!-- Registration Modal 2 Content -->
+    <!-- Registration Modal 2: Employer -->
+    <div id="registration_modal_2_employer" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_employer" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
         <form id="company_registration_form" class="form">
           <label class="label">Company Name</label>
-          <input class="input" type="text" id="company_name" placeholder="Company Name">
+          <input
+            class="input"
+            type="text"
+            id="company_name"
+            placeholder="Company Name"
+          />
           <div>&nbsp;</div>
           <label class="label">Company Logo</label>
-          <input type="file" id="company_logo" placeholder="Last Name">  
+          <input type="file" id="company_logo" placeholder="Last Name" />
           <div>&nbsp;</div>
-          <button type="button" id="create_employer_account">Create an account</button> 
+          <button
+            type="button"
+            id="create_employer_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
         </form>
+      </div>
     </div>
-</div>
 
-<!-- Registration Modal 2: Admin -->
-<div id="registration_modal_2_admin" class="modal">
-  <div class="modal-background">
-    <!-- Close button -->
-    <button id="close_modal_2_admin" class="close-button">X</button>
-      <!-- Registration Modal 2 Content -->
+    <!-- Registration Modal 2: Admin -->
+    <div id="registration_modal_2_admin" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_admin" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
         <form id="admin_registration_form" class="form">
           <label class="label">First Name</label>
-          <input class="input" type="text" id="admin_first_name" placeholder="First Name">
+          <input
+            class="input"
+            type="text"
+            id="admin_first_name"
+            placeholder="First Name"
+          />
           <div>&nbsp;</div>
           <label class="label">Last Name</label>
-          <input class="input" type="text" id="admin_last_name" placeholder="Last Name">  
+          <input
+            class="input"
+            type="text"
+            id="admin_last_name"
+            placeholder="Last Name"
+          />
           <div>&nbsp;</div>
           <label class="label">Access Code</label>
-          <input class="input" type="text" id="admin_access_code" placeholder="Access Code">  
+          <input
+            class="input"
+            type="text"
+            id="admin_access_code"
+            placeholder="Access Code"
+          />
           <div>&nbsp;</div>
-          <button type="button" id="create_admin_account">Create an account</button> 
+          <button
+            type="button"
+            id="create_admin_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
         </form>
+      </div>
     </div>
-</div>
-
 
     <!-- Footer -->
     <footer>
       <!-- Your footer content -->
     </footer>
 
-  <!-- JavaScript -->
+    <!-- JavaScript -->
     <script>
       // // Smooth scrolling to section when a navbar item is clicked
       // document.querySelectorAll(".navbar-item").forEach((item) => {

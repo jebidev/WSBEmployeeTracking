@@ -207,93 +207,105 @@ document.addEventListener("DOMContentLoaded", () => {
   registrationForm.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent the default form submission
 
-    // Retrieve and trim values from input fields
-    const employerContactNumber = document
-      .getElementById("employerContactNumber")
-      .value.trim();
-    const event_name = document.getElementById("eventName").value.trim();
-    const event_overview = document
-      .getElementById("eventOverview")
-      .value.trim();
-    const event_description = document
-      .getElementById("eventDescription")
-      .value.trim();
-    const event_category = document
-      .getElementById("eventCategory")
-      .value.trim();
-    const location = document.getElementById("location").value.trim();
-    const event_medium = document.getElementById("event_medium").value.trim();
-    const event_capacity = document
-      .getElementById("eventCapacity")
-      .value.trim();
-
-    // Validate required fields are not empty
-    if (
-      !employerContactNumber ||
-      !event_name ||
-      !event_overview ||
-      !event_description ||
-      !event_category ||
-      !location ||
-      !event_capacity ||
-      !event_medium
-    ) {
-      alert("Please fill in all fields.");
+    // Get the currently logged in user's ID
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) {
+      alert("You must be logged in to submit an event.");
       return;
     }
+    const currentUserId = currentUser.uid;
 
-    // Handle event date
-    const eventDateInput = document.getElementById("eventDate");
-    const eventDateValue = new Date(eventDateInput.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize today's date for comparison
+    // Fetch the company name from the 'users' collection using the currentUserId
+    db.collection("users")
+      .doc(currentUserId)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          alert("User profile does not exist.");
+          return;
+        }
 
-    if (eventDateValue < today) {
-      alert("Please enter a date after the current day.");
-      return; // Stop further processing if date is in the past
-    }
+        const companyName = doc.data().companyName; // Assuming the field is named 'company_name'
 
-    const seatingArrangement = document.querySelector(
-      'input[name="seatingArrangement"]:checked'
-    )?.value;
+        // Now include the companyName in your form data
+        const employerContactNumber = document
+          .getElementById("employerContactNumber")
+          .value.trim();
+        const eventName = document.getElementById("eventName").value.trim();
+        const eventOverview = document
+          .getElementById("eventOverview")
+          .value.trim();
+        const eventDescription = document
+          .getElementById("eventDescription")
+          .value.trim();
+        const eventCategory = document
+          .getElementById("eventCategory")
+          .value.trim();
+        const location = document.getElementById("location").value.trim();
+        const eventMedium = document
+          .getElementById("event_medium")
+          .value.trim();
+        const eventCapacity = document
+          .getElementById("eventCapacity")
+          .value.trim();
+        const eventDateInput = document.getElementById("eventDate");
+        const eventDateValue = new Date(eventDateInput.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize today's date for comparison
 
-    // Prepare form data
-    const regformData = {
-      employerContactNumber,
-      event_name,
-      event_date: eventDateInput.value,
-      event_overview,
-      event_description,
-      event_category,
-      location,
-      event_medium,
-      event_capacity,
-      disposables: Array.from(
-        document.querySelectorAll('input[name="disposables"]:checked')
-      ).map((cb) => cb.value),
-      meals: Array.from(
-        document.querySelectorAll('input[name="meals"]:checked')
-      ).map((cb) => cb.value),
-      snacks: Array.from(
-        document.querySelectorAll('input[name="snacks"]:checked')
-      ).map((cb) => cb.value),
-      beverages: Array.from(
-        document.querySelectorAll('input[name="beverages"]:checked')
-      ).map((cb) => cb.value),
-      seatingArrangement,
-    };
+        if (eventDateValue < today) {
+          alert("Please enter a date after the current day.");
+          return; // Stop further processing if date is in the past
+        }
 
-    console.log(regformData);
+        const seatingArrangement = document.querySelector(
+          'input[name="seatingArrangement"]:checked'
+        )?.value;
 
-    // Submit event data to Firestore
-    db.collection("events")
-      .add(regformData)
-      .then(() => {
-        showNotification("Your event has been submitted for approval.");
+        console.log("companyName", companyName);
+
+        const regformData = {
+          employerContactNumber,
+          company_name: companyName,
+          event_name: eventName,
+          event_date: eventDateInput.value,
+          event_overview: eventOverview,
+          event_description: eventDescription,
+          event_category: eventCategory,
+          location,
+          event_medium: eventMedium,
+          event_capacity: eventCapacity,
+          disposables: Array.from(
+            document.querySelectorAll('input[name="disposables"]:checked')
+          ).map((cb) => cb.value),
+          meals: Array.from(
+            document.querySelectorAll('input[name="meals"]:checked')
+          ).map((cb) => cb.value),
+          snacks: Array.from(
+            document.querySelectorAll('input[name="snacks"]:checked')
+          ).map((cb) => cb.value),
+          beverages: Array.from(
+            document.querySelectorAll('input[name="beverages"]:checked')
+          ).map((cb) => cb.value),
+          seatingArrangement,
+        };
+
+        console.log(regformData);
+
+        // Submit event data to Firestore
+        db.collection("events")
+          .add(regformData)
+          .then(() => {
+            showNotification("Your event has been submitted for approval.");
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+            showNotification("There was an error submitting your event.");
+          });
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
-        showNotification("There was an error submitting your event.");
+        console.error("Error fetching user data:", error);
+        alert("There was an error fetching your company information.");
       });
   });
 });
@@ -319,7 +331,7 @@ function showNotification(message) {
   // Automatically remove notification after 5 seconds
   setTimeout(() => {
     notification.remove();
-  }, 5000);
+  }, 3000);
 }
 
 function toggleModal(modalId, show) {
@@ -338,13 +350,6 @@ function submitSignInForm() {
   console.log("Form Submitted"); // Placeholder action
   toggleModal("signInModal", false); // Close the modal upon submission
 }
-
-// Example usage: to show the modal
-// document
-//   .getElementById("yourSignInButtonId")
-//   .addEventListener("click", function () {
-//     toggleModal("signInModal", true);
-//   });
 
 function show_events_home() {
   db.collection("events")
