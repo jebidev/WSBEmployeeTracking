@@ -223,7 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .value.trim();
     const location = document.getElementById("location").value.trim();
     const event_medium = document.getElementById("event_medium").value.trim();
-
     const event_capacity = document
       .getElementById("eventCapacity")
       .value.trim();
@@ -239,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       !event_capacity ||
       !event_medium
     ) {
-      alert("Please fill in all required fields.");
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -262,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const regformData = {
       employerContactNumber,
       event_name,
-      event_date: eventDateInput.value, // Directly use Date object here
+      event_date: eventDateInput.value,
       event_overview,
       event_description,
       event_category,
@@ -290,13 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
     db.collection("events")
       .add(regformData)
       .then(() => {
-        openNotificationModal(
-          "Your event has been sent for approval to the admin team."
-        );
+        showNotification("Your event has been submitted for approval.");
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
-        openNotificationModal("There was an error submitting your event.");
+        showNotification("There was an error submitting your event.");
       });
   });
 });
@@ -308,6 +305,21 @@ function openNotificationModal(message) {
 
 function closeNotificationModal() {
   document.getElementById("notificationModal").classList.remove("is-active");
+}
+
+function showNotification(message) {
+  // Create notification element
+  const notification = document.createElement("div");
+  notification.className = "notification-toast";
+  notification.textContent = message;
+
+  // Append to body
+  document.body.appendChild(notification);
+
+  // Automatically remove notification after 5 seconds
+  setTimeout(() => {
+    notification.remove();
+  }, 5000);
 }
 
 function toggleModal(modalId, show) {
@@ -345,46 +357,50 @@ function show_events_home() {
       let index = 0;
       data.forEach((d) => {
         const boxHtml = `<div class="box">
-          <div class="content">
-            <!--Company name and logo-->
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">${d.data().company_name}</p>
-              </div>
+        <div class="content">
+          <!--Company name and logo-->
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                <img src="Image/business_logo.jpeg" alt="Company Logo" />
+              </figure>
             </div>
-            <!--Event Name-->
-            <p class="title is-5 p-5">${d.data().event_name}</p>
-            <!--Event Description-->
-            <p>${d.data().event_description}</p>
-            <!--Event and Medium Type-->
-            <div class="field is-grouped">
-              <p class="Type">
-                <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_category}</span>
-              </p>
+            <div class="media-content">
+              <p class="title is-4">${d.data().company_name}</p>
+              <button class="button is-small is-pulled-right expand-button is-rounded" data-event-id="${
+                d.id
+              }" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i>      </button>
             </div>
-            <!--Event Date-->
-            <p>
-              <span class="has-text-weight-semibold">Date:</span>
-              ${d.data().event_date}
+          </div>
+          <!--Event Name-->
+          <p class="title is-5 p-5">${d.data().event_name}</p>
+          <!--Event Description-->
+          <p>${d.data().event_description}</p>
+          <!--Event and Medium Type-->
+          <div class="field is-grouped">
+            <p class="Type">
+              <span class="tag is-light">${d.data().event_medium}</span>
+              <span class="tag is-light">${d.data().event_category}</span>
             </p>
-            <!--Save Button-->
-            <button
-            class="button is-primary save-event-button"
-            style="background-color: black"
-          >
+          </div>
+          <!--Event Date-->
+          <p>
+            <span class="has-text-weight-semibold">Date:</span>
+            ${d.data().event_date}
+          </p>
+          <!--Save Button-->
+          <button class="button is-primary save-event-button" style="background-color: black">
             <span class="icon is-small">
               <i class="fas fa-bookmark icon-white"></i>
-              <!-- Initial class for white color -->
             </span>
           </button>
-          </div>
-        </div>`;
+          <!--Register Button-->
+          <button class="button is-primary register-button" style="background-color: rgb(23, 66, 135); color: white">
+            Register
+          </button>
+        </div>
+      </div>`;
 
         if (index % 2 === 0) {
           htmlColumn1 += boxHtml;
@@ -398,10 +414,10 @@ function show_events_home() {
       document.querySelector("#column1").innerHTML += htmlColumn1;
       document.querySelector("#column2").innerHTML += htmlColumn2;
 
+      attachEventListeners(); // Call to attach listeners after rendering
+
       document.querySelectorAll(".save-event-button").forEach((button) => {
         button.addEventListener("click", () => {
-          const icon = button.querySelector(".fas");
-
           // Toggle color classes
           if (icon.classList.contains("icon-white")) {
             icon.classList.remove("icon-white");
@@ -421,7 +437,94 @@ function show_events_home() {
         });
       });
     });
+
+  function attachEventListeners() {
+    document.querySelectorAll(".register-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        if (this.textContent === "Register") {
+          this.textContent = "Registered"; // Change button text to "Registered"
+          this.style.backgroundColor = "red"; // Change button color to red
+          this.style.color = "white"; // Ensure text color is white for better visibility
+        } else {
+          this.textContent = "Register"; // Change button text back to "Register"
+          this.style.backgroundColor = "rgb(23, 66, 135)"; // Change button color back to blue
+          this.style.color = "white"; // Ensure text color remains white
+        }
+      });
+    });
+
+    document.querySelectorAll(".expand-button").forEach((button) => {
+      button.addEventListener("click", function (event) {
+        const eventId = this.getAttribute("data-event-id");
+        showEventDetailsModal(eventId);
+      });
+    });
+  }
+
+  function showEventDetailsModal(eventId) {
+    const event = db.collection("events").doc(eventId).get();
+    event
+      .then((doc) => {
+        if (doc.exists) {
+          const eventData = doc.data();
+          populateEventModal(eventData);
+          toggleModal("eventDetailsModal", true);
+        } else {
+          console.error("No such event!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting event:", error);
+      });
+  }
+
+  function populateEventModal(eventData) {
+    document.getElementById("modalEventName").textContent =
+      eventData.event_name;
+    document.getElementById("modalCompanyName").textContent =
+      eventData.company_name;
+    document.getElementById("modalEventCapacity").textContent =
+      eventData.event_capacity;
+    document.getElementById("modalEventOverview").textContent =
+      eventData.event_overview;
+    document.getElementById("modalEventDescription").textContent =
+      eventData.event_description;
+    document.getElementById("modalLocation").textContent = eventData.location;
+    document.getElementById("modalEventMedium").textContent =
+      eventData.event_medium;
+
+    const foodIncluded =
+      eventData.meals.length > 0 || eventData.snacks.length > 0;
+    document.getElementById("modalFoodIncluded").textContent = foodIncluded
+      ? "Yes"
+      : "No";
+  }
+
+  function toggleModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (show) {
+      modal.style.display = "block";
+    } else {
+      modal.style.display = "none";
+    }
+  }
+
+  const modal = document.getElementById("eventDetailsModal");
+  const closeModalButton = document.querySelector(".modal-close");
+
+  // Ensure this matches the class or ID of your close button
+  closeModalButton.addEventListener("click", function () {
+    toggleModal("eventDetailsModal", false);
+  });
+
+  // Also set up the modal to close if the background is clicked
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      toggleModal("eventDetailsModal", false);
+    }
+  });
 }
+
 show_events_home();
 
 document
@@ -502,6 +605,10 @@ function show_register_events() {
               <div class="media-content">
                 <p class="title is-4">${d.data().company_name}</p>
               </div>
+              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${
+                d.id
+              }" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i>      </button>
             </div>
             <!--Event Name-->
             <p class="title is-5 p-5">${d.data().event_name}</p>
@@ -523,7 +630,9 @@ function show_register_events() {
             <button
               class="button is-primary accept-button"
               data-event-id="${eventId}"
-              style="
+              data-event-name="${
+                d.data().event_name
+              }" // Add this line              style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
@@ -534,7 +643,8 @@ function show_register_events() {
             <button
               class="button is-primary decline-button"
               data-event-id="${eventId}"
-              style="
+              data-event-name="${d.data().event_name}" // Add this line
+                        style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
@@ -558,54 +668,127 @@ function show_register_events() {
 
       // Attach event listeners to the buttons after they are added to the DOM
       attachButtonListeners();
+
+      // Attach event listener for expand button on Events Administration page
+      document.querySelectorAll(".expand-button-ea").forEach((button) => {
+        button.addEventListener("click", function () {
+          const eventId = this.getAttribute("data-event-id");
+          showAdminEventDetailsModal(eventId);
+        });
+      });
     });
+
+  function showAdminEventDetailsModal(eventId) {
+    const event = db.collection("events").doc(eventId).get();
+    event
+      .then((doc) => {
+        if (doc.exists) {
+          const eventData = doc.data();
+          populateAdminEventModal(eventData);
+          toggleAdminModal("adminEventDetailsModal", true);
+        } else {
+          console.error("No such event!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting event:", error);
+      });
+  }
+
+  function populateAdminEventModal(eventData) {
+    document.getElementById("modalEventName-ea").textContent =
+      eventData.event_name;
+    document.getElementById("modalCompanyName-ea").textContent =
+      eventData.company_name;
+    document.getElementById("modalEventCapacity-ea").textContent =
+      eventData.event_capacity;
+    document.getElementById("modalEventOverview-ea").textContent =
+      eventData.event_overview;
+    document.getElementById("modalEventDescription-ea").textContent =
+      eventData.event_description;
+    document.getElementById("modalLocation-ea").textContent =
+      eventData.location;
+    document.getElementById("modalEventMedium-ea").textContent =
+      eventData.event_medium;
+    document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
+    document.getElementById("modalEventSnacks-ea").textContent =
+      eventData.snacks;
+    document.getElementById("modalEventDisposables-ea").textContent =
+      eventData.disposables;
+  }
+
+  function toggleAdminModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (show) {
+      modal.classList.add("is-active");
+    } else {
+      modal.classList.remove("is-active");
+    }
+    console.log(
+      "adminModal closeAdminModalButton",
+      adminModal,
+      closeAdminModalButton
+    );
+  }
+  const adminModal = document.getElementById("adminEventDetailsModal");
+  const closeAdminModalButton = document.querySelector(".modal-close-ea");
+
+  // Ensure this matches the class or ID of your close button
+  closeAdminModalButton.addEventListener("click", function () {
+    console.log("CLSOIGN BOSS");
+    toggleAdminModal("adminEventDetailsModal", false);
+  });
+
+  // Also set up the modal to close if the background is clicked
+  adminModal.addEventListener("click", function (event) {
+    if (event.target === adminModal) {
+      toggleAdminModal("adminEventDetailsModal", false);
+    }
+  });
 }
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document.querySelectorAll(".accept-button").forEach((button) => {
+  document.querySelectorAll(".accept-button-ea").forEach((button) => {
     button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+      const eventId = button.getAttribute("data-event-id");
+      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
 
-      // If the button says "Accept", update the event status to "Approved" in Firestore
-      if (eventStatus === "Accept") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Approved" })
-          .then(() => {
-            console.log("Event status updated to Approved");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Approved"; // Change the button text to "Approved"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
+      db.collection("events")
+        .doc(eventId)
+        .update({ event_status: "Approved" })
+        .then(() => {
+          console.log("Event status updated to Approved");
+          button.textContent = "Approved";
+          showNotification(`Your event "${eventName}" has been approved.`);
+        })
+        .catch((error) => {
+          console.error("Error updating event status:", error);
+          showNotification(`Error approving event "${eventName}".`);
+        });
     });
   });
   document.querySelectorAll(".decline-button").forEach((button) => {
     button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+      const eventId = button.getAttribute("data-event-id");
+      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
 
-      // If the button says "Decline", update the event status to "Approved" in Firestore
-      if (eventStatus === "Decline") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Declined" })
-          .then(() => {
-            console.log("Event status updated to Declined");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Declined"; // Change the button text to "Approved"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
+      db.collection("events")
+        .doc(eventId)
+        .update({ event_status: "Declined" })
+        .then(() => {
+          console.log("Event status updated to Declined");
+          button.textContent = "Declined";
+          showNotification(`Your event "${eventName}" has been declined.`);
+        })
+        .catch((error) => {
+          console.error("Error updating event status:", error);
+          showNotification(`Error declining event "${eventName}".`);
+        });
     });
   });
 }
+
 show_register_events();
 
 // calendar!!!

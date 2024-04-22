@@ -8,6 +8,9 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
+    <link rel="stylesheet" href="/path/to/animate.min.css" />
+    <script src="js/notification.js"></script>
+
     <script
       src="https://kit.fontawesome.com/8a80b728dc.js"
       crossorigin="anonymous"
@@ -77,6 +80,10 @@
         border-radius: 50%;
         color: white; /* Original text color */
         transition: background-color 0.3s; /* Smooth transition for the background color */
+      }
+
+      .register-button {
+        background-color: rgb(23, 66, 135);
       }
 
       .background-image-home {
@@ -259,6 +266,9 @@
         flex: 1; /* Ensures that each choice takes equal space */
       }
 
+      .is-rounded {
+        border-radius: 50%;
+      }
       .seating-choice img {
         width: 250px; /* Fixed width for all images */
         height: auto; /* Fixed height for all images */
@@ -354,6 +364,59 @@
         align-items: center; /* Center-align the content */
       }
 
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-ea {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+      .modal-content-ea {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .modal-close-ea {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+      }
+
       .calendar_button {
         width: 75px;
         cursor: pointer;
@@ -421,6 +484,30 @@
         border-radius: 5px;
         max-height: 55px;
         overflow: hidden;
+      }
+
+      .notification-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        padding: 15px 30px;
+        color: #fff;
+        background-color: black;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.5s;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
 
       .notification-content {
@@ -583,6 +670,74 @@
         color: black;
         display: block;
       }
+
+      #eventDetailsModal {
+        padding-top: 120px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #adminEventDetailsModal {
+        padding-top: 80px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #eventDetailsModal .modal-content {
+        background: #fff; /* White background for the content */
+        padding: 20px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 600px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      .modal-content-ea {
+        height: 303.3px;
+        background: #fff; /* White background for the content */
+        padding: 0px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 800px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      #eventDetailsModal p {
+        line-height: 1.6; /* Spacing between lines */
+        margin-bottom: 15px; /* Spacing between paragraphs */
+      }
+
+      #eventDetailsModal strong {
+        color: #000; /* Bold text color for labels */
+      }
+
+      .modal-close-ea {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close-ea:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+
+      .modal-close:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
     </style>
   </head>
   <body>
@@ -655,6 +810,11 @@
         style="display: flex; justify-content: center; width: 100%"
       >
         <a class="navbar-item">
+          <span class="ml-2 is-size-5" style="color: black" id="Home2"
+            >Home</span
+          >
+        </a>
+        <a class="navbar-item">
           <span
             class="ml-2 is-size-5"
             style="color: black"
@@ -693,25 +853,30 @@
     <!-- Main content -->
     <main>
       <section class="section background-image-home" id="openingSection">
-        <div class="text-container pl-6 p-5 mt-6">
-          <h1 class="title is-size-1 mt-6 pt-6 has-text-centered">
+        <div
+          class="pl-6 p-5"
+          style="background-color: rgba(223, 223, 223, 0.65)"
+        >
+          <h1
+            class="title is-size-1 has-text-centered mb-6"
+            style="color: black"
+          >
             Welcome to Employer Tracking!
           </h1>
-          <p class="subtitle">
+          <p class="subtitle" style="color: black">
             Welcome to our School of Business employer tracking platform, where
             ambition meets opportunity! Employers can effortlessly register
             their forthcoming events, spanning from career expos to networking
             sessions, offering students a portal to explore diverse professional
-            pathways. With user-friendly features, employers can specify event
-            details such as date, time, category, and participating
-            organizations, ensuring optimal visibility and interaction.
+            pathways.
+          </p>
+          <p class="subtitle" style="color: black">
             Meanwhile, students can peruse a myriad of events tailored to their
             interests and career aspirations, easily enrolling to participate
-            and engage with potential employers. Our platform serves as a vital
-            link between industry frontrunners and aspiring talent, nurturing
-            meaningful connections and facilitating the journey towards
-            rewarding careers. Join us today and unlock a realm of
-            possibilities!
+            and engage with potential employers.
+          </p>
+          <p class="subtitle" style="color: black">
+            Join us today and unlock a realm of possibilities!
           </p>
         </div>
       </section>
@@ -905,6 +1070,42 @@
           </div>
 
           <!-- Events Content -->
+
+          <!-- Event Details Modal -->
+          <div id="eventDetailsModal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <!-- Content to show event details -->
+              <p><strong>Event:</strong> <span id="modalEventName"></span></p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity"></span>
+              </p>
+
+              <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium"></span>
+              </p>
+              <p>
+                <strong>Food Included:</strong>
+                <span id="modalFoodIncluded"></span>
+              </p>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+          </div>
+
           <div class="column is-9" id="box-container">
             <!-- Boxes will be dynamically generated here -->
             <div class="columns">
@@ -1073,8 +1274,6 @@
                 gap: 20px;
               "
             >
-              <!-- Example for Beverages Column -->
-              <!-- Beverages Column -->
               <!-- Beverages Column -->
               <div>
                 <label>Beverages:</label>
@@ -1083,25 +1282,25 @@
                   style="list-style-type: none; padding-left: 0"
                 >
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="beverages" value="tea" />
                       Tea
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="beverages" value="coffee" />
                       Coffee
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="beverages" value="water" />
                       Water
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="beverages"
@@ -1111,7 +1310,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="beverages" value="juice" />
                       Juice
                     </label>
@@ -1127,39 +1326,37 @@
                   style="list-style-type: none; padding-left: 0"
                 >
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="meals" value="pizza" />
                       Pizza
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="meals" value="burritos" />
                       Burritos
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="meals" value="salads" />
                       Salads
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="meals" value="cut-fruit" />
                       Cut Fruit
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input type="checkbox" name="meals" value="sushi" />
                       Sushi
                     </label>
                   </li>
                 </ul>
               </div>
-
-              <!-- Snacks Column -->
 
               <!-- Snacks Column -->
               <div>
@@ -1169,7 +1366,7 @@
                   style="list-style-type: none; padding-left: 0"
                 >
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="snacks"
@@ -1179,7 +1376,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="snacks"
@@ -1189,7 +1386,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="snacks"
@@ -1199,7 +1396,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="snacks"
@@ -1209,7 +1406,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="snacks"
@@ -1229,7 +1426,7 @@
                   style="list-style-type: none; padding-left: 0"
                 >
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1239,7 +1436,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1249,7 +1446,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1259,7 +1456,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1269,7 +1466,7 @@
                     </label>
                   </li>
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1280,7 +1477,7 @@
                   </li>
 
                   <li>
-                    <label>
+                    <label style="font-weight: 400">
                       <input
                         type="checkbox"
                         name="disposables"
@@ -1289,7 +1486,6 @@
                       Serving Spoons
                     </label>
                   </li>
-                  <!-- Additional disposable options can be added here -->
                 </ul>
               </div>
             </div>
@@ -1488,6 +1684,50 @@
             </div>
           </div>
           <!-- Events Content -->
+          <!-- Event Details Modal -->
+          <div id="adminEventDetailsModal" class="modal">
+            <div class="modal-background-ea"></div>
+            <div class="modal-content-ea">
+              <!-- Content to show event details -->
+              <p>
+                <strong>Event:</strong> <span id="modalEventName-ea"></span>
+              </p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName-ea"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview-ea"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription-ea"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity-ea"></span>
+              </p>
+
+              <p>
+                <strong>Location:</strong> <span id="modalLocation-ea"></span>
+              </p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium-ea"></span>
+              </p>
+              <p>
+                <strong>Meals:</strong> <span id="modalEventMeals-ea"></span>
+              </p>
+              <p>
+                <strong>Snacks:</strong> <span id="modalEventSnacks-ea"></span>
+              </p>
+              <p>
+                <strong>Disposables:</strong>
+                <span id="modalEventDisposables-ea"></span>
+              </p>
+            </div>
+            <button class="modal-close-ea is-large" aria-label="close"></button>
+          </div>
           <div class="column is-9" id="box-container">
             <!-- Boxes will be dynamically generated here -->
             <div class="columns">
@@ -1599,7 +1839,7 @@
           <h1 class="title is-size-1">Come Explore the Dates!</h1>
         </div>
       </section>
-      <section class="calendar_body" , id="calendarContainer">
+      <section class="calendar_body mb-6" , id="calendarContainer">
         <div id="container">
           <div class="is-size-1" id="monthDisplay"></div>
           <div>
@@ -1791,6 +2031,28 @@
       // Open the Main Contents when Home is hit on the navbar
       document
         .getElementById("homeNavItem")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "block";
+          document.getElementById("mainContent").style.display = "block";
+          document.getElementById("registrationOpener").style.display = "none";
+          document.getElementById("registrationContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "none";
+          document.getElementById("employerEngagementOpener").style.display =
+            "none";
+          document.getElementById("employerEngagementContainer").style.display =
+            "none";
+          document.getElementById("calendarOpener").style.display = "none";
+          document.getElementById("calendarContainer").style.display = "none";
+        });
+
+      // for when home is clicked on navbar
+      document
+        .getElementById("Home2")
         .addEventListener("click", function (event) {
           event.preventDefault();
           document.getElementById("openingSection").style.display = "block";
