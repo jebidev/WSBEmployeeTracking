@@ -754,54 +754,69 @@ function show_register_events() {
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document.querySelectorAll(".accept-button-ea").forEach((button) => {
-    button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id");
-      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
+  document
+    .querySelectorAll(".accept-button, .decline-button")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const eventId = button.getAttribute("data-event-id");
+        const eventName = button.getAttribute("data-event-name");
+        const newStatus = button.classList.contains("accept-button")
+          ? "Approved"
+          : "Declined";
 
-      db.collection("events")
-        .doc(eventId)
-        .update({ event_status: "Approved" })
-        .then(() => {
-          console.log("Event status updated to Approved");
-          button.textContent = "Approved";
-          // showNotification(`Your event "${eventName}" has been approved.`);
-          updateNotificationsArray(
-            ownerId,
-            `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
-          );
-        })
-        .catch((error) => {
-          console.error("Error updating event status:", error);
-          showNotification(`Error approving event "${eventName}".`);
-        });
+        // First, get the event to retrieve ownerId
+        db.collection("events")
+          .doc(eventId)
+          .get()
+          .then((doc) => {
+            if (!doc.exists) {
+              console.error("No such event exists!");
+              return;
+            }
+            const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
+
+            // Update event status
+            db.collection("events")
+              .doc(eventId)
+              .update({ event_status: newStatus })
+              .then(() => {
+                console.log(`Event status updated to ${newStatus}`);
+                button.textContent = newStatus;
+
+                // Fetch user and update their notifications
+                const userRef = db.collection("users").doc(ownerId);
+                db.runTransaction((transaction) => {
+                  return transaction.get(userRef).then((userDoc) => {
+                    if (!userDoc.exists) {
+                      throw new Error("User does not exist!");
+                    }
+
+                    // Get current notifications, add new one, and update
+                    let notifications = userDoc.data().notifications || [];
+                    notifications.push(
+                      `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
+                    );
+                    transaction.update(userRef, {
+                      notifications: notifications,
+                    });
+                  });
+                })
+                  .then(() => {
+                    console.log("User notification updated successfully.");
+                  })
+                  .catch((error) => {
+                    console.error("Transaction failed: ", error);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error updating event status: ", error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error fetching event details: ", error);
+          });
+      });
     });
-  });
-  document.querySelectorAll(".decline-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id");
-      const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
-
-      const ownerId = doc.data().ownerId; // Make sure the field name 'ownerId' matches your database schema
-
-      db.collection("events")
-        .doc(eventId)
-        .update({ event_status: "Declined" })
-        .then(() => {
-          console.log("Event status updated to Declined");
-          button.textContent = "Declined";
-          // showNotification(`Your event "${eventName}" has been declined.`);
-          updateNotificationsArray(
-            ownerId,
-            `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
-          );
-        })
-        .catch((error) => {
-          console.error("Error updating event status:", error);
-          showNotification(`Error declining event "${eventName}".`);
-        });
-    });
-  });
 }
 
 function updateNotificationsArray(userId, message) {
