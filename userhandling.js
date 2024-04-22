@@ -1,5 +1,28 @@
-// Sign in modal code
+function r_e(id) {
+  return document.querySelector(`#${id}`);
+}
 
+function appendContent(html) {
+  r_e("main").innerHTML += html;
+}
+
+function removeContent() {
+  r_e("main").innerHTML = "";
+}
+
+// Message bar
+function configure_message_bar(message) {
+  r_e("message_bar").classList.remove("is-hidden");
+  r_e("message_bar").innerHTML = `${message}`;
+
+  setTimeout(() => {
+    r_e("message_bar").classList.add("is-hidden");
+    r_e("message_bar").innerHTML = "";
+  }, 7000);
+}
+
+
+// Sign in modal code
 // Sign in modal elements
 const sign_in_button = document.getElementById('signinbutton');
 const login_modal = document.getElementById('login_modal');
@@ -13,21 +36,7 @@ const registration_modal = document.getElementById('registration_modal');
 const close_registration = document.getElementById('close_registration_button');
 const create_account = document.getElementById('create_account_button');
 
-// Handle showing and hiding sign in buttons
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    sign_in_button.classList.add('is-hidden');
-    sign_up_button.classList.add('is-hidden');
-    sign_out_button.classList.remove('is-hidden');
-  } else {
-    // No user is signed in.
-    console.log("No user is logged in");
-    sign_in_button.classList.remove('is-hidden');
-    sign_up_button.classList.remove('is-hidden');
-    sign_out_button.classList.add('is-hidden');
-  }
-});
+
 
 //Sign out a user
 sign_out_button.addEventListener('click', function() {
@@ -277,4 +286,50 @@ document.getElementById('create_employer_account').addEventListener('click', fun
       };
       registerAccount(email, password, additionalData, () => closeModal(registrationModalAdmin));
   });
+});
+
+// Handle showing and hiding sign in buttons
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    const userEmail = user.email; // Assuming the user has an email. Adjust according to your user model.
+    sign_in_button.classList.add('is-hidden');
+    sign_up_button.classList.add('is-hidden');
+    sign_out_button.classList.remove('is-hidden');
+  } else {
+    // No user is signed in.
+    console.log("No user is logged in");
+    sign_in_button.classList.remove('is-hidden');
+    sign_up_button.classList.remove('is-hidden');
+    sign_out_button.classList.add('is-hidden');
+  }
+});
+
+// Configuring the message bar
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    // Fetch user details from Firestore
+    db.collection('users').doc(user.uid).get().then(doc => {
+      if (doc.exists) {
+        const userData = doc.data();
+        let welcomeMessage = "";
+        if (userData.userType === 'employer') {
+          // Display company name for employers
+          welcomeMessage = `Welcome ${userData.companyName}!`; 
+        } else {
+          // Display first name for students and admins
+          welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`; 
+        }
+        configure_message_bar(welcomeMessage);
+      } else {
+        console.log("No additional user data found.");
+      }
+    }).catch(error => {
+      console.error("Error fetching user data:", error);
+    });
+  } else {
+    // No user is signed in.
+    configure_message_bar("Please sign in or register"); // Display a default message when no user is logged in.
+  }
 });
