@@ -265,6 +265,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("companyName", companyName);
 
         const regformData = {
+          userId: currentUser.uid, // Storing userId in each event
+
           employerContactNumber,
           company_name: companyName,
           event_name: eventName,
@@ -539,22 +541,49 @@ document
     const notificationList = document.getElementById("notificationList");
     const dropdown = document.querySelector(".notification-dropdown");
 
-    // Simulate fetching notifications (you would replace this with an actual API call)
-    const notifications = [];
-
-    // Clear existing notifications
-    notificationList.innerHTML = "";
-
-    // Check if there are notifications and display them
-    if (notifications.length > 0) {
-      notifications.forEach((notification) => {
-        const li = document.createElement("li");
-        li.textContent = notification.text;
-        notificationList.appendChild(li);
-      });
-    } else {
-      notificationList.innerHTML = "<li>Nothing new needs attention.</li>";
+    // Fetch the currently logged-in user's ID
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) {
+      console.log("No user logged in!");
+      notificationList.innerHTML =
+        "<li>Please log in to view notifications.</li>";
+      return;
     }
+    const currentUserId = currentUser.uid;
+
+    // Fetch notifications from Firebase
+    db.collection("users")
+      .doc(currentUserId)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          console.error("User does not exist!");
+          notificationList.innerHTML =
+            "<li>Unable to fetch notifications.</li>";
+          return;
+        }
+
+        // Retrieve notifications from the user's document
+        const notifications = doc.data().notifications || [];
+
+        // Clear existing notifications
+        notificationList.innerHTML = "";
+
+        // Check if there are notifications and display them
+        if (notifications.length > 0) {
+          notifications.forEach((notification) => {
+            const li = document.createElement("li");
+            li.textContent = notification;
+            notificationList.appendChild(li);
+          });
+        } else {
+          notificationList.innerHTML = "<li>Nothing new needs attention.</li>";
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching notifications: ", error);
+        notificationList.innerHTML = "<li>Error retrieving notifications.</li>";
+      });
 
     // Toggle dropdown display
     dropdown.style.display =
@@ -757,65 +786,63 @@ function attachButtonListeners() {
   document
     .querySelectorAll(".accept-button, .decline-button")
     .forEach((button) => {
-      button.addEventListener("click", () => {
-        const eventId = button.getAttribute("data-event-id");
-        const eventName = button.getAttribute("data-event-name");
-        const newStatus = button.classList.contains("accept-button")
+      button.addEventListener("click", function () {
+        const eventId = this.getAttribute("data-event-id");
+        const newStatus = this.classList.contains("accept-button")
           ? "Approved"
           : "Declined";
 
-        // First, get the event to retrieve ownerId
         db.collection("events")
           .doc(eventId)
           .get()
           .then((doc) => {
             if (!doc.exists) {
-              console.error("No such event exists!");
+              console.error("Event does not exist!");
               return;
             }
-            const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
 
-            // Update event status
+            const userId = doc.data().userId; // Retrieve userId from event
+            const eventName = doc.data().event_name;
+
+            // Update event status in the database
             db.collection("events")
               .doc(eventId)
               .update({ event_status: newStatus })
               .then(() => {
                 console.log(`Event status updated to ${newStatus}`);
-                button.textContent = newStatus;
-
-                // Fetch user and update their notifications
-                const userRef = db.collection("users").doc(ownerId);
-                db.runTransaction((transaction) => {
-                  return transaction.get(userRef).then((userDoc) => {
-                    if (!userDoc.exists) {
-                      throw new Error("User does not exist!");
-                    }
-
-                    // Get current notifications, add new one, and update
-                    let notifications = userDoc.data().notifications || [];
-                    notifications.push(
-                      `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
-                    );
-                    transaction.update(userRef, {
-                      notifications: notifications,
-                    });
-                  });
-                })
-                  .then(() => {
-                    console.log("User notification updated successfully.");
-                  })
-                  .catch((error) => {
-                    console.error("Transaction failed: ", error);
-                  });
+                updateNotificationsArray(
+                  userId,
+                  `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
+                );
               })
               .catch((error) => {
-                console.error("Error updating event status: ", error);
+                console.error("Failed to update event status: ", error);
               });
-          })
-          .catch((error) => {
-            console.error("Error fetching event details: ", error);
           });
       });
+    });
+}
+
+function updateNotificationsArray(userId, message) {
+  const userRef = db.collection("users").doc(userId);
+
+  db.runTransaction((transaction) => {
+    return transaction.get(userRef).then((userDoc) => {
+      if (!userDoc.exists) {
+        throw new Error("User does not exist!");
+      }
+
+      let notifications = userDoc.data().notifications || [];
+      notifications.push(message); // Append new notification message
+
+      transaction.update(userRef, { notifications: notifications });
+    });
+  })
+    .then(() => {
+      console.log("Notification updated for user.");
+    })
+    .catch((error) => {
+      console.error("Failed to update notification for user: ", error);
     });
 }
 
