@@ -629,9 +629,18 @@
         <button
           class="button sign-up-btn"
           style="background-color: white; color: black"
+          id="signupbutton"
         >
           Sign Up
         </button>
+        <button
+          class="button sign-up-btn is-hidden"
+          style="background-color: white; color: black"
+          id="signoutbutton"
+        >
+          Sign Out
+        </button>
+
       </div>
     </nav>
 
@@ -1651,7 +1660,6 @@
         <input class="input" type="password" id="login_password" placeholder="Password">
         <div>&nbsp;</div>
         <button type="button" id="modal_signin">Login</button>&nbsp;&nbsp;
-        <button type="button" id="register">Register</button>
       </div>
     </form>
   </div>
@@ -1678,7 +1686,6 @@
         <option value="admin">Admin</option>
       </select>
       <div>&nbsp;</div>
-      <button type="button" id="create_account_button">Create an account</button> 
       <button type="button" id="nextpage">Next Page</button>
     </form>
   </div>
