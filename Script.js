@@ -765,7 +765,11 @@ function attachButtonListeners() {
         .then(() => {
           console.log("Event status updated to Approved");
           button.textContent = "Approved";
-          showNotification(`Your event "${eventName}" has been approved.`);
+          // showNotification(`Your event "${eventName}" has been approved.`);
+          updateNotificationsArray(
+            ownerId,
+            `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
+          );
         })
         .catch((error) => {
           console.error("Error updating event status:", error);
@@ -778,13 +782,19 @@ function attachButtonListeners() {
       const eventId = button.getAttribute("data-event-id");
       const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
 
+      const ownerId = doc.data().ownerId; // Make sure the field name 'ownerId' matches your database schema
+
       db.collection("events")
         .doc(eventId)
         .update({ event_status: "Declined" })
         .then(() => {
           console.log("Event status updated to Declined");
           button.textContent = "Declined";
-          showNotification(`Your event "${eventName}" has been declined.`);
+          // showNotification(`Your event "${eventName}" has been declined.`);
+          updateNotificationsArray(
+            ownerId,
+            `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
+          );
         })
         .catch((error) => {
           console.error("Error updating event status:", error);
@@ -792,6 +802,32 @@ function attachButtonListeners() {
         });
     });
   });
+}
+
+function updateNotificationsArray(userId, message) {
+  const userRef = db.collection("users").doc(userId);
+  db.runTransaction((transaction) => {
+    return transaction.get(userRef).then((userDoc) => {
+      if (!userDoc.exists) {
+        throw "User does not exist!";
+      }
+
+      // Get the current array of notifications (or initialize if it doesn't exist)
+      let notifications = userDoc.data().notifications || [];
+      notifications.push(message);
+
+      // Update the document
+      transaction.update(userRef, { notifications: notifications });
+    });
+  })
+    .then(() => {
+      console.log("Notification added to user.");
+      showNotification(message); // This could also show a notification on the admin's side
+    })
+    .catch((error) => {
+      console.error("Transaction failed: ", error);
+      showNotification("Failed to update notifications.");
+    });
 }
 
 show_register_events();
