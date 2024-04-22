@@ -83,7 +83,7 @@
       }
 
       .register-button {
-        background-color: rgb(52, 52, 211);
+        background-color: rgb(23, 66, 135);
       }
 
       .background-image-home {
@@ -266,6 +266,9 @@
         flex: 1; /* Ensures that each choice takes equal space */
       }
 
+      .is-rounded {
+        border-radius: 50%;
+      }
       .seating-choice img {
         width: 250px; /* Fixed width for all images */
         height: auto; /* Fixed height for all images */
@@ -359,6 +362,59 @@
         display: flex;
         flex-direction: column;
         align-items: center; /* Center-align the content */
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-ea {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+      .modal-content-ea {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .modal-close-ea {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
       }
 
       .calendar_button {
@@ -589,6 +645,74 @@
         text-decoration: none;
         color: black;
         display: block;
+      }
+
+      #eventDetailsModal {
+        padding-top: 120px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #adminEventDetailsModal {
+        padding-top: 80px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #eventDetailsModal .modal-content {
+        background: #fff; /* White background for the content */
+        padding: 20px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 600px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      .modal-content-ea {
+        height: 303.3px;
+        background: #fff; /* White background for the content */
+        padding: 0px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 800px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      #eventDetailsModal p {
+        line-height: 1.6; /* Spacing between lines */
+        margin-bottom: 15px; /* Spacing between paragraphs */
+      }
+
+      #eventDetailsModal strong {
+        color: #000; /* Bold text color for labels */
+      }
+
+      .modal-close-ea {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close-ea:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+
+      .modal-close:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
       }
     </style>
   </head>
@@ -908,6 +1032,42 @@
           </div>
 
           <!-- Events Content -->
+
+          <!-- Event Details Modal -->
+          <div id="eventDetailsModal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <!-- Content to show event details -->
+              <p><strong>Event:</strong> <span id="modalEventName"></span></p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity"></span>
+              </p>
+
+              <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium"></span>
+              </p>
+              <p>
+                <strong>Food Included:</strong>
+                <span id="modalFoodIncluded"></span>
+              </p>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+          </div>
+
           <div class="column is-9" id="box-container">
             <!-- Boxes will be dynamically generated here -->
             <div class="columns">
@@ -1486,6 +1646,50 @@
             </div>
           </div>
           <!-- Events Content -->
+          <!-- Event Details Modal -->
+          <div id="adminEventDetailsModal" class="modal">
+            <div class="modal-background-ea"></div>
+            <div class="modal-content-ea">
+              <!-- Content to show event details -->
+              <p>
+                <strong>Event:</strong> <span id="modalEventName-ea"></span>
+              </p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName-ea"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview-ea"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription-ea"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity-ea"></span>
+              </p>
+
+              <p>
+                <strong>Location:</strong> <span id="modalLocation-ea"></span>
+              </p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium-ea"></span>
+              </p>
+              <p>
+                <strong>Meals:</strong> <span id="modalEventMeals-ea"></span>
+              </p>
+              <p>
+                <strong>Snacks:</strong> <span id="modalEventSnacks-ea"></span>
+              </p>
+              <p>
+                <strong>Disposables:</strong>
+                <span id="modalEventDisposables-ea"></span>
+              </p>
+            </div>
+            <button class="modal-close-ea is-large" aria-label="close"></button>
+          </div>
           <div class="column is-9" id="box-container">
             <!-- Boxes will be dynamically generated here -->
             <div class="columns">

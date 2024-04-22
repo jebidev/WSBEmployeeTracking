@@ -367,6 +367,10 @@ function show_events_home() {
             </div>
             <div class="media-content">
               <p class="title is-4">${d.data().company_name}</p>
+              <button class="button is-small is-pulled-right expand-button is-rounded" data-event-id="${
+                d.id
+              }" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i>      </button>
             </div>
           </div>
           <!--Event Name-->
@@ -392,7 +396,7 @@ function show_events_home() {
             </span>
           </button>
           <!--Register Button-->
-          <button class="button is-primary register-button" style="background-color: blue; color: white">
+          <button class="button is-primary register-button" style="background-color: rgb(23, 66, 135); color: white">
             Register
           </button>
         </div>
@@ -414,8 +418,6 @@ function show_events_home() {
 
       document.querySelectorAll(".save-event-button").forEach((button) => {
         button.addEventListener("click", () => {
-          const icon = button.querySelector(".fas");
-
           // Toggle color classes
           if (icon.classList.contains("icon-white")) {
             icon.classList.remove("icon-white");
@@ -445,12 +447,82 @@ function show_events_home() {
           this.style.color = "white"; // Ensure text color is white for better visibility
         } else {
           this.textContent = "Register"; // Change button text back to "Register"
-          this.style.backgroundColor = "blue"; // Change button color back to blue
+          this.style.backgroundColor = "rgb(23, 66, 135)"; // Change button color back to blue
           this.style.color = "white"; // Ensure text color remains white
         }
       });
     });
+
+    document.querySelectorAll(".expand-button").forEach((button) => {
+      button.addEventListener("click", function (event) {
+        const eventId = this.getAttribute("data-event-id");
+        showEventDetailsModal(eventId);
+      });
+    });
   }
+
+  function showEventDetailsModal(eventId) {
+    const event = db.collection("events").doc(eventId).get();
+    event
+      .then((doc) => {
+        if (doc.exists) {
+          const eventData = doc.data();
+          populateEventModal(eventData);
+          toggleModal("eventDetailsModal", true);
+        } else {
+          console.error("No such event!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting event:", error);
+      });
+  }
+
+  function populateEventModal(eventData) {
+    document.getElementById("modalEventName").textContent =
+      eventData.event_name;
+    document.getElementById("modalCompanyName").textContent =
+      eventData.company_name;
+    document.getElementById("modalEventCapacity").textContent =
+      eventData.event_capacity;
+    document.getElementById("modalEventOverview").textContent =
+      eventData.event_overview;
+    document.getElementById("modalEventDescription").textContent =
+      eventData.event_description;
+    document.getElementById("modalLocation").textContent = eventData.location;
+    document.getElementById("modalEventMedium").textContent =
+      eventData.event_medium;
+
+    const foodIncluded =
+      eventData.meals.length > 0 || eventData.snacks.length > 0;
+    document.getElementById("modalFoodIncluded").textContent = foodIncluded
+      ? "Yes"
+      : "No";
+  }
+
+  function toggleModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (show) {
+      modal.style.display = "block";
+    } else {
+      modal.style.display = "none";
+    }
+  }
+
+  const modal = document.getElementById("eventDetailsModal");
+  const closeModalButton = document.querySelector(".modal-close");
+
+  // Ensure this matches the class or ID of your close button
+  closeModalButton.addEventListener("click", function () {
+    toggleModal("eventDetailsModal", false);
+  });
+
+  // Also set up the modal to close if the background is clicked
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      toggleModal("eventDetailsModal", false);
+    }
+  });
 }
 
 show_events_home();
@@ -533,6 +605,10 @@ function show_register_events() {
               <div class="media-content">
                 <p class="title is-4">${d.data().company_name}</p>
               </div>
+              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${
+                d.id
+              }" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i>      </button>
             </div>
             <!--Event Name-->
             <p class="title is-5 p-5">${d.data().event_name}</p>
@@ -592,12 +668,88 @@ function show_register_events() {
 
       // Attach event listeners to the buttons after they are added to the DOM
       attachButtonListeners();
+
+      // Attach event listener for expand button on Events Administration page
+      document.querySelectorAll(".expand-button-ea").forEach((button) => {
+        button.addEventListener("click", function () {
+          const eventId = this.getAttribute("data-event-id");
+          showAdminEventDetailsModal(eventId);
+        });
+      });
     });
+
+  function showAdminEventDetailsModal(eventId) {
+    const event = db.collection("events").doc(eventId).get();
+    event
+      .then((doc) => {
+        if (doc.exists) {
+          const eventData = doc.data();
+          populateAdminEventModal(eventData);
+          toggleAdminModal("adminEventDetailsModal", true);
+        } else {
+          console.error("No such event!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting event:", error);
+      });
+  }
+
+  function populateAdminEventModal(eventData) {
+    document.getElementById("modalEventName-ea").textContent =
+      eventData.event_name;
+    document.getElementById("modalCompanyName-ea").textContent =
+      eventData.company_name;
+    document.getElementById("modalEventCapacity-ea").textContent =
+      eventData.event_capacity;
+    document.getElementById("modalEventOverview-ea").textContent =
+      eventData.event_overview;
+    document.getElementById("modalEventDescription-ea").textContent =
+      eventData.event_description;
+    document.getElementById("modalLocation-ea").textContent =
+      eventData.location;
+    document.getElementById("modalEventMedium-ea").textContent =
+      eventData.event_medium;
+    document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
+    document.getElementById("modalEventSnacks-ea").textContent =
+      eventData.snacks;
+    document.getElementById("modalEventDisposables-ea").textContent =
+      eventData.disposables;
+  }
+
+  function toggleAdminModal(modalId, show) {
+    const modal = document.getElementById(modalId);
+    if (show) {
+      modal.classList.add("is-active");
+    } else {
+      modal.classList.remove("is-active");
+    }
+    console.log(
+      "adminModal closeAdminModalButton",
+      adminModal,
+      closeAdminModalButton
+    );
+  }
+  const adminModal = document.getElementById("adminEventDetailsModal");
+  const closeAdminModalButton = document.querySelector(".modal-close-ea");
+
+  // Ensure this matches the class or ID of your close button
+  closeAdminModalButton.addEventListener("click", function () {
+    console.log("CLSOIGN BOSS");
+    toggleAdminModal("adminEventDetailsModal", false);
+  });
+
+  // Also set up the modal to close if the background is clicked
+  adminModal.addEventListener("click", function (event) {
+    if (event.target === adminModal) {
+      toggleAdminModal("adminEventDetailsModal", false);
+    }
+  });
 }
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document.querySelectorAll(".accept-button").forEach((button) => {
+  document.querySelectorAll(".accept-button-ea").forEach((button) => {
     button.addEventListener("click", () => {
       const eventId = button.getAttribute("data-event-id");
       const eventName = button.getAttribute("data-event-name"); // Make sure to add this data attribute where the buttons are generated.
