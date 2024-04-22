@@ -126,3 +126,116 @@ closeEmployerModal.addEventListener('click', function() {
 closeAdminModal.addEventListener('click', function() {
     closeModal(registrationModalAdmin);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Firebase Authentication setup
+  function registerAccount(email, password, additionalData, closeModalCallback) {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+              console.log("User created:", userCredential.user);
+
+              // Reference to Firestore
+              const db = firebase.firestore();
+              db.collection('users').doc(userCredential.user.uid).set({
+                  email: email,
+                  ...additionalData
+              }).then(() => {
+                  console.log("User data stored in Firestore.");
+                  closeModalCallback();
+              }).catch((error) => {
+                  console.error("Error storing user data in Firestore:", error.message);
+              });
+          })
+          .catch((error) => {
+              console.error("Error creating user:", error.message);
+          });
+  }
+
+  // Student account creation
+  document.getElementById('create_student_account').addEventListener('click', function() {
+      const email = document.getElementById('registration_email').value;
+      const password = document.getElementById('registration_password').value;
+      const firstName = document.getElementById('student_first_name').value;
+      const lastName = document.getElementById('student_last_name').value;
+      const additionalData = {
+          userType: 'student',
+          firstName: firstName,
+          lastName: lastName
+      };
+      registerAccount(email, password, additionalData, () => closeModal(registrationModalStudent));
+  });
+
+  // // Employer account creation
+  // document.getElementById('create_employer_account').addEventListener('click', function() {
+  //     const email = document.getElementById('registration_email').value;
+  //     const password = document.getElementById('registration_password').value;
+  //     const companyName = document.getElementById('company_name').value;
+  //     const additionalData = {
+  //         userType: 'employer',
+  //         companyName: companyName
+  //         // Assuming file handling for 'company_logo' is managed elsewhere
+  //     };
+  //     registerAccount(email, password, additionalData, () => closeModal(registrationModalEmployer));
+
+  //     let company_logo = document.getElementById('company_logo').files[0];
+  // });
+  // Employer account creation
+document.getElementById('create_employer_account').addEventListener('click', function() {
+  const email = document.getElementById('registration_email').value;
+  const password = document.getElementById('registration_password').value;
+  const companyName = document.getElementById('company_name').value;
+  const companyLogoFile = document.getElementById('company_logo').files[0]; // Get the file
+
+  if (companyLogoFile) {
+      // Create a storage reference
+      const storageRef = firebase.storage().ref();
+      const logoRef = storageRef.child('company_logos/' + companyLogoFile.name);
+
+      // Upload the file
+      const uploadTask = logoRef.put(companyLogoFile);
+
+      uploadTask.on('state_changed', 
+          function(snapshot) {
+              // Observe state change events such as progress, pause, and resume
+              // You can use these to show upload progress to users
+          }, function(error) {
+              // Handle unsuccessful uploads
+              console.error("Error uploading file: ", error);
+          }, function() {
+              // Handle successful uploads on complete
+              // For instance, get the download URL
+              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                  console.log('File available at', downloadURL);
+                  
+                  // Create user account after logo upload to ensure logo URL is ready to be saved
+                  const additionalData = {
+                      userType: 'employer',
+                      companyName: companyName,
+                      companyLogoUrl: downloadURL // Save logo URL in user's profile or wherever it's needed
+                  };
+
+                  registerAccount(email, password, additionalData, () => closeModal(registrationModalEmployer));
+              });
+          });
+  } else {
+      console.error("No file selected for upload");
+  }
+});
+
+
+  // Admin account creation
+  document.getElementById('create_admin_account').addEventListener('click', function() {
+      const email = document.getElementById('registration_email').value;
+      const password = document.getElementById('registration_password').value;
+      const firstName = document.getElementById('admin_first_name').value;
+      const lastName = document.getElementById('admin_last_name').value;
+      const accessCode = document.getElementById('admin_access_code').value;
+      const additionalData = {
+          userType: 'admin',
+          firstName: firstName,
+          lastName: lastName,
+          accessCode: accessCode
+      };
+      registerAccount(email, password, additionalData, () => closeModal(registrationModalAdmin));
+  });
+});
