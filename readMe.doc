@@ -4,14 +4,18 @@ User Stories
 - Story 3 - As an employer user, I want to be able to edit add/edit event details such as date, time, location, and description to keep the information accurate. I also want to be able to communicate with my attendees through a notification system that is clean and simple. 
 
 Tasks:
-    - Create prototypes of website homepage and website registration form
-    - Complete 1-Page GUI
-    - Connect website to Firebase
-    - Complete JavaScript to make website interactive (dependency on completing the 1-Page GUI)
-    - Create databases in Firebase
-    - Create individual user permissions for the admin, student, and employer levels
-    - Meet with client to discuss progress and receive feedback
-    - Begin JavaScript to use CRUD features
+    - Create User Permissions
+    - JS to use CRUD features connected with DBs
+    - JS Calendar
+    - JS for visualizations
+    - add rooms capacity to Firebase
+    - Launch Firebase website
+    - JS for assigning rooms for each event upon acceptance
+    - Update footer for website
+    - Employer notification for when event is accepted or denied
+    - Make events filtering work/add a section for saved events
+    - Navbar items to be accessible based on roles
+    - Standardized fonts and image sizes across site
 
 GitHub Link: https://github.com/jebidev/WSBEmployeeTracking/tree/main
 
@@ -19,60 +23,31 @@ Scrum Master: Jing Wang
 Trello Link: https://trello.com/b/y2OQPaTm/is424-team-project
 
 Daily Standups:
-April 3, 2024
+April 19, 2024
 What did you do yesterday?
-    - Planned out sprint
-    - Assigned roles
-    - Started working on JavaScript, but ran into a problem with multiple GUIs
-    - Pushed 1-Page GUI completion up
+    - Continued working on user permissions
+    - updated calender JS
+    - added room capacity to Firebase
+    - added footer to website
 What are you planning to do today?
-    - Finish 1-Page GUI
-    - Start working on JavaScript
-    - Create Firebase Connection and DBs
+    - Finishing up user permissions and login/sign up
+    - working on filtering for the website
+    - working on the notifications for the website
+    - discussing with client if we should remove the visualizations page
 Any problems are you facing?
-    - Need to push up 1-page GUI in order to work on JavaScript
+    - hard to find time for meetings due to other exams and commitments
+    - running into issues with login and sign up which effects other features
 
-April 8, 2024
+April 21, 2024
 What did you do yesterday?
-    - Completed 1 page GUI
-    - Created Firebase DBs
+    - Adjusted styles for the website
+    - worked on filtering for main page and event registration page
+    - calendar is completed
+    - notification system is completed (waiting on users)
+    - login is completed
 What are you planning to do today?
-    - Continue working on JavaScript
-    - Create DBs
-    - Create Users
-    - Connect to Firebase
+    - continue working on filtering
+    - fix some bugs in the code
 Any problems are you facing?
-    - Busy schedules
-
-April 10, 2024
-What did you do yesterday?
-    - Worked on JavaScript
-    - Added Firebase Connection
-    - Added images for room sizing in registration form
-    - Worked on User Permissions
-What are you planning to do today?
-    - Pulling Data from Firebase for events page
-    - JavaScript for Sign-in Modal
-    - JavaScript for functionality
-Any problems are you facing?
-    - Merge problems with html_updates branch
-    - Scheduling meetings can be tough due to busy schedules
-
-Spring Review (April 14, 2024):
-What did you learn from doing our first sprint?
-    - We learned that teamwork and patience can be incredibly helpful when working on projects collaboratively. We also learned how to be more proactive in our approach to completeing the project. We also learned the importance of communication, especially when working on different parts of the project. This can be in sending text updates of what we have worked on or thorough our meetings throughout the sprint.
-
-What did go well? Why?
-    - Each part of the website has come together well; the one page HTML was a smooth transition from having multiple completed pages. The bulma and css have been very seamlessly coming together, thanks to extra work done over spring break by Jing. We have also had a lot better time management this time around, understanding that everyone has other work come up.
-
-What didn’t go well? Why not?
-    - Still can be hard to plan meetings with other schoolwork; we also had issues with remembering things from IS 371 since most of us took the course years ago. This is just due to busy schedules and most of us having taken IS 371 freshman or sophomore year. 
-
-How can you make things better next time?
-    - Plan meetings further ahead of time.
-
-Are you satisfied with what you already completed?
-    - Yes, we are satisfied with our work so far. We showed the client the website and he was very impressed with our work so far. 
-
-Which group was invited? What are your observations/notes? Everybody was present?
-    - We reviewed Group 11 and their project about Habitat for Humanity. We like the design of the website and the functionality of the website. We really liked how they implemented a calendar for events into their website. We did notice a typo on the About Page where "introduction" is spelt "intoriduction". We loved all the photos of dogs on the webpage, and the posts page. We liked the inclusion of links to Facebook, Instagram, and Twitter. The entire team was present to showcase their design.
+    - notification bugs
+    - 

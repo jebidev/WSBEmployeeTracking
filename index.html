@@ -851,14 +851,14 @@
             >Events Administration</span
           >
         </a>
-        <a class="navbar-item">
+        <!-- <a class="navbar-item">
           <span
             class="ml-2 is-size-5"
             style="color: black"
             id="EmployerEngagementNavItem"
             >Employer Engagement</span
           >
-        </a>
+        </a> -->
       </div>
     </nav>
 
@@ -899,7 +899,7 @@
           <div class="column is-3">
             <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
               <h1 class="is-size-3 has-text-white">Filter</h1>
-              <form action="#">
+              <form action="#" id="filterForm">
                 <!-- Checkbox for saved events -->
                 <div class="field">
                   <input
@@ -927,47 +927,10 @@
                 <div class="field">
                   <label class="label has-text-white">Company</label>
                   <div class="control">
-                    <div class="select is-fullwidth">
+                    <div class="select is-fullwidth" id="companySelect">
                       <select>
-                        <option>Select a company...</option>
-                        <option>Ey</option>
-                        <option>KPMG</option>
-                        <option>PWC</option>
-                        <option>Deloitte</option>
-                        <option>RSM</option>
-                        <option>BDO</option>
-                        <option>Wipfli</option>
-                        <option>Baker Tilly</option>
-                        <!-- Add more options as needed -->
+                        <option value="">Select a company...</option>
                       </select>
-                    </div>
-                  </div>
-                  <div class="control">
-                    <div class="field is-grouped-multiline">
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">EY</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">KPMG</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">PWC</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Deloitte</span>
-                        </label>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -979,25 +942,25 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category-checkbox" id="hiringCheckbox" value="Hiring"/>
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category-checkbox" id="officeHourCheckbox" value="Office Hour"/>
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category-checkbox" id="networkingCheckbox" value="Networking"/>
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -1013,19 +976,19 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox" class="medium-checkbox" id="virtualCheckbox" value="Virtual"/>
                           <span class="has-text-white">Virtual</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox" class="medium-checkbox" id="inpersonCheckbox" value="In-Person"/>
                           <span class="has-text-white">In-Person</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox" class="medium-checkbox" id="hybridCheckbox" value="Hybrid"/>
                           <span class="has-text-white">Hybrid</span>
                         </label>
                       </div>
@@ -1039,40 +1002,12 @@
                   <div class="control">
                     <input type="date" class="input" />
                   </div>
-                  <div class="control">
-                    <div class="field is-grouped-multiline">
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Upcoming Events</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Today</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Next 20 Days</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Past Events</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth">
+                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter">
                       Apply
                     </button>
                   </div>
@@ -1602,49 +1537,22 @@
               <form action="#">
                 <!-- Checkbox for accept events -->
                 <div class="field">
-                  <input
-                    type="checkbox"
-                    id="acceptEvents"
-                    class="is-checkradio"
-                  />
-                  <label for="AcceptedEvents" class="has-text-white"
-                    >Events Accepted</label
-                  >
+                  <input type="checkbox" id="acceptEvents" class="is-checkradio"/>
+                  <label for="acceptEvents" class="has-text-white">Events Accepted</label>
                 </div>
-
+                <!-- Checkbox for decline events -->
                 <div class="field">
-                  <input
-                    type="checkbox"
-                    id="DeclineEvents"
-                    class="is-checkradio"
-                  />
-                  <label for="DeclineEvents" class="has-text-white"
-                    >Events Declined</label
-                  >
-                </div>
-
-                <!-- Search -->
-                <div class="field">
-                  <label class="label has-text-white">Search</label>
-                  <div class="control has-icons-left">
-                    <input type="text" class="input" placeholder="Search..." />
-                    <span class="icon is-left">
-                      <i class="fas fa-search"></i>
-                    </span>
-                  </div>
+                  <input type="checkbox" id="declineEvents" class="is-checkradio"/>
+                  <label for="declineEvents" class="has-text-white">Events Declined</label>
                 </div>
 
                 <!-- Dropdown for company names -->
                 <div class="field">
                   <label class="label has-text-white">Company</label>
                   <div class="control">
-                    <div class="select is-fullwidth">
+                    <div class="select is-fullwidth" id="companySelect2">
                       <select>
-                        <option>Select a company...</option>
-                        <option>Company A</option>
-                        <option>Company B</option>
-                        <option>Company C</option>
-                        <!-- Add more options as needed -->
+                        <option value="">Select a company...</option>
                       </select>
                     </div>
                   </div>
@@ -1657,25 +1565,25 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="hiringCheckbox" value="Hiring"/>
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="officeHourCheckbox" value="Office Hour"/>
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="networkingCheckbox" value="Networking"/>
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" />
+                          <input type="checkbox"  class="category2-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -1687,7 +1595,7 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth">
+                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter2">
                       Apply
                     </button>
                   </div>
@@ -1753,98 +1661,87 @@
           </div>
         </div>
       </section>
-      <section
-        class="section background-image-engage"
-        id="employerEngagementOpener"
-      >
-        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
-          <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
-        </div>
-      </section>
-      <section class="section" id="employerEngagementContainer">
-        <h1 class="title is-size-2 p-5">Employer Engagement Visualization</h1>
-        <div class="columns">
-          <!-- Filter Sidebar -->
-          <div class="column is-3">
-            <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
-              <h1 class="is-size-3 has-text-white">Filter</h1>
-              <form action="#">
-                <!-- Search -->
-                <div class="field">
-                  <label class="label has-text-white">Search</label>
-                  <div class="control has-icons-left">
-                    <input type="text" class="input" placeholder="Search..." />
-                    <span class="icon is-left">
-                      <i class="fas fa-search"></i>
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Dropdown for company names -->
-                <div class="field">
-                  <label class="label has-text-white">Company</label>
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select>
-                        <option>Select a company...</option>
-                        <option>Company A</option>
-                        <option>Company B</option>
-                        <option>Company C</option>
-                        <!-- Add more options as needed -->
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!--Checkbox for Medium-->
-                <div class="field">
-                  <label class="label has-text-white">Medium</label>
-                  <div class="control">
-                    <div class="field is-grouped-multiline">
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Virtual</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">In-Person</span>
-                        </label>
-                      </div>
-                      <div class="control">
-                        <label class="checkbox">
-                          <input type="checkbox" />
-                          <span class="has-text-white">Hybrid</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Submit button -->
-                <div class="field">
-                  <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth">
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </form>
+<!-- Employer Engagement -->
+<!-- <section class="section background-image-engage" id="employerEngagementOpener">
+  <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+    <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
+  </div>
+</section>
+<section class="section" id="employerEngagementContainer">
+  <h1 class="title is-size-2 p-5">Employer Engagement Visualization</h1>
+  <div class="columns">
+    <div class="column is-3">
+      <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
+        <h1 class="is-size-3 has-text-white">Filter</h1>
+        <form action="#">
+          <div class="field">
+            <label class="label has-text-white">Search</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" placeholder="Search..." />
+              <span class="icon is-left">
+                <i class="fas fa-search"></i>
+              </span>
             </div>
           </div>
-          <div class="column is-9">
-            <div class="columns">
-              <div class="column is-11">
-                <div class="box">
-                  <!--graph-->
+          <div class="field">
+            <label class="label has-text-white">Company</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select>
+                  <option>Select a company...</option>
+                  <option>Company A</option>
+                  <option>Company B</option>
+                  <option>Company C</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Medium</label>
+            <div class="control">
+              <div class="field is-grouped-multiline">
+                <div class="control">
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="has-text-white">Virtual</span>
+                  </label>
+                </div>
+                <div class="control">
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="has-text-white">In-Person</span>
+                  </label>
+                </div>
+                <div class="control">
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="has-text-white">Hybrid</span>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-white is-fullwidth">
+                Apply
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="column is-9">
+      <div class="columns">
+        <div class="column is-11">
+          <div class="box">
+          </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section> -->
+
       <!-- Calendar Page -->
       <section class="section background-image-calendar" id="calendarOpener">
         <div class="text-container pl-6 p-6 mt-6 has-text-centered">

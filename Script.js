@@ -353,7 +353,28 @@ function submitSignInForm() {
   toggleModal("signInModal", false); // Close the modal upon submission
 }
 
+// Fetch company options from the database
+db.collection('events').get().then(snapshot => {
+  const companySelect = document.getElementById('companySelect2').querySelector('select');
+  const uniqueCompanyNames = new Set(); // Set to store unique company names
+
+  snapshot.forEach(doc => {
+    const companyName = doc.data().company_name;
+    // Check if the company name is not already added to the set
+    if (!uniqueCompanyNames.has(companyName)) {
+      const option = document.createElement('option');
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+      uniqueCompanyNames.add(companyName); // Add the company name to the set
+    }
+  });
+}).catch(error => {
+  console.error('Error fetching companies: ', error);
+});
+
 function show_events_home() {
+  // Fetch all events when the page loads
   db.collection("events")
     .where("event_status", "==", "Approved")
     .get()
@@ -363,176 +384,157 @@ function show_events_home() {
       let htmlColumn2 = ``;
       let index = 0;
       data.forEach((d) => {
-        const boxHtml = `<div class="box">
-        <div class="content">
-          <!--Company name and logo-->
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img src="Image/business_logo.jpeg" alt="Company Logo" />
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">${d.data().company_name}</p>
-              <button class="button is-small is-pulled-right expand-button is-rounded" data-event-id="${
-                d.id
-              }" style="background-color:black;">
-              <i class="fas fa-expand-alt"></i>      </button>
-            </div>
-          </div>
-          <!--Event Name-->
-          <p class="title is-5 p-5">${d.data().event_name}</p>
-          <!--Event Description-->
-          <p>${d.data().event_description}</p>
-          <!--Event and Medium Type-->
-          <div class="field is-grouped">
-            <p class="Type">
-              <span class="tag is-light">${d.data().event_medium}</span>
-              <span class="tag is-light">${d.data().event_category}</span>
-            </p>
-          </div>
-          <!--Event Date-->
-          <p>
-            <span class="has-text-weight-semibold">Date:</span>
-            ${d.data().event_date}
-          </p>
-          <!--Save Button-->
-          <button class="button is-primary save-event-button" style="background-color: black">
-            <span class="icon is-small">
-              <i class="fas fa-bookmark icon-white"></i>
-            </span>
-          </button>
-          <!--Register Button-->
-          <button class="button is-primary register-button" style="background-color: rgb(23, 66, 135); color: white">
-            Register
-          </button>
-        </div>
-      </div>`;
-
+        const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
         if (index % 2 === 0) {
           htmlColumn1 += boxHtml;
         } else {
           htmlColumn2 += boxHtml;
         }
-
         index++;
       });
-      //append html variable to the document
-      document.querySelector("#column1").innerHTML += htmlColumn1;
-      document.querySelector("#column2").innerHTML += htmlColumn2;
+      // Append HTML to the document
+      document.querySelector("#column1").innerHTML = htmlColumn1;
+      document.querySelector("#column2").innerHTML = htmlColumn2;
 
-      attachEventListeners(); // Call to attach listeners after rendering
-
-      document.querySelectorAll(".save-event-button").forEach((button) => {
-        button.addEventListener("click", () => {
-          // Toggle color classes
-          if (icon.classList.contains("icon-white")) {
-            icon.classList.remove("icon-white");
-            icon.classList.add("icon-red");
-          } else {
-            icon.classList.remove("icon-red");
-            icon.classList.add("icon-white");
-          }
-
-          // Apply the jump animation
-          icon.classList.add("jump");
-
-          // Remove the animation class after it completes to allow it to run again on next click
-          icon.addEventListener("animationend", () => {
-            icon.classList.remove("jump");
-          });
-        });
-      });
+      // Add event listeners to save buttons
+      attachSaveEventListeners();
     });
 
-  function attachEventListeners() {
-    document.querySelectorAll(".register-button").forEach((button) => {
-      button.addEventListener("click", function () {
-        if (this.textContent === "Register") {
-          this.textContent = "Registered"; // Change button text to "Registered"
-          this.style.backgroundColor = "red"; // Change button color to red
-          this.style.color = "white"; // Ensure text color is white for better visibility
-        } else {
-          this.textContent = "Register"; // Change button text back to "Register"
-          this.style.backgroundColor = "rgb(23, 66, 135)"; // Change button color back to blue
-          this.style.color = "white"; // Ensure text color remains white
-        }
+  // Add event listener to the submit button
+  document.getElementById("submitFilter").addEventListener("click", applyFilters);
+}
+
+function generateEventBoxHtml(eventDoc) {
+  // Generate HTML for each event
+  return `<div class="box">
+            <div class="content">
+              <!--Company name and logo-->
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">${eventDoc.data().company_name}</p>
+                </div>
+              </div>
+              <!--Event Name-->
+              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+              <!--Event Description-->
+              <p>${eventDoc.data().event_description}</p>
+              <!--Event and Medium Type-->
+              <div class="field is-grouped">
+                <p class="Type">
+                  <span class="tag is-light">${eventDoc.data().event_medium}</span>
+                  <span class="tag is-light">${eventDoc.data().event_category}</span>
+                </p>
+              </div>
+              <!--Event Date-->
+              <p>
+                <span class="has-text-weight-semibold">Date:</span>
+                ${eventDoc.data().event_date}
+              </p>
+              <!--Save Button-->
+              <button class="button is-primary save-event-button" style="background-color: black">
+                <span class="icon is-small">
+                  <i class="fas fa-bookmark icon-white"></i>
+                  <!-- Initial class for white color -->
+                </span>
+              </button>
+            </div>
+          </div>`;
+}
+
+function attachSaveEventListeners() {
+  // Add event listeners to save buttons
+  document.querySelectorAll(".save-event-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const icon = button.querySelector(".fas");
+
+      // Toggle color classes
+      if (icon.classList.contains("icon-white")) {
+        icon.classList.remove("icon-white");
+        icon.classList.add("icon-red");
+      } else {
+        icon.classList.remove("icon-red");
+        icon.classList.add("icon-white");
+      }
+
+      // Apply the jump animation
+      icon.classList.add("jump");
+
+      // Remove the animation class after it completes to allow it to run again on next click
+      icon.addEventListener("animationend", () => {
+        icon.classList.remove("jump");
       });
     });
-
-    document.querySelectorAll(".expand-button").forEach((button) => {
-      button.addEventListener("click", function (event) {
-        const eventId = this.getAttribute("data-event-id");
-        showEventDetailsModal(eventId);
-      });
-    });
-  }
-
-  function showEventDetailsModal(eventId) {
-    const event = db.collection("events").doc(eventId).get();
-    event
-      .then((doc) => {
-        if (doc.exists) {
-          const eventData = doc.data();
-          populateEventModal(eventData);
-          toggleModal("eventDetailsModal", true);
-        } else {
-          console.error("No such event!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting event:", error);
-      });
-  }
-
-  function populateEventModal(eventData) {
-    document.getElementById("modalEventName").textContent =
-      eventData.event_name;
-    document.getElementById("modalCompanyName").textContent =
-      eventData.company_name;
-    document.getElementById("modalEventCapacity").textContent =
-      eventData.event_capacity;
-    document.getElementById("modalEventOverview").textContent =
-      eventData.event_overview;
-    document.getElementById("modalEventDescription").textContent =
-      eventData.event_description;
-    document.getElementById("modalLocation").textContent = eventData.location;
-    document.getElementById("modalEventMedium").textContent =
-      eventData.event_medium;
-
-    const foodIncluded =
-      eventData.meals.length > 0 || eventData.snacks.length > 0;
-    document.getElementById("modalFoodIncluded").textContent = foodIncluded
-      ? "Yes"
-      : "No";
-  }
-
-  function toggleModal(modalId, show) {
-    const modal = document.getElementById(modalId);
-    if (show) {
-      modal.style.display = "block";
-    } else {
-      modal.style.display = "none";
-    }
-  }
-
-  const modal = document.getElementById("eventDetailsModal");
-  const closeModalButton = document.querySelector(".modal-close");
-
-  // Ensure this matches the class or ID of your close button
-  closeModalButton.addEventListener("click", function () {
-    toggleModal("eventDetailsModal", false);
-  });
-
-  // Also set up the modal to close if the background is clicked
-  modal.addEventListener("click", function (event) {
-    if (event.target === modal) {
-      toggleModal("eventDetailsModal", false);
-    }
   });
 }
 
+function applyFilters() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
+
+  // Get selected categories
+  const selectedCategories = [];
+  document.querySelectorAll('.category-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedCategories.push(checkbox.value);
+    }
+  });
+
+  const selectedMedium = [];
+  document.querySelectorAll('.medium-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedMedium.push(checkbox.value);
+    }
+  });
+
+  // Fetch the search input value
+  const searchInputValue = document.querySelector('.input').value.toLowerCase();
+
+  // Fetch the selected date
+  const selectedDate = document.querySelector('.input[type="date"]').value;
+
+  // Fetch events based on the selected company, categories, search input, and date
+  db.collection("events")
+    .where("event_status", "==", "Approved")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        // Check if the event matches all the selected filters and search input
+        if (
+          (selectedCompany === '' || d.data().company_name === selectedCompany) &&
+          (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
+          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
+          (d.data().event_name.toLowerCase().includes(searchInputValue)) &&
+          (selectedDate === '' || d.data().event_date === selectedDate)
+        ) {
+          const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
+        }
+      });
+      // Append HTML to the document
+      document.querySelector("#column1").innerHTML = htmlColumn1;
+      document.querySelector("#column2").innerHTML = htmlColumn2;
+
+      // Add event listeners to save buttons
+      attachSaveEventListeners();
+    });
+}
+
 show_events_home();
+
 
 document
   .getElementById("notificationBell")
@@ -602,7 +604,32 @@ document.addEventListener("click", function (event) {
   }
 });
 
+// show values from db in dropdown
+db.collection('events').get().then(snapshot => {
+  const companySelect = document.getElementById('companySelect2').querySelector('select');
+  const uniqueCompanyNames = new Set(); // Set to store unique company names
+
+  snapshot.forEach(doc => {
+    const companyName = doc.data().company_name;
+    // Check if the company name is not already added to the set
+    if (!uniqueCompanyNames.has(companyName)) {
+      const option = document.createElement('option');
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+      uniqueCompanyNames.add(companyName); // Add the company name to the set
+    }
+  });
+}).catch(error => {
+  console.error('Error fetching companies: ', error);
+});
+
+
+
+//Events Administration page
+// Function to fetch and display events
 function show_register_events() {
+  // Fetch all events when the page loads
   db.collection("events")
     .get()
     .then((res) => {
@@ -627,252 +654,185 @@ function show_register_events() {
           buttonText2 = "Decline";
         }
 
-        const boxHtml = `<div class="box">
-          <div class="content">
-            <!--Company name and logo-->
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">${d.data().company_name}</p>
-              </div>
-              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${
-                d.id
-              }" style="background-color:black;">
-              <i class="fas fa-expand-alt"></i>      </button>
-            </div>
-            <!--Event Name-->
-            <p class="title is-5 p-5">${d.data().event_name}</p>
-            <!--Event Description-->
-            <p>${d.data().event_description}</p>
-            <!--Event and Medium Type-->
-            <div class="field is-grouped">
-              <p class="Type">
-                <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_type}</span>
-              </p>
-            </div>
-            <!--Event Date-->
-            <p>
-              <span class="has-text-weight-semibold">Date:</span>
-              ${d.data().event_date}
-            </p>
-            <!--Accept or Approved Button-->
-            <button
-              class="button is-primary accept-button"
-              data-event-id="${eventId}"
-              data-event-name="${
-                d.data().event_name
-              }" // Add this line              style="
-                background-color: rgba(197, 35, 40, 255);
-                color: white;
-              "
-            >
-              ${buttonText1}
-            </button>
-            <!-- Decline Button -->
-            <button
-              class="button is-primary decline-button"
-              data-event-id="${eventId}"
-              data-event-name="${d.data().event_name}" // Add this line
-                        style="
-                background-color: rgba(197, 35, 40, 255);
-                color: white;
-              "
-            >
-            ${buttonText2}
-            </button>
-          </div>
-        </div>`;
-
+        const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
         if (index % 2 === 0) {
           htmlColumn1 += boxHtml;
         } else {
           htmlColumn2 += boxHtml;
         }
-
         index++;
       });
-      //append html variable to the document
-      document.querySelector("#column1_events").innerHTML += htmlColumn1;
-      document.querySelector("#column2_events").innerHTML += htmlColumn2;
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
 
-      // Attach event listeners to the buttons after they are added to the DOM
-      attachButtonListeners();
-
-      // Attach event listener for expand button on Events Administration page
-      document.querySelectorAll(".expand-button-ea").forEach((button) => {
-        button.addEventListener("click", function () {
-          const eventId = this.getAttribute("data-event-id");
-          showAdminEventDetailsModal(eventId);
-        });
-      });
+      // Add event listeners to the buttons after they are added to the DOM
+      attachButtonListeners2();
     });
+}
 
-  function showAdminEventDetailsModal(eventId) {
-    const event = db.collection("events").doc(eventId).get();
-    event
-      .then((doc) => {
-        if (doc.exists) {
-          const eventData = doc.data();
-          populateAdminEventModal(eventData);
-          toggleAdminModal("adminEventDetailsModal", true);
-        } else {
-          console.error("No such event!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting event:", error);
-      });
-  }
-
-  function populateAdminEventModal(eventData) {
-    document.getElementById("modalEventName-ea").textContent =
-      eventData.event_name;
-    document.getElementById("modalCompanyName-ea").textContent =
-      eventData.company_name;
-    document.getElementById("modalEventCapacity-ea").textContent =
-      eventData.event_capacity;
-    document.getElementById("modalEventOverview-ea").textContent =
-      eventData.event_overview;
-    document.getElementById("modalEventDescription-ea").textContent =
-      eventData.event_description;
-    document.getElementById("modalLocation-ea").textContent =
-      eventData.location;
-    document.getElementById("modalEventMedium-ea").textContent =
-      eventData.event_medium;
-    document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
-    document.getElementById("modalEventSnacks-ea").textContent =
-      eventData.snacks;
-    document.getElementById("modalEventDisposables-ea").textContent =
-      eventData.disposables;
-  }
-
-  function toggleAdminModal(modalId, show) {
-    const modal = document.getElementById(modalId);
-    if (show) {
-      modal.classList.add("is-active");
-    } else {
-      modal.classList.remove("is-active");
-    }
-    console.log(
-      "adminModal closeAdminModalButton",
-      adminModal,
-      closeAdminModalButton
-    );
-  }
-  const adminModal = document.getElementById("adminEventDetailsModal");
-  const closeAdminModalButton = document.querySelector(".modal-close-ea");
-
-  // Ensure this matches the class or ID of your close button
-  closeAdminModalButton.addEventListener("click", function () {
-    console.log("CLSOIGN BOSS");
-    toggleAdminModal("adminEventDetailsModal", false);
-  });
-
-  // Also set up the modal to close if the background is clicked
-  adminModal.addEventListener("click", function (event) {
-    if (event.target === adminModal) {
-      toggleAdminModal("adminEventDetailsModal", false);
-    }
-  });
+// Function to generate HTML for each event
+function generateEventBoxHtml2(eventDoc, eventId, buttonText1, buttonText2) {
+  return `<div class="box">
+            <div class="content">
+              <!--Company name and logo-->
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">${eventDoc.data().company_name}</p>
+                </div>
+              </div>
+              <!--Event Name-->
+              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+              <!--Event Description-->
+              <p>${eventDoc.data().event_description}</p>
+              <!--Event and Medium Type-->
+              <div class="field is-grouped">
+                <p class="Type">
+                  <span class="tag is-light">${eventDoc.data().event_medium}</span>
+                  <span class="tag is-light">${eventDoc.data().event_category}</span>
+                </p>
+              </div>
+              <!--Event Date-->
+              <p>
+                <span class="has-text-weight-semibold">Date:</span>
+                ${eventDoc.data().event_date}
+              </p>
+              <!--Accept or Approved Button-->
+              <button class="button is-primary accept-button" data-event-id="${eventId}" style="background-color: rgba(197, 35, 40, 255); color: white;">
+                ${buttonText1}
+              </button>
+              <!-- Decline Button -->
+              <button class="button is-primary decline-button" data-event-id="${eventId}" style="background-color: rgba(197, 35, 40, 255); color: white;">
+                ${buttonText2}
+              </button>
+            </div>
+          </div>`;
 }
 
 // Function to attach event listeners to Accept and Approved buttons
-function attachButtonListeners() {
-  document
-    .querySelectorAll(".accept-button, .decline-button")
-    .forEach((button) => {
-      button.addEventListener("click", function () {
-        const eventId = this.getAttribute("data-event-id");
-        const newStatus = this.classList.contains("accept-button")
-          ? "Approved"
-          : "Declined";
+function attachButtonListeners2() {
+  document.querySelectorAll(".accept-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
 
+      // If the button says "Accept", update the event status to "Approved" in Firestore
+      if (eventStatus === "Accept") {
         db.collection("events")
           .doc(eventId)
-          .get()
-          .then((doc) => {
-            if (!doc.exists) {
-              console.error("Event does not exist!");
-              return;
-            }
-
-            const userId = doc.data().userId; // Retrieve userId from event
-            const eventName = doc.data().event_name;
-
-            // Update event status in the database
-            db.collection("events")
-              .doc(eventId)
-              .update({ event_status: newStatus })
-              .then(() => {
-                console.log(`Event status updated to ${newStatus}`);
-                updateNotificationsArray(
-                  userId,
-                  `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
-                );
-              })
-              .catch((error) => {
-                console.error("Failed to update event status: ", error);
-              });
+          .update({ event_status: "Approved" })
+          .then(() => {
+            console.log("Event status updated to Approved");
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = "Approved"; // Change the button text to "Approved"
+          })
+          .catch((error) => {
+            console.error("Error updating event status:", error);
           });
+      }
+    });
+  });
+  document.querySelectorAll(".decline-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+
+      // If the button says "Decline", update the event status to "Approved" in Firestore
+      if (eventStatus === "Decline") {
+        db.collection("events")
+          .doc(eventId)
+          .update({ event_status: "Declined" })
+          .then(() => {
+            console.log("Event status updated to Declined");
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = "Declined"; // Change the button text to "Declined"
+          })
+          .catch((error) => {
+            console.error("Error updating event status:", error);
+          });
+      }
+    });
+  });
+}
+
+// Function to apply filters and show events accordingly
+function applyFilters2() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
+
+  // Get selected categories
+  const selectedCategories2 = [];
+  document.querySelectorAll('.category2-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedCategories2.push(checkbox.value);
+    }
+  });
+
+  const acceptEvents = document.getElementById('acceptEvents').checked;
+  const declineEvents = document.getElementById('declineEvents').checked;
+
+  // Fetch events based on the selected company, categories, and checkboxes
+  db.collection("events")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const eventId = d.id; // Get the event ID
+
+        // Determine the text to display on the button based on the event status
+        let buttonText1 = "";
+        let buttonText2 = "";
+        if (d.data().event_status === "Approved") {
+          buttonText1 = "Approved";
+        } else {
+          buttonText1 = "Accept";
+        }
+        if (d.data().event_status === "Declined") {
+          buttonText2 = "Declined";
+        } else {
+          buttonText2 = "Decline";
+        }
+
+        // Check if the event matches the selected company, categories, and checkboxes
+        if (
+          (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
+          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category)) &&
+          (acceptEvents && d.data().event_status === "Approved") || 
+          (declineEvents && d.data().event_status === "Declined") || (!acceptEvents && !declineEvents)
+        ) {
+          const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
+        }
       });
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
+
+      // Add event listeners to the buttons after they are added to the DOM
+      attachButtonListeners2();
     });
 }
 
-function updateNotificationsArray(userId, message) {
-  const userRef = db.collection("users").doc(userId);
-
-  db.runTransaction((transaction) => {
-    return transaction.get(userRef).then((userDoc) => {
-      if (!userDoc.exists) {
-        throw new Error("User does not exist!");
-      }
-
-      let notifications = userDoc.data().notifications || [];
-      notifications.push(message); // Append new notification message
-
-      transaction.update(userRef, { notifications: notifications });
-    });
-  })
-    .then(() => {
-      console.log("Notification updated for user.");
-    })
-    .catch((error) => {
-      console.error("Failed to update notification for user: ", error);
-    });
-}
-
-function updateNotificationsArray(userId, message) {
-  const userRef = db.collection("users").doc(userId);
-  db.runTransaction((transaction) => {
-    return transaction.get(userRef).then((userDoc) => {
-      if (!userDoc.exists) {
-        throw "User does not exist!";
-      }
-
-      // Get the current array of notifications (or initialize if it doesn't exist)
-      let notifications = userDoc.data().notifications || [];
-      notifications.push(message);
-
-      // Update the document
-      transaction.update(userRef, { notifications: notifications });
-    });
-  })
-    .then(() => {
-      console.log("Notification added to user.");
-      showNotification(message); // This could also show a notification on the admin's side
-    })
-    .catch((error) => {
-      console.error("Transaction failed: ", error);
-      showNotification("Failed to update notifications.");
-    });
-}
-
+// Call the function to show events immediately when the page is loaded
 show_register_events();
+
+// Add event listener to the "Apply" button to trigger the applyFilters function
+document.getElementById("submitFilter2").addEventListener("click", applyFilters2);
+
+
 
 // calendar!!!
 // calendar functions
