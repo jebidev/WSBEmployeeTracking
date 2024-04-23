@@ -432,7 +432,7 @@ call_events(today.getFullYear(), today.getMonth());
 
 // Fetch company options from the database
 db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect2').querySelector('select');
+  const companySelect = document.getElementById('companySelect').querySelector('select');
   const uniqueCompanyNames = new Set(); // Set to store unique company names
 
   snapshot.forEach(doc => {
@@ -450,6 +450,7 @@ db.collection('events').get().then(snapshot => {
   console.error('Error fetching companies: ', error);
 });
 
+// SHOW EVENTS HOME PAGE
 function show_events_home() {
   // Fetch all events when the page loads
   db.collection("events")
@@ -612,7 +613,6 @@ function applyFilters() {
 
 show_events_home();
 
-
 document
   .getElementById("notificationBell")
   .addEventListener("click", function (event) {
@@ -656,7 +656,7 @@ document.addEventListener("click", function (event) {
 
 // show values from db in dropdown
 db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect').querySelector('select');
+  const companySelect = document.getElementById('companySelect2').querySelector('select');
   const uniqueCompanyNames = new Set(); // Set to store unique company names
 
   snapshot.forEach(doc => {
@@ -673,8 +673,6 @@ db.collection('events').get().then(snapshot => {
 }).catch(error => {
   console.error('Error fetching companies: ', error);
 });
-
-
 
 //Events Administration page
 // Function to fetch and display events
@@ -855,8 +853,9 @@ function applyFilters2() {
         if (
           (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
           (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category)) &&
-          (acceptEvents && d.data().event_status === "Approved") || 
-          (declineEvents && d.data().event_status === "Declined") || (!acceptEvents && !declineEvents)
+          ((acceptEvents && d.data().event_status === "Approved") || 
+          (declineEvents && d.data().event_status === "Declined") || 
+          (!acceptEvents && !declineEvents))
         ) {
           const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
           if (index % 2 === 0) {
