@@ -394,10 +394,31 @@ function show_events_home() {
     });
 
   // Add event listener to the submit button
-  document.getElementById("submitFilter").addEventListener("click", applyFilters);
+  document
+    .getElementById("submitFilter")
+    .addEventListener("click", applyFilters);
 }
 
 function generateEventBoxHtml(eventDoc) {
+  const currentUser = firebase.auth().currentUser;
+  const currentUserId = currentUser.uid;
+  const eventId = eventDoc.id; // Ensure this is the correct document ID from Firestore
+
+  // Check if the current user is registered for the event
+  const attendees = eventDoc.data().attendees || [];
+  const isRegistered = attendees.includes(currentUserId);
+
+  // Check if the current user has bookmarked the event
+  const bookmarkUsers = eventDoc.data().bookmark_users || [];
+  const isBookmarked = bookmarkUsers.includes(currentUserId);
+
+  // Set the button colors based on user status
+  const registerButtonColor = isRegistered ? "red" : "rgb(23, 66, 135)";
+  const registerButtonTextColor = isRegistered ? "white" : "white";
+
+  const bookmarkButtonColor = isBookmarked ? "black" : "black";
+  const bookmarkButtonIconColor = isBookmarked ? "icon-red" : "icon-white";
+
   // Generate HTML for each event
   return `<div class="box">
             <div class="content">
@@ -419,8 +440,12 @@ function generateEventBoxHtml(eventDoc) {
               <!--Event and Medium Type-->
               <div class="field is-grouped">
                 <p class="Type">
-                  <span class="tag is-light">${eventDoc.data().event_medium}</span>
-                  <span class="tag is-light">${eventDoc.data().event_category}</span>
+                  <span class="tag is-light">${
+                    eventDoc.data().event_medium
+                  }</span>
+                  <span class="tag is-light">${
+                    eventDoc.data().event_category
+                  }</span>
                 </p>
               </div>
               <!--Event Date-->
@@ -429,14 +454,62 @@ function generateEventBoxHtml(eventDoc) {
                 ${eventDoc.data().event_date}
               </p>
               <!--Save Button-->
-              <button class="button is-primary save-event-button" style="background-color: black">
+              <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
                 <span class="icon is-small">
-                  <i class="fas fa-bookmark icon-white"></i>
-                  <!-- Initial class for white color -->
+                  <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
                 </span>
+              </button>
+              <!--Register Button-->
+              <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
+                ${isRegistered ? "Registered" : "Register"}
               </button>
             </div>
           </div>`;
+}
+
+function attachButtonListeners2() {
+  document.querySelectorAll(".accept-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+
+      // If the button says "Accept", update the event status to "Approved" in Firestore
+      if (eventStatus === "Accept") {
+        db.collection("events")
+          .doc(eventId)
+          .update({ event_status: "Approved" })
+          .then(() => {
+            console.log("Event status updated to Approved");
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = "Approved"; // Change the button text to "Approved"
+          })
+          .catch((error) => {
+            console.error("Error updating event status:", error);
+          });
+      }
+    });
+  });
+  document.querySelectorAll(".decline-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id"); // Get the event ID
+      const eventStatus = button.textContent.trim(); // Get the current text content of the button
+
+      // If the button says "Decline", update the event status to "Approved" in Firestore
+      if (eventStatus === "Decline") {
+        db.collection("events")
+          .doc(eventId)
+          .update({ event_status: "Declined" })
+          .then(() => {
+            console.log("Event status updated to Declined");
+            // You can add further logic here, like updating UI, etc.
+            button.textContent = "Declined"; // Change the button text to "Declined"
+          })
+          .catch((error) => {
+            console.error("Error updating event status:", error);
+          });
+      }
+    });
+  });
 }
 
 function attachSaveEventListeners() {
@@ -461,31 +534,114 @@ function attachSaveEventListeners() {
       icon.addEventListener("animationend", () => {
         icon.classList.remove("jump");
       });
+
+      const currentUser = firebase.auth().currentUser;
+      if (!currentUser) {
+        alert("You must be logged in to bookmark an event.");
+        return;
+      }
+      const currentUserId = currentUser.uid;
+      const eventId = button.getAttribute("data-event-id"); // Ensure your button elements have a data-event-id attribute
+
+      console.log("currentUserId eventid ", currentUserId, eventId);
+
+      // Reference to the event document
+      const eventRef = db.collection("events").doc(eventId);
+
+      db.runTransaction((transaction) => {
+        return transaction.get(eventRef).then((eventDoc) => {
+          if (!eventDoc.exists) {
+            throw "Event does not exist!";
+          }
+
+          let bookmarkUsers = eventDoc.data().bookmark_users || [];
+          if (bookmarkUsers.includes(currentUserId)) {
+            // Remove user from bookmark list
+            bookmarkUsers = bookmarkUsers.filter((id) => id !== currentUserId);
+            transaction.update(eventRef, { bookmark_users: bookmarkUsers });
+          } else {
+            // Add user to bookmark list
+            bookmarkUsers.push(currentUserId);
+            console.log("PUSHED USRE TO BOOKMAKR USERS");
+            transaction.update(eventRef, { bookmark_users: bookmarkUsers });
+          }
+        });
+      }).catch((error) => {
+        console.error("Transaction failed: ", error);
+        alert("Failed to bookmark/unbookmark. Please try again.");
+      });
+    });
+  });
+
+  document.querySelectorAll(".register-button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const currentUser = firebase.auth().currentUser;
+      if (!currentUser) {
+        alert("You must be logged in to register for an event.");
+        return;
+      }
+      const currentUserId = currentUser.uid;
+      const eventId = this.getAttribute("data-event-id"); // Ensure your event elements have a data-event-id attribute
+
+      console.log("currentUserId eventid ", currentUserId, eventId);
+
+      // Reference to the event document
+      const eventRef = db.collection("events").doc(eventId);
+
+      db.runTransaction((transaction) => {
+        return transaction.get(eventRef).then((eventDoc) => {
+          if (!eventDoc.exists) {
+            throw "Event does not exist!";
+          }
+
+          let attendees = eventDoc.data().attendees || [];
+          if (attendees.includes(currentUserId)) {
+            // Unregister the user
+            attendees = attendees.filter((id) => id !== currentUserId);
+            transaction.update(eventRef, { attendees });
+            this.textContent = "Register"; // Change button text back to "Register"
+            this.style.backgroundColor = "rgb(23, 66, 135)"; // Change button color back to blue
+            this.style.color = "white"; // Ensure text color remains white
+          } else {
+            // Register the user
+            attendees.push(currentUserId);
+            transaction.update(eventRef, { attendees });
+            this.textContent = "Registered"; // Change button text to "Registered"
+            this.style.backgroundColor = "red"; // Change button color to red
+            this.style.color = "white"; // Ensure text color is white for better visibility
+          }
+        });
+      }).catch((error) => {
+        console.error("Transaction failed: ", error);
+        alert("Failed to register/unregister. Please try again.");
+      });
     });
   });
 }
 
 function applyFilters() {
   // Fetch the selected company name from the dropdown
-  const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
+  const selectedCompany = document
+    .getElementById("companySelect")
+    .querySelector("select").value;
 
   // Get selected categories
   const selectedCategories = [];
-  document.querySelectorAll('.category-checkbox').forEach((checkbox) => {
+  document.querySelectorAll(".category-checkbox").forEach((checkbox) => {
     if (checkbox.checked) {
       selectedCategories.push(checkbox.value);
     }
   });
 
   const selectedMedium = [];
-  document.querySelectorAll('.medium-checkbox').forEach((checkbox) => {
+  document.querySelectorAll(".medium-checkbox").forEach((checkbox) => {
     if (checkbox.checked) {
       selectedMedium.push(checkbox.value);
     }
   });
 
   // Fetch the search input value
-  const searchInputValue = document.querySelector('.input').value.toLowerCase();
+  const searchInputValue = document.querySelector(".input").value.toLowerCase();
 
   // Fetch events based on the selected company, categories, and search input
   db.collection("events")
@@ -860,9 +1016,9 @@ function updateNotificationsArray(userId, message) {
 show_register_events();
 
 // Add event listener to the "Apply" button to trigger the applyFilters function
-document.getElementById("submitFilter2").addEventListener("click", applyFilters2);
-
-
+document
+  .getElementById("submitFilter2")
+  .addEventListener("click", applyFilters2);
 
 // calendar!!!
 // calendar functions

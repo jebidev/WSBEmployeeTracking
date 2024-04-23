@@ -271,10 +271,11 @@
       }
       .seating-choice img {
         width: 250px; /* Fixed width for all images */
-        height: auto; /* Fixed height for all images */
+        max-height: 100px; /* Fixed height for all images */
         object-fit: contain; /* Keeps the aspect ratio of the image */
         margin-bottom: 10px; /* Space between the image and the text below it */
-        margin-right: 50px;
+        margin-right: auto;
+        margin-left: auto;
       }
 
       /* Adjust the width and height as necessary to fit your design */
@@ -295,7 +296,6 @@
         height: auto;
         display: block;
         margin-bottom: 10px;
-        transform: translateX(50px);
       }
 
       .seating-choice.selected {
@@ -942,25 +942,45 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="hiringCheckbox" value="Hiring"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="hiringCheckbox"
+                            value="Hiring"
+                          />
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="officeHourCheckbox" value="Office Hour"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="officeHourCheckbox"
+                            value="Office Hour"
+                          />
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="networkingCheckbox" value="Networking"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="networkingCheckbox"
+                            value="Networking"
+                          />
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="infoSessionsCheckbox"
+                            value="Info Sessions"
+                          />
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -976,19 +996,34 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="virtualCheckbox" value="Virtual"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="virtualCheckbox"
+                            value="Virtual"
+                          />
                           <span class="has-text-white">Virtual</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="inpersonCheckbox" value="In-Person"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="inpersonCheckbox"
+                            value="In-Person"
+                          />
                           <span class="has-text-white">In-Person</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="hybridCheckbox" value="Hybrid"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="hybridCheckbox"
+                            value="Hybrid"
+                          />
                           <span class="has-text-white">Hybrid</span>
                         </label>
                       </div>
@@ -1007,7 +1042,11 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter"
+                    >
                       Apply
                     </button>
                   </div>
@@ -1538,23 +1577,35 @@
                 <!-- Checkbox for accept events -->
                 <div class="field">
                   <input
+                   
                     type="checkbox"
+                   
                     id="acceptEvents"
+                   
                     class="is-checkradio"
+                  
                   />
                   <label for="AcceptedEvents" class="has-text-white"
+                    
                     >Events Accepted</label
+                  
                   >
                 </div>
 
                 <div class="field">
                   <input
+                   
                     type="checkbox"
+                   
                     id="DeclineEvents"
+                   
                     class="is-checkradio"
+                  
                   />
                   <label for="DeclineEvents" class="has-text-white"
+                    
                     >Events Declined</label
+                  
                   >
                 </div>
 
@@ -1577,25 +1628,45 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="hiringCheckbox" value="Hiring"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="hiringCheckbox"
+                            value="Hiring"
+                          />
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="officeHourCheckbox" value="Office Hour"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="officeHourCheckbox"
+                            value="Office Hour"
+                          />
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="networkingCheckbox" value="Networking"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="networkingCheckbox"
+                            value="Networking"
+                          />
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="infoSessionsCheckbox"
+                            value="Info Sessions"
+                          />
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -1607,7 +1678,11 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter2">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter2"
+                    >
                       Apply
                     </button>
                   </div>
@@ -1673,8 +1748,8 @@
           </div>
         </div>
       </section>
-<!-- Employer Engagement -->
-<section class="section background-image-engage" id="employerEngagementOpener">
+      <!-- Employer Engagement -->
+      <!-- <section class="section background-image-engage" id="employerEngagementOpener">
   <div class="text-container pl-6 p-6 mt-6 has-text-centered">
     <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
   </div>
@@ -1990,7 +2065,147 @@
 
     <!-- Footer -->
     <footer>
-      <!-- Your footer content -->
+      <footer
+        class="footer"
+        style="
+          background: rgb(26, 26, 26);
+          color: white;
+          font-weight: bold;
+          border: 2px;
+          padding: 35px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <a
+          href="https://business.wisc.edu/?gad_source=1&gclid=CjwKCAjwz42xBhB9EiwA48pT74bsoLucsXiqe8_nUrb-wNl2vCmGvUW1Vxlzja1nulCvehqJxOVESxoCq20QAvD_BwE"
+          style="margin-right: 50px"
+        >
+          <img
+            src="Image/big_logo.png"
+            alt="Wisconsin School of Business Logo"
+            style="height: 120px"
+          />
+        </a>
+        <div style="border-right: 2px solid white; padding-right: 20px">
+          <p style="font-size: 2em">Employer Tracking</p>
+          <p>Grainger Hall</p>
+          <a
+            href="https://www.google.com/maps/place/Wisconsin+School+of+Business/@43.0727126,-89.4042052,17z/data=!3m2!4b1!5s0x8807accba31d6d3d:0x858a349b2e7b4072!4m6!3m5!1s0x8807accbb03adcad:0xdbae6b358f4b37a9!8m2!3d43.0727087!4d-89.4016356!16s%2Fm%2F0407bc5?entry=ttu"
+            target="_blank"
+            style="color: white; text-decoration: none"
+          >
+            <p>975 University Avenue</p>
+            <p>Madison, WI 53706</p>
+          </a>
+          <p>
+            <a
+              href="mailto:employertracking@wis.edu"
+              style="color: white; text-decoration: none"
+              >Email: employertracking@wis.edu</a
+            >
+          </p>
+          <p>
+            <a
+              href="tel:+16082621550"
+              style="color: white; text-decoration: none"
+              >Contact Number: +1 (608)-262-1550</a
+            >
+          </p>
+        </div>
+        <div style="flex-grow: 1; padding-left: 20px">
+          <a
+            href="https://business.wisc.edu/contact/"
+            style="
+              color: white;
+              display: block;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            "
+          >
+            Contact Us
+          </a>
+          <a
+            href="https://map.wisc.edu"
+            style="
+              color: white;
+              display: block;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            "
+          >
+            Campus Map
+          </a>
+          <a
+            href="https://secfac.wisc.edu/academic-calendar/"
+            style="
+              color: white;
+              display: block;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            "
+          >
+            Academic Calendar
+          </a>
+          <a
+            href="https://business.wisc.edu/about/"
+            style="
+              color: white;
+              display: block;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            "
+          >
+            About
+          </a>
+          <a
+            href="https://business.wisc.edu/fac-staff-resources/"
+            style="
+              color: white;
+              display: block;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            "
+          >
+            Resources
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://twitter.com/UWBusiness"
+            target="_blank"
+            style="color: white; margin-right: 20px"
+          >
+            <i class="fab fa-twitter" style="font-size: 2.5em"></i>
+            <!-- Font Awesome Twitter icon -->
+          </a>
+          <a
+            href="https://www.instagram.com/wisconsinschoolofbusiness"
+            target="_blank"
+            style="color: white; margin-right: 20px"
+          >
+            <i class="fab fa-instagram" style="font-size: 2.5em"></i>
+            <!-- Font Awesome Instagram icon -->
+          </a>
+          <a
+            href="https://www.linkedin.com/school/wisconsin-school-of-business/"
+            target="_blank"
+            style="color: white; margin-right: 20px"
+          >
+            <i class="fab fa-linkedin" style="font-size: 2.5em"></i>
+            <!-- Font Awesome LinkedIn icon -->
+          </a>
+          <a
+            href="https://www.facebook.com/wisconsinschoolofbusiness"
+            target="_blank"
+            style="color: white"
+          >
+            <i class="fab fa-facebook" style="font-size: 2.5em"></i>
+            <!-- Font Awesome Facebook icon -->
+          </a>
+        </div>
+      </footer>
     </footer>
 
     <!-- JavaScript -->
@@ -2115,6 +2330,7 @@
       document
         .getElementById("calendarNavItem")
         .addEventListener("click", function (event) {
+          console.log("HIIII cali");
           event.preventDefault();
           document.getElementById("openingSection").style.display = "none";
           document.getElementById("mainContent").style.display = "none";
@@ -2171,4 +2387,3 @@
     <script src="userhandling.js"></script>
   </body>
 </html>
-<div id="message_bar" class="has-text-centered messagebarbg">f</div>
