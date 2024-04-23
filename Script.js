@@ -329,14 +329,19 @@ function submitSignInForm() {
 
 // Fetch company options from the database
 db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect').querySelector('select');
+  const companySelect = document.getElementById('companySelect2').querySelector('select');
+  const uniqueCompanyNames = new Set(); // Set to store unique company names
 
   snapshot.forEach(doc => {
     const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
+    // Check if the company name is not already added to the set
+    if (!uniqueCompanyNames.has(companyName)) {
+      const option = document.createElement('option');
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+      uniqueCompanyNames.add(companyName); // Add the company name to the set
+    }
   });
 }).catch(error => {
   console.error('Error fetching companies: ', error);
@@ -463,7 +468,10 @@ function applyFilters() {
   // Fetch the search input value
   const searchInputValue = document.querySelector('.input').value.toLowerCase();
 
-  // Fetch events based on the selected company, categories, and search input
+  // Fetch the selected date
+  const selectedDate = document.querySelector('.input[type="date"]').value;
+
+  // Fetch events based on the selected company, categories, search input, and date
   db.collection("events")
     .where("event_status", "==", "Approved")
     .get()
@@ -478,7 +486,8 @@ function applyFilters() {
           (selectedCompany === '' || d.data().company_name === selectedCompany) &&
           (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
           (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
-          (d.data().event_name.toLowerCase().includes(searchInputValue))
+          (d.data().event_name.toLowerCase().includes(searchInputValue)) &&
+          (selectedDate === '' || d.data().event_date === selectedDate)
         ) {
           const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
           if (index % 2 === 0) {
@@ -498,8 +507,8 @@ function applyFilters() {
     });
 }
 
-
 show_events_home();
+
 
 document
   .getElementById("notificationBell")
@@ -545,17 +554,23 @@ document.addEventListener("click", function (event) {
 // show values from db in dropdown
 db.collection('events').get().then(snapshot => {
   const companySelect = document.getElementById('companySelect2').querySelector('select');
+  const uniqueCompanyNames = new Set(); // Set to store unique company names
 
   snapshot.forEach(doc => {
     const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
+    // Check if the company name is not already added to the set
+    if (!uniqueCompanyNames.has(companyName)) {
+      const option = document.createElement('option');
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+      uniqueCompanyNames.add(companyName); // Add the company name to the set
+    }
   });
 }).catch(error => {
   console.error('Error fetching companies: ', error);
 });
+
 
 
 //Events Administration page
@@ -705,7 +720,10 @@ function applyFilters2() {
     }
   });
 
-  // Fetch events based on the selected company and categories
+  const acceptEvents = document.getElementById('acceptEvents').checked;
+  const declineEvents = document.getElementById('declineEvents').checked;
+
+  // Fetch events based on the selected company, categories, and checkboxes
   db.collection("events")
     .get()
     .then((res) => {
@@ -730,10 +748,12 @@ function applyFilters2() {
           buttonText2 = "Decline";
         }
 
-        // Check if the event matches the selected company and categories
+        // Check if the event matches the selected company, categories, and checkboxes
         if (
           (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
-          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category))
+          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category)) &&
+          (acceptEvents && d.data().event_status === "Approved") || 
+          (declineEvents && d.data().event_status === "Declined") || (!acceptEvents && !declineEvents)
         ) {
           const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
           if (index % 2 === 0) {
