@@ -460,7 +460,10 @@ function applyFilters() {
     }
   });
 
-  // Fetch events based on the selected company and categories
+  // Fetch the search input value
+  const searchInputValue = document.querySelector('.input').value.toLowerCase();
+
+  // Fetch events based on the selected company, categories, and search input
   db.collection("events")
     .where("event_status", "==", "Approved")
     .get()
@@ -470,10 +473,12 @@ function applyFilters() {
       let htmlColumn2 = ``;
       let index = 0;
       data.forEach((d) => {
+        // Check if the event matches all the selected filters and search input
         if (
           (selectedCompany === '' || d.data().company_name === selectedCompany) &&
           (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
-          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium))
+          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
+          (d.data().event_name.toLowerCase().includes(searchInputValue))
         ) {
           const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
           if (index % 2 === 0) {
@@ -492,6 +497,7 @@ function applyFilters() {
       attachSaveEventListeners();
     });
 }
+
 
 show_events_home();
 
@@ -551,22 +557,12 @@ db.collection('events').get().then(snapshot => {
   console.error('Error fetching companies: ', error);
 });
 
+
+//Events Administration page
 // Function to fetch and display events
 function show_register_events() {
-  // Fetch the selected company name from the dropdown
-  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
-
-  // Get selected categories
-  const selectedCategories2 = [];
-  document.querySelectorAll('.category2-checkbox').forEach((checkbox) => {
-    if (checkbox.checked) {
-      selectedCategories2.push(checkbox.value);
-    }
-  });
-
-  // Fetch events based on the selected company and categories
+  // Fetch all events when the page loads
   db.collection("events")
-    .where("event_status", "==", "Approved")
     .get()
     .then((res) => {
       let data = res.docs;
@@ -590,31 +586,25 @@ function show_register_events() {
           buttonText2 = "Decline";
         }
 
-        // Check if the event matches the selected company and categories
-        if (
-          (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
-          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category))
-        ) {
-          const boxHtml = generateEventBoxHtml(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
-          if (index % 2 === 0) {
-            htmlColumn1 += boxHtml;
-          } else {
-            htmlColumn2 += boxHtml;
-          }
-          index++;
+        const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
+        if (index % 2 === 0) {
+          htmlColumn1 += boxHtml;
+        } else {
+          htmlColumn2 += boxHtml;
         }
+        index++;
       });
       // Append HTML to the document
       document.querySelector("#column1_events").innerHTML = htmlColumn1;
       document.querySelector("#column2_events").innerHTML = htmlColumn2;
 
       // Add event listeners to the buttons after they are added to the DOM
-      attachButtonListeners();
+      attachButtonListeners2();
     });
 }
 
 // Function to generate HTML for each event
-function generateEventBoxHtml(eventDoc, eventId, buttonText1, buttonText2) {
+function generateEventBoxHtml2(eventDoc, eventId, buttonText1, buttonText2) {
   return `<div class="box">
             <div class="content">
               <!--Company name and logo-->
@@ -657,7 +647,7 @@ function generateEventBoxHtml(eventDoc, eventId, buttonText1, buttonText2) {
 }
 
 // Function to attach event listeners to Accept and Approved buttons
-function attachButtonListeners() {
+function attachButtonListeners2() {
   document.querySelectorAll(".accept-button").forEach((button) => {
     button.addEventListener("click", () => {
       const eventId = button.getAttribute("data-event-id"); // Get the event ID
@@ -702,8 +692,72 @@ function attachButtonListeners() {
   });
 }
 
+// Function to apply filters and show events accordingly
+function applyFilters2() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
+
+  // Get selected categories
+  const selectedCategories2 = [];
+  document.querySelectorAll('.category2-checkbox').forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedCategories2.push(checkbox.value);
+    }
+  });
+
+  // Fetch events based on the selected company and categories
+  db.collection("events")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const eventId = d.id; // Get the event ID
+
+        // Determine the text to display on the button based on the event status
+        let buttonText1 = "";
+        let buttonText2 = "";
+        if (d.data().event_status === "Approved") {
+          buttonText1 = "Approved";
+        } else {
+          buttonText1 = "Accept";
+        }
+        if (d.data().event_status === "Declined") {
+          buttonText2 = "Declined";
+        } else {
+          buttonText2 = "Decline";
+        }
+
+        // Check if the event matches the selected company and categories
+        if (
+          (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
+          (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category))
+        ) {
+          const boxHtml = generateEventBoxHtml2(d, eventId, buttonText1, buttonText2); // Generate HTML for each event
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
+        }
+      });
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
+
+      // Add event listeners to the buttons after they are added to the DOM
+      attachButtonListeners2();
+    });
+}
+
 // Call the function to show events immediately when the page is loaded
 show_register_events();
+
+// Add event listener to the "Apply" button to trigger the applyFilters function
+document.getElementById("submitFilter2").addEventListener("click", applyFilters2);
 
 
 
