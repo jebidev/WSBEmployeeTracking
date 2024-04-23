@@ -352,19 +352,24 @@ function submitSignInForm() {
 }
 
 // Fetch company options from the database
-db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect').querySelector('select');
+db.collection("events")
+  .get()
+  .then((snapshot) => {
+    const companySelect = document
+      .getElementById("companySelect")
+      .querySelector("select");
 
-  snapshot.forEach(doc => {
-    const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
+    snapshot.forEach((doc) => {
+      const companyName = doc.data().company_name;
+      const option = document.createElement("option");
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching companies: ", error);
   });
-}).catch(error => {
-  console.error('Error fetching companies: ', error);
-});
 
 function show_events_home() {
   // Fetch all events when the page loads
@@ -419,52 +424,74 @@ function generateEventBoxHtml(eventDoc) {
   const bookmarkButtonColor = isBookmarked ? "black" : "black";
   const bookmarkButtonIconColor = isBookmarked ? "icon-red" : "icon-white";
 
-  // Generate HTML for each event
-  return `<div class="box">
-            <div class="content">
-              <!--Company name and logo-->
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">${eventDoc.data().company_name}</p>
-                </div>
-              </div>
-              <!--Event Name-->
-              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
-              <!--Event Description-->
-              <p>${eventDoc.data().event_description}</p>
-              <!--Event and Medium Type-->
-              <div class="field is-grouped">
-                <p class="Type">
-                  <span class="tag is-light">${
-                    eventDoc.data().event_medium
-                  }</span>
-                  <span class="tag is-light">${
-                    eventDoc.data().event_category
-                  }</span>
-                </p>
-              </div>
-              <!--Event Date-->
-              <p>
-                <span class="has-text-weight-semibold">Date:</span>
-                ${eventDoc.data().event_date}
-              </p>
-              <!--Save Button-->
-              <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
-                <span class="icon is-small">
-                  <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
-                </span>
-              </button>
-              <!--Register Button-->
-              <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
-                ${isRegistered ? "Registered" : "Register"}
-              </button>
-            </div>
-          </div>`;
+  // Return the initial HTML with a placeholder for the image
+  let html = `<div class="box">
+  <div class="content">
+    <!--Company name and logo-->
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-48x48 figure-img-circle">
+          <img id="img-${eventId}" src="" alt="Company Logo" />
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4">${eventDoc.data().company_name}</p>
+      </div>
+    </div>
+    <!--Event Name-->
+    <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+    <!--Event Description-->
+    <p>${eventDoc.data().event_description}</p>
+    <!--Event and Medium Type-->
+    <div class="field is-grouped">
+      <p class="Type">
+        <span class="tag is-light">${eventDoc.data().event_medium}</span>
+        <span class="tag is-light">${eventDoc.data().event_category}</span>
+      </p>
+    </div><!--Event Date-->
+    <p>
+      <span class="has-text-weight-semibold">Date:</span>
+      ${eventDoc.data().event_date}
+    </p>
+    <!--Save Button-->
+    <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
+      <span class="icon is-small">
+        <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
+      </span>
+    </button> <!--Register Button-->
+    <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
+      ${isRegistered ? "Registered" : "Register"}
+    </button>
+  </div>
+</div>`;
+
+  // Fetch the company logo URL asynchronously and update the image source
+  const eventUserId = eventDoc.data().userId;
+  db.collection("users")
+    .doc(eventUserId)
+    .get()
+    .then((userDoc) => {
+      if (userDoc.exists) {
+        const companyLogoUrl = userDoc.data().companyLogoUrl;
+        console.log("userDoc.data().companyLogoUrl", companyLogoUrl);
+        const imgElement = document.querySelector(`#img-${eventId}`);
+        console.log("imgelement", imgElement);
+        if (imgElement) {
+          imgElement.src = companyLogoUrl;
+          console.log(
+            "if imgeleemnt userDoc.data().companyLogoUrl",
+            companyLogoUrl
+          );
+        }
+      } else {
+        console.error("User document does not exist");
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to fetch user data:", error);
+    });
+
+  return html;
 }
 
 function attachButtonListeners2() {
@@ -655,10 +682,13 @@ function applyFilters() {
       data.forEach((d) => {
         // Check if the event matches all the selected filters and search input
         if (
-          (selectedCompany === '' || d.data().company_name === selectedCompany) &&
-          (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
-          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
-          (d.data().event_name.toLowerCase().includes(searchInputValue))
+          (selectedCompany === "" ||
+            d.data().company_name === selectedCompany) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(d.data().event_category)) &&
+          (selectedMedium.length === 0 ||
+            selectedMedium.includes(d.data().event_medium)) &&
+          d.data().event_name.toLowerCase().includes(searchInputValue)
         ) {
           const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
           if (index % 2 === 0) {
@@ -677,7 +707,6 @@ function applyFilters() {
       attachSaveEventListeners();
     });
 }
-
 
 show_events_home();
 
@@ -723,20 +752,24 @@ document.addEventListener("click", function (event) {
 });
 
 // show values from db in dropdown
-db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect2').querySelector('select');
+db.collection("events")
+  .get()
+  .then((snapshot) => {
+    const companySelect = document
+      .getElementById("companySelect2")
+      .querySelector("select");
 
-  snapshot.forEach(doc => {
-    const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
+    snapshot.forEach((doc) => {
+      const companyName = doc.data().company_name;
+      const option = document.createElement("option");
+      option.value = companyName;
+      option.textContent = companyName;
+      companySelect.appendChild(option);
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching companies: ", error);
   });
-}).catch(error => {
-  console.error('Error fetching companies: ', error);
-});
-
 
 //Events Administration page
 // Function to fetch and display events

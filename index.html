@@ -364,6 +364,22 @@
         align-items: center; /* Center-align the content */
       }
 
+      .figure-img-circle {
+        display: block;
+        width: 100px; /* Set the width as needed */
+        height: 100px; /* Set the height to be the same as the width for a perfect circle */
+        border-radius: 50%; /* This creates the circle shape */
+        overflow: hidden; /* Ensures no part of the image spills outside the border */
+        border: 2px solid #fff; /* Optional: adds a white border around the image */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+      }
+
+      .figure-img-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the area without distorting ratio */
+      }
+
       .modal {
         display: none;
         position: fixed;
