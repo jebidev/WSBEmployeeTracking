@@ -271,10 +271,11 @@
       }
       .seating-choice img {
         width: 250px; /* Fixed width for all images */
-        height: auto; /* Fixed height for all images */
+        max-height: 100px; /* Fixed height for all images */
         object-fit: contain; /* Keeps the aspect ratio of the image */
         margin-bottom: 10px; /* Space between the image and the text below it */
-        margin-right: 50px;
+        margin-right: auto;
+        margin-left: auto;
       }
 
       /* Adjust the width and height as necessary to fit your design */
@@ -295,7 +296,6 @@
         height: auto;
         display: block;
         margin-bottom: 10px;
-        transform: translateX(50px);
       }
 
       .seating-choice.selected {
@@ -942,25 +942,45 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="hiringCheckbox" value="Hiring"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="hiringCheckbox"
+                            value="Hiring"
+                          />
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="officeHourCheckbox" value="Office Hour"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="officeHourCheckbox"
+                            value="Office Hour"
+                          />
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="networkingCheckbox" value="Networking"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="networkingCheckbox"
+                            value="Networking"
+                          />
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="infoSessionsCheckbox"
+                            value="Info Sessions"
+                          />
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -976,19 +996,34 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="virtualCheckbox" value="Virtual"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="virtualCheckbox"
+                            value="Virtual"
+                          />
                           <span class="has-text-white">Virtual</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="inpersonCheckbox" value="In-Person"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="inpersonCheckbox"
+                            value="In-Person"
+                          />
                           <span class="has-text-white">In-Person</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox" class="medium-checkbox" id="hybridCheckbox" value="Hybrid"/>
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="hybridCheckbox"
+                            value="Hybrid"
+                          />
                           <span class="has-text-white">Hybrid</span>
                         </label>
                       </div>
@@ -1007,7 +1042,11 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter"
+                    >
                       Apply
                     </button>
                   </div>
@@ -1537,13 +1576,25 @@
               <form action="#">
                 <!-- Checkbox for accept events -->
                 <div class="field">
-                  <input type="checkbox" id="acceptEvents" class="is-checkradio"/>
-                  <label for="acceptEvents" class="has-text-white">Events Accepted</label>
+                  <input
+                    type="checkbox"
+                    id="acceptEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="acceptEvents" class="has-text-white"
+                    >Events Accepted</label
+                  >
                 </div>
                 <!-- Checkbox for decline events -->
                 <div class="field">
-                  <input type="checkbox" id="declineEvents" class="is-checkradio"/>
-                  <label for="declineEvents" class="has-text-white">Events Declined</label>
+                  <input
+                    type="checkbox"
+                    id="declineEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="declineEvents" class="has-text-white"
+                    >Events Declined</label
+                  >
                 </div>
 
                 <!-- Dropdown for company names -->
@@ -1565,25 +1616,45 @@
                     <div class="field is-grouped-multiline">
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="hiringCheckbox" value="Hiring"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="hiringCheckbox"
+                            value="Hiring"
+                          />
                           <span class="has-text-white">Hiring</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="officeHourCheckbox" value="Office Hour"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="officeHourCheckbox"
+                            value="Office Hour"
+                          />
                           <span class="has-text-white">Office Hour</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="networkingCheckbox" value="Networking"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="networkingCheckbox"
+                            value="Networking"
+                          />
                           <span class="has-text-white">Networking</span>
                         </label>
                       </div>
                       <div class="control">
                         <label class="checkbox">
-                          <input type="checkbox"  class="category2-checkbox" id="infoSessionsCheckbox" value="Info Sessions"/>
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="infoSessionsCheckbox"
+                            value="Info Sessions"
+                          />
                           <span class="has-text-white">Info Sessions </span>
                         </label>
                       </div>
@@ -1595,7 +1666,11 @@
                 <!-- Submit button -->
                 <div class="field">
                   <div class="control">
-                    <button type="submit" class="button is-white is-fullwidth" id="submitFilter2">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter2"
+                    >
                       Apply
                     </button>
                   </div>
@@ -1661,8 +1736,8 @@
           </div>
         </div>
       </section>
-<!-- Employer Engagement -->
-<!-- <section class="section background-image-engage" id="employerEngagementOpener">
+      <!-- Employer Engagement -->
+      <!-- <section class="section background-image-engage" id="employerEngagementOpener">
   <div class="text-container pl-6 p-6 mt-6 has-text-centered">
     <h1 class="title is-size-1">Tracking Employers Engagement!</h1>
   </div>
