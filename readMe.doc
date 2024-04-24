@@ -7,13 +7,13 @@ Tasks:
     - Create User Permissions
     - JS to use CRUD features connected with DBs
     - JS Calendar
-    - JS for visualizations
     - add rooms capacity to Firebase
     - Launch Firebase website
     - JS for assigning rooms for each event upon acceptance
     - Update footer for website
     - Employer notification for when event is accepted or denied
-    - Make events filtering work/add a section for saved events
+    - Make events filtering work
+    - add a section for saved events
     - Navbar items to be accessible based on roles
     - Standardized fonts and image sizes across site
 
@@ -50,4 +50,15 @@ What are you planning to do today?
     - fix some bugs in the code
 Any problems are you facing?
     - notification bugs
-    - 
+
+April 23, 2024
+What did you do yesterday?
+    - filtering is completed
+    - removed employer engagement section due to time constraints
+    - updated user permissions
+What are you planning to do today?
+    - add room capacity JS
+    - add JS to add saved events to account
+Any problems you are facing?
+    - Bugs are coming up more often
+    - bigger file leads to more issues with merges
