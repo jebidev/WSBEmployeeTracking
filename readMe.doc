@@ -59,6 +59,7 @@ What did you do yesterday?
 What are you planning to do today?
     - add room capacity JS
     - add JS to add saved events to account
+    - navbar updates
 Any problems you are facing?
     - Bugs are coming up more often
     - bigger file leads to more issues with merges
