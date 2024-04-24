@@ -406,16 +406,21 @@ function show_events_home() {
 
 function generateEventBoxHtml(eventDoc) {
   const currentUser = firebase.auth().currentUser;
-  const currentUserId = currentUser.uid;
   const eventId = eventDoc.id; // Ensure this is the correct document ID from Firestore
 
-  // Check if the current user is registered for the event
-  const attendees = eventDoc.data().attendees || [];
-  const isRegistered = attendees.includes(currentUserId);
+  let currentUserId = currentUser ? currentUser.uid : null;
 
-  // Check if the current user has bookmarked the event
-  const bookmarkUsers = eventDoc.data().bookmark_users || [];
-  const isBookmarked = bookmarkUsers.includes(currentUserId);
+  // Initialize as not registered and not bookmarked
+  let isRegistered = false;
+  let isBookmarked = false;
+
+  if (currentUserId) {
+    const attendees = eventDoc.data().attendees || [];
+    isRegistered = attendees.includes(currentUserId);
+
+    const bookmarkUsers = eventDoc.data().bookmark_users || [];
+    isBookmarked = bookmarkUsers.includes(currentUserId);
+  }
 
   // Set the button colors based on user status
   const registerButtonColor = isRegistered ? "red" : "rgb(23, 66, 135)";
