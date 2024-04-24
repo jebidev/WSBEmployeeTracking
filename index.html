@@ -664,8 +664,8 @@
 
       body nav .navbar-item .notification-dropdown {
         position: absolute;
-        background-color: #fff;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        background-color: white;
+        box-shadow: 16px 16px 16px 16px rgb(0, 0, 0, 0.2);
         z-index: 1000; /* Very high to ensure it's on top */
         right: 0;
         width: 300px;
@@ -794,18 +794,6 @@
 
       <!-- Navbar End for Sign In and Sign Up Buttons -->
       <div class="navbar-end has-dropdown">
-        <a class="navbar-item">
-          <span class="icon">
-            <i
-              class="fa fa-bell"
-              style="color: white; font-size: 1.5em"
-              id="notificationBell"
-            ></i>
-          </span>
-          <div class="notification-dropdown" style="display: none">
-            <ul id="notificationList" style="color: black"></ul>
-          </div>
-        </a>
         <button
           class="button sign-in-btn is-warning"
           style="background-color: white; color: black"
@@ -874,6 +862,19 @@
             id="EmployerEngagementNavItem"
             >Employer Engagement</span
           >
+        </a>
+
+        <a class="navbar-item is-pulled-right">
+          <span class="icon">
+            <i
+              class="fa fa-bell"
+              style="color: black; font-size: 1.5em"
+              id="notificationBell"
+            ></i>
+          </span>
+          <div class="notification-dropdown" style="display: none">
+            <ul id="notificationList" style="color: black"></ul>
+          </div>
         </a>
       </div>
     </nav>
