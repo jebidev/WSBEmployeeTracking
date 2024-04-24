@@ -640,6 +640,9 @@ function applyFilters() {
     }
   });
 
+  // Fetch the selected date
+  const selectedDate = document.querySelector('.input[type="date"]').value;
+
   // Fetch the search input value
   const searchInputValue = document.querySelector(".input").value.toLowerCase();
 
@@ -658,7 +661,8 @@ function applyFilters() {
           (selectedCompany === '' || d.data().company_name === selectedCompany) &&
           (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
           (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
-          (d.data().event_name.toLowerCase().includes(searchInputValue))
+          (d.data().event_name.toLowerCase().includes(searchInputValue) &&
+          (selectedDate === '' || d.data().event_date === selectedDate))
         ) {
           const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
           if (index % 2 === 0) {
