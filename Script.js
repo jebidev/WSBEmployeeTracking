@@ -353,14 +353,26 @@ function submitSignInForm() {
 
 // Fetch company options from the database
 db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect').querySelector('select');
+  const companySelect1 = document.getElementById('companySelect').querySelector('select');
+  const companySelect2 = document.getElementById('companySelect2').querySelector('select');
+  const uniqueCompanyNames = new Set(); // Set to store unique company names
 
   snapshot.forEach(doc => {
     const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
+    // Check if the company name is not already added to the set
+    if (!uniqueCompanyNames.has(companyName)) {
+      const option1 = document.createElement('option');
+      option1.value = companyName;
+      option1.textContent = companyName;
+      companySelect1.appendChild(option1);
+
+      const option2 = document.createElement('option');
+      option2.value = companyName;
+      option2.textContent = companyName;
+      companySelect2.appendChild(option2);
+
+      uniqueCompanyNames.add(companyName); // Add the company name to the set
+    }
   });
 }).catch(error => {
   console.error('Error fetching companies: ', error);
@@ -726,22 +738,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// show values from db in dropdown
-db.collection('events').get().then(snapshot => {
-  const companySelect = document.getElementById('companySelect2').querySelector('select');
-
-  snapshot.forEach(doc => {
-    const companyName = doc.data().company_name;
-    const option = document.createElement('option');
-    option.value = companyName;
-    option.textContent = companyName;
-    companySelect.appendChild(option);
-  });
-}).catch(error => {
-  console.error('Error fetching companies: ', error);
-});
-
-
 //Events Administration page
 // Function to fetch and display events
 function show_register_events() {
@@ -782,10 +778,8 @@ function show_register_events() {
               <div class="media-content">
                 <p class="title is-4">${d.data().company_name}</p>
               </div>
-              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${
-                d.id
-              }" style="background-color:black;">
-              <i class="fas fa-expand-alt"></i>      </button>
+              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${eventId}" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i></button>
             </div>
             <!--Event Name-->
             <p class="title is-5 p-5">${d.data().event_name}</p>
@@ -795,7 +789,7 @@ function show_register_events() {
             <div class="field is-grouped">
               <p class="Type">
                 <span class="tag is-light">${d.data().event_medium}</span>
-                <span class="tag is-light">${d.data().event_type}</span>
+                <span class="tag is-light">${d.data().event_category}</span>
               </p>
             </div>
             <!--Event Date-->
@@ -807,9 +801,8 @@ function show_register_events() {
             <button
               class="button is-primary accept-button"
               data-event-id="${eventId}"
-              data-event-name="${
-                d.data().event_name
-              }" // Add this line              style="
+              data-event-name="${d.data().event_name}"
+              style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
@@ -820,8 +813,8 @@ function show_register_events() {
             <button
               class="button is-primary decline-button"
               data-event-id="${eventId}"
-              data-event-name="${d.data().event_name}" // Add this line
-                        style="
+              data-event-name="${d.data().event_name}"
+              style="
                 background-color: rgba(197, 35, 40, 255);
                 color: white;
               "
@@ -839,9 +832,9 @@ function show_register_events() {
 
         index++;
       });
-      //append html variable to the document
-      document.querySelector("#column1_events").innerHTML += htmlColumn1;
-      document.querySelector("#column2_events").innerHTML += htmlColumn2;
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
 
       // Attach event listeners to the buttons after they are added to the DOM
       attachButtonListeners();
@@ -854,175 +847,220 @@ function show_register_events() {
         });
       });
     });
-
-  function showAdminEventDetailsModal(eventId) {
-    const event = db.collection("events").doc(eventId).get();
-    event
-      .then((doc) => {
-        if (doc.exists) {
-          const eventData = doc.data();
-          populateAdminEventModal(eventData);
-          toggleAdminModal("adminEventDetailsModal", true);
-        } else {
-          console.error("No such event!");
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting event:", error);
-      });
-  }
-
-  function populateAdminEventModal(eventData) {
-    document.getElementById("modalEventName-ea").textContent =
-      eventData.event_name;
-    document.getElementById("modalCompanyName-ea").textContent =
-      eventData.company_name;
-    document.getElementById("modalEventCapacity-ea").textContent =
-      eventData.event_capacity;
-    document.getElementById("modalEventOverview-ea").textContent =
-      eventData.event_overview;
-    document.getElementById("modalEventDescription-ea").textContent =
-      eventData.event_description;
-    document.getElementById("modalLocation-ea").textContent =
-      eventData.location;
-    document.getElementById("modalEventMedium-ea").textContent =
-      eventData.event_medium;
-    document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
-    document.getElementById("modalEventSnacks-ea").textContent =
-      eventData.snacks;
-    document.getElementById("modalEventDisposables-ea").textContent =
-      eventData.disposables;
-  }
-
-  function toggleAdminModal(modalId, show) {
-    const modal = document.getElementById(modalId);
-    if (show) {
-      modal.classList.add("is-active");
-    } else {
-      modal.classList.remove("is-active");
-    }
-    console.log(
-      "adminModal closeAdminModalButton",
-      adminModal,
-      closeAdminModalButton
-    );
-  }
-  const adminModal = document.getElementById("adminEventDetailsModal");
-  const closeAdminModalButton = document.querySelector(".modal-close-ea");
-
-  // Ensure this matches the class or ID of your close button
-  closeAdminModalButton.addEventListener("click", function () {
-    console.log("CLSOIGN BOSS");
-    toggleAdminModal("adminEventDetailsModal", false);
-  });
-
-  // Also set up the modal to close if the background is clicked
-  adminModal.addEventListener("click", function (event) {
-    if (event.target === adminModal) {
-      toggleAdminModal("adminEventDetailsModal", false);
-    }
-  });
 }
+
+function showAdminEventDetailsModal(eventId) {
+  const event = db.collection("events").doc(eventId).get();
+  event
+    .then((doc) => {
+      if (doc.exists) {
+        const eventData = doc.data();
+        populateAdminEventModal(eventData);
+        toggleAdminModal("adminEventDetailsModal", true);
+      } else {
+        console.error("No such event!");
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting event:", error);
+    });
+}
+
+function populateAdminEventModal(eventData) {
+  document.getElementById("modalEventName-ea").textContent = eventData.event_name;
+  document.getElementById("modalCompanyName-ea").textContent = eventData.company_name;
+  document.getElementById("modalEventCapacity-ea").textContent = eventData.event_capacity;
+  document.getElementById("modalEventOverview-ea").textContent = eventData.event_overview;
+  document.getElementById("modalEventDescription-ea").textContent = eventData.event_description;
+  document.getElementById("modalLocation-ea").textContent = eventData.location;
+  document.getElementById("modalEventMedium-ea").textContent = eventData.event_medium;
+  document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
+  document.getElementById("modalEventSnacks-ea").textContent = eventData.snacks;
+  document.getElementById("modalEventDisposables-ea").textContent = eventData.disposables;
+}
+
+function toggleAdminModal(modalId, show) {
+  const modal = document.getElementById(modalId);
+  if (show) {
+    modal.classList.add("is-active");
+  } else {
+    modal.classList.remove("is-active");
+  }
+}
+
+const closeAdminModalButton = document.querySelector(".modal-close-ea");
+
+// Ensure this matches the class or ID of your close button
+closeAdminModalButton.addEventListener("click", function () {
+  toggleAdminModal("adminEventDetailsModal", false);
+});
+
+// Also set up the modal to close if the background is clicked
+document.getElementById("adminEventDetailsModal").addEventListener("click", function (event) {
+  if (event.target === this) {
+    toggleAdminModal("adminEventDetailsModal", false);
+  }
+});
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document
-    .querySelectorAll(".accept-button, .decline-button")
-    .forEach((button) => {
-      button.addEventListener("click", () => {
-        const eventId = button.getAttribute("data-event-id");
-        const eventName = button.getAttribute("data-event-name");
-        const newStatus = button.classList.contains("accept-button")
-          ? "Approved"
-          : "Declined";
+  document.querySelectorAll(".accept-button, .decline-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-event-id");
+      const eventName = button.getAttribute("data-event-name");
+      const newStatus = button.classList.contains("accept-button") ? "Approved" : "Declined";
 
-        // First, get the event to retrieve ownerId
-        db.collection("events")
-          .doc(eventId)
-          .get()
-          .then((doc) => {
-            if (!doc.exists) {
-              console.error("No such event exists!");
-              return;
-            }
-            const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
+      // First, get the event to retrieve ownerId
+      db.collection("events").doc(eventId).get().then((doc) => {
+        if (!doc.exists) {
+          console.error("No such event exists!");
+          return;
+        }
+        const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
 
-            // Update event status
-            db.collection("events")
-              .doc(eventId)
-              .update({ event_status: newStatus })
-              .then(() => {
-                console.log(`Event status updated to ${newStatus}`);
-                button.textContent = newStatus;
+        // Update event status
+        db.collection("events").doc(eventId).update({ event_status: newStatus }).then(() => {
+          console.log(`Event status updated to ${newStatus}`);
+          button.textContent = newStatus;
 
-                // Fetch user and update their notifications
-                const userRef = db.collection("users").doc(ownerId);
-                db.runTransaction((transaction) => {
-                  return transaction.get(userRef).then((userDoc) => {
-                    if (!userDoc.exists) {
-                      throw new Error("User does not exist!");
-                    }
+          // Fetch user and update their notifications
+          const userRef = db.collection("users").doc(ownerId);
+          db.runTransaction((transaction) => {
+            return transaction.get(userRef).then((userDoc) => {
+              if (!userDoc.exists) {
+                throw new Error("User does not exist!");
+              }
 
-                    // Get current notifications, add new one, and update
-                    let notifications = userDoc.data().notifications || [];
-                    notifications.push(
-                      `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
-                    );
-                    transaction.update(userRef, {
-                      notifications: notifications,
-                    });
-                  });
-                })
-                  .then(() => {
-                    console.log("User notification updated successfully.");
-                  })
-                  .catch((error) => {
-                    console.error("Transaction failed: ", error);
-                  });
-              })
-              .catch((error) => {
-                console.error("Error updating event status: ", error);
-              });
-          })
-          .catch((error) => {
-            console.error("Error fetching event details: ", error);
+              // Get current notifications, add new one, and update
+              let notifications = userDoc.data().notifications || [];
+              notifications.push(`Your event "${eventName}" has been ${newStatus.toLowerCase()}.`);
+              transaction.update(userRef, { notifications: notifications });
+            });
+          }).then(() => {
+            console.log("User notification updated successfully.");
+          }).catch((error) => {
+            console.error("Transaction failed: ", error);
           });
+        }).catch((error) => {
+          console.error("Error updating event status: ", error);
+        });
+      }).catch((error) => {
+        console.error("Error fetching event details: ", error);
       });
     });
+  });
 }
 
-function updateNotificationsArray(userId, message) {
-  const userRef = db.collection("users").doc(userId);
-  db.runTransaction((transaction) => {
-    return transaction.get(userRef).then((userDoc) => {
-      if (!userDoc.exists) {
-        throw "User does not exist!";
+function applyFilters2() {
+  // Fetch the selected company name from the dropdown
+  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
+  // Get selected categories
+  const selectedCategories2 = Array.from(document.querySelectorAll('.category2-checkbox:checked')).map(checkbox => checkbox.value);
+
+  const acceptEvents = document.getElementById('acceptEvents').checked;
+  const declineEvents = document.getElementById('DeclineEvents').checked;
+
+  // Fetch events based on the selected company, categories, and checkboxes
+  db.collection("events").get().then((res) => {
+    let data = res.docs;
+    let htmlColumn1 = ``;
+    let htmlColumn2 = ``;
+    let index = 0;
+    data.forEach((d) => {
+      const eventId = d.id; // Get the event ID
+
+      // Determine the text to display on the button based on the event status
+      let buttonText1 = d.data().event_status === "Approved" ? "Approved" : "Accept";
+      let buttonText2 = d.data().event_status === "Declined" ? "Declined" : "Decline";
+
+      // Check if the event matches the selected company, categories, and checkboxes
+      if (
+        (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
+        (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category)) &&
+        ((acceptEvents && d.data().event_status === "Approved") || 
+        (declineEvents && d.data().event_status === "Declined") || 
+        (!acceptEvents && !declineEvents))
+      ) {
+        const boxHtml = `<div class="box">
+          <div class="content">
+            <!--Company name and logo-->
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">${d.data().company_name}</p>
+              </div>
+              <button class="button is-small is-pulled-right expand-button-ea is-rounded" data-event-id="${eventId}" style="background-color:black;">
+              <i class="fas fa-expand-alt"></i></button>
+            </div>
+            <!--Event Name-->
+            <p class="title is-5 p-5">${d.data().event_name}</p>
+            <!--Event Description-->
+            <p>${d.data().event_description}</p>
+            <!--Event and Medium Type-->
+            <div class="field is-grouped">
+              <p class="Type">
+                <span class="tag is-light">${d.data().event_medium}</span>
+                <span class="tag is-light">${d.data().event_category}</span>
+              </p>
+            </div>
+            <!--Event Date-->
+            <p>
+              <span class="has-text-weight-semibold">Date:</span>
+              ${d.data().event_date}
+            </p>
+            <!--Accept or Approved Button-->
+            <button
+              class="button is-primary accept-button"
+              data-event-id="${eventId}"
+              data-event-name="${d.data().event_name}"
+              style="
+                background-color: rgba(197, 35, 40, 255);
+                color: white;
+              "
+            >
+              ${buttonText1}
+            </button>
+            <!-- Decline Button -->
+            <button
+              class="button is-primary decline-button"
+              data-event-id="${eventId}"
+              data-event-name="${d.data().event_name}"
+              style="
+                background-color: rgba(197, 35, 40, 255);
+                color: white;
+              "
+            >
+            ${buttonText2}
+            </button>
+          </div>
+        </div>`;
+        if (index % 2 === 0) {
+          htmlColumn1 += boxHtml;
+        } else {
+          htmlColumn2 += boxHtml;
+        }
+        index++;
       }
-
-      // Get the current array of notifications (or initialize if it doesn't exist)
-      let notifications = userDoc.data().notifications || [];
-      notifications.push(message);
-
-      // Update the document
-      transaction.update(userRef, { notifications: notifications });
     });
-  })
-    .then(() => {
-      console.log("Notification added to user.");
-      showNotification(message); // This could also show a notification on the admin's side
-    })
-    .catch((error) => {
-      console.error("Transaction failed: ", error);
-      showNotification("Failed to update notifications.");
-    });
+    // Append HTML to the document
+    document.querySelector("#column1_events").innerHTML = htmlColumn1;
+    document.querySelector("#column2_events").innerHTML = htmlColumn2;
+
+    // Add event listeners to the buttons after they are added to the DOM
+    attachButtonListeners();
+  });
 }
+
+// Add event listener to the "Apply" button to trigger the applyFilters function
+document.getElementById("submitFilter2").addEventListener("click", applyFilters2);
 
 show_register_events();
 
-// Add event listener to the "Apply" button to trigger the applyFilters function
-document
-  .getElementById("submitFilter2")
-  .addEventListener("click", applyFilters2);
+
 
 // calendar!!!
 // calendar functions
