@@ -592,10 +592,11 @@ function attachSaveEventListeners() {
 }
 
 function applyFilters() {
+  // Fetch the bookmarked events checkbox status
+  const savedEvents = document.getElementById('savedEvents').checked;
+
   // Fetch the selected company name from the dropdown
-  const selectedCompany = document
-    .getElementById("companySelect")
-    .querySelector("select").value;
+  const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
 
   // Get selected categories
   const selectedCategories = [];
@@ -605,20 +606,13 @@ function applyFilters() {
     }
   });
 
-  const selectedMedium = [];
-  document.querySelectorAll(".medium-checkbox").forEach((checkbox) => {
-    if (checkbox.checked) {
-      selectedMedium.push(checkbox.value);
-    }
-  });
-
   // Fetch the selected date
   const selectedDate = document.querySelector('.input[type="date"]').value;
 
   // Fetch the search input value
   const searchInputValue = document.querySelector(".input").value.toLowerCase();
 
-  // Fetch events based on the selected company, categories, and search input
+  // Filter events based on the selected criteria
   db.collection("events")
     .where("event_status", "==", "Approved")
     .get()
@@ -630,9 +624,9 @@ function applyFilters() {
       data.forEach((d) => {
         // Check if the event matches all the selected filters and search input
         if (
+          (!savedEvents || (savedEvents && d.data().bookmark_users && d.data().bookmark_users.includes(firebase.auth().currentUser.uid))) &&
           (selectedCompany === '' || d.data().company_name === selectedCompany) &&
           (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
-          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
           (d.data().event_name.toLowerCase().includes(searchInputValue) &&
           (selectedDate === '' || d.data().event_date === selectedDate))
         ) {
@@ -653,6 +647,7 @@ function applyFilters() {
       attachSaveEventListeners();
     });
 }
+
 
 
 show_events_home();
