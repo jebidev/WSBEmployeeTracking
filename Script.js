@@ -610,7 +610,12 @@ function applyFilters() {
       selectedCategories.push(checkbox.value);
     }
   });
-
+  const selectedMedium = [];
+  document.querySelectorAll(".medium-checkbox").forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedMedium.push(checkbox.value);
+    }
+  });
   // Fetch the selected date
   const selectedDate = document.querySelector('.input[type="date"]').value;
 
@@ -632,6 +637,7 @@ function applyFilters() {
           (!savedEvents || (savedEvents && d.data().bookmark_users && d.data().bookmark_users.includes(firebase.auth().currentUser.uid))) &&
           (selectedCompany === '' || d.data().company_name === selectedCompany) &&
           (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
+          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
           (d.data().event_name.toLowerCase().includes(searchInputValue) &&
           (selectedDate === '' || d.data().event_date === selectedDate))
         ) {
