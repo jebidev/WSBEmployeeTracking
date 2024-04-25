@@ -384,7 +384,7 @@
         display: none;
         position: fixed;
         z-index: 1000;
-        left: 0;
+        left: 50;
         top: 0;
         width: 100%;
         height: 100%;
@@ -1636,7 +1636,7 @@
                           <input
                             type="checkbox"
                             class="category2-checkbox"
-                            id="hiringCheckbox"
+                            id="hiringCheckbox2"
                             value="Hiring"
                           />
                           <span class="has-text-white">Hiring</span>
@@ -1647,7 +1647,7 @@
                           <input
                             type="checkbox"
                             class="category2-checkbox"
-                            id="officeHourCheckbox"
+                            id="officeHourCheckbox2"
                             value="Office Hour"
                           />
                           <span class="has-text-white">Office Hour</span>
@@ -1658,7 +1658,7 @@
                           <input
                             type="checkbox"
                             class="category2-checkbox"
-                            id="networkingCheckbox"
+                            id="networkingCheckbox2"
                             value="Networking"
                           />
                           <span class="has-text-white">Networking</span>
@@ -1669,7 +1669,7 @@
                           <input
                             type="checkbox"
                             class="category2-checkbox"
-                            id="infoSessionsCheckbox"
+                            id="infoSessionsCheckbox2"
                             value="Info Sessions"
                           />
                           <span class="has-text-white">Info Sessions </span>
@@ -2160,10 +2160,6 @@
             "none";
           document.getElementById("eventsRegisterOpener").style.display =
             "none";
-          document.getElementById("employerEngagementOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementContainer").style.display =
-            "none";
           document.getElementById("calendarOpener").style.display = "none";
           document.getElementById("calendarContainer").style.display = "none";
         });
@@ -2180,10 +2176,6 @@
           document.getElementById("eventsRegisterContainer").style.display =
             "none";
           document.getElementById("eventsRegisterOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementContainer").style.display =
             "none";
           document.getElementById("calendarOpener").style.display = "none";
           document.getElementById("calendarContainer").style.display = "none";
@@ -2203,10 +2195,6 @@
             "none";
           document.getElementById("eventsRegisterOpener").style.display =
             "none";
-          document.getElementById("employerEngagementOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementContainer").style.display =
-            "none";
           document.getElementById("calendarOpener").style.display = "none";
           document.getElementById("calendarContainer").style.display = "none";
         });
@@ -2223,31 +2211,6 @@
           document.getElementById("eventsRegisterContainer").style.display =
             "block";
           document.getElementById("eventsRegisterOpener").style.display =
-            "block";
-          document.getElementById("employerEngagementOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementContainer").style.display =
-            "none";
-          document.getElementById("calendarOpener").style.display = "none";
-          document.getElementById("calendarContainer").style.display = "none";
-        });
-      // Open the Employer Engagement Page when hit on navbar
-      document
-        .getElementById("EmployerEngagementNavItem")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          document.getElementById("openingSection").style.display = "none";
-          document.getElementById("mainContent").style.display = "none";
-          document.getElementById("registrationOpener").style.display = "none";
-          document.getElementById("registrationContainer").style.display =
-            "none";
-          document.getElementById("eventsRegisterContainer").style.display =
-            "none";
-          document.getElementById("eventsRegisterOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementOpener").style.display =
-            "block";
-          document.getElementById("employerEngagementContainer").style.display =
             "block";
           document.getElementById("calendarOpener").style.display = "none";
           document.getElementById("calendarContainer").style.display = "none";
@@ -2266,10 +2229,6 @@
           document.getElementById("eventsRegisterContainer").style.display =
             "none";
           document.getElementById("eventsRegisterOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementOpener").style.display =
-            "none";
-          document.getElementById("employerEngagementContainer").style.display =
             "none";
           document.getElementById("calendarOpener").style.display = "block";
           document.getElementById("calendarContainer").style.display = "block";
