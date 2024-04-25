@@ -478,52 +478,6 @@ function generateEventBoxHtml(eventDoc) {
             </div>
           </div>`;
 }
-
-function attachButtonListeners2() {
-  document.querySelectorAll(".accept-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
-
-      // If the button says "Accept", update the event status to "Approved" in Firestore
-      if (eventStatus === "Accept") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Approved" })
-          .then(() => {
-            console.log("Event status updated to Approved");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Approved"; // Change the button text to "Approved"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
-    });
-  });
-  document.querySelectorAll(".decline-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id"); // Get the event ID
-      const eventStatus = button.textContent.trim(); // Get the current text content of the button
-
-      // If the button says "Decline", update the event status to "Approved" in Firestore
-      if (eventStatus === "Decline") {
-        db.collection("events")
-          .doc(eventId)
-          .update({ event_status: "Declined" })
-          .then(() => {
-            console.log("Event status updated to Declined");
-            // You can add further logic here, like updating UI, etc.
-            button.textContent = "Declined"; // Change the button text to "Declined"
-          })
-          .catch((error) => {
-            console.error("Error updating event status:", error);
-          });
-      }
-    });
-  });
-}
-
 function attachSaveEventListeners() {
   // Add event listeners to save buttons
   document.querySelectorAll(".save-event-button").forEach((button) => {
@@ -867,17 +821,24 @@ function showAdminEventDetailsModal(eventId) {
 }
 
 function populateAdminEventModal(eventData) {
-  document.getElementById("modalEventName-ea").textContent = eventData.event_name;
-  document.getElementById("modalCompanyName-ea").textContent = eventData.company_name;
-  document.getElementById("modalEventCapacity-ea").textContent = eventData.event_capacity;
-  document.getElementById("modalEventOverview-ea").textContent = eventData.event_overview;
-  document.getElementById("modalEventDescription-ea").textContent = eventData.event_description;
-  document.getElementById("modalLocation-ea").textContent = eventData.location;
-  document.getElementById("modalEventMedium-ea").textContent = eventData.event_medium;
-  document.getElementById("modalEventMeals-ea").textContent = eventData.meals;
-  document.getElementById("modalEventSnacks-ea").textContent = eventData.snacks;
-  document.getElementById("modalEventDisposables-ea").textContent = eventData.disposables;
+  const modalElements = {
+    "modalEventName-ea": "event_name",
+    "modalCompanyName-ea": "company_name",
+    "modalEventCapacity-ea": "event_capacity",
+    "modalEventOverview-ea": "event_overview",
+    "modalEventDescription-ea": "event_description",
+    "modalLocation-ea": "location",
+    "modalEventMedium-ea": "event_medium",
+    "modalEventMeals-ea": "meals",
+    "modalEventSnacks-ea": "snacks",
+    "modalEventDisposables-ea": "disposables"
+  };
+
+  for (const [modalId, field] of Object.entries(modalElements)) {
+    document.getElementById(modalId).textContent = eventData[field] || "";
+  }
 }
+
 
 function toggleAdminModal(modalId, show) {
   const modal = document.getElementById(modalId);
@@ -909,7 +870,7 @@ function attachButtonListeners() {
       const eventId = button.getAttribute("data-event-id");
       const eventName = button.getAttribute("data-event-name");
       const newStatus = button.classList.contains("accept-button") ? "Approved" : "Declined";
-
+      
       // First, get the event to retrieve ownerId
       db.collection("events").doc(eventId).get().then((doc) => {
         if (!doc.exists) {
@@ -939,8 +900,53 @@ function attachButtonListeners() {
           }).then(() => {
             console.log("User notification updated successfully.");
           }).catch((error) => {
-            console.error("Transaction failed: ", error);
+            // console.error("Transaction failed: ", error);
           });
+
+          // Debugging: Check newStatus value
+          console.log("New Status:", newStatus);
+
+          // If the event is approved, assign a room based on location and capacity
+          if (newStatus === "Approved") {
+            const eventLocation = doc.data().location;
+            console.log("Event Location:", eventLocation); // Debugging line
+            // Convert eventCapacity to a number using parseInt or parseFloat
+            const eventCapacity = parseInt(doc.data().event_capacity, 10);
+            console.log("Event Capacity:", eventCapacity); // Debugging line
+
+
+// Query the rooms collection for available rooms matching location and capacity
+db.collection("rooms")
+  .where("Location", "==", eventLocation)
+  .where("Capacity", ">=", eventCapacity)
+  .orderBy("Capacity", "asc")
+  .limit(1)
+  .get()
+  .then((roomSnapshot) => {
+    if (!roomSnapshot.empty) {
+      // If a room is found, assign it to the event
+      const roomData = roomSnapshot.docs[0].data();
+      const roomNumber = roomData["Room Number"];
+
+      // Update the event with the assigned room
+      db.collection("events")
+        .doc(eventId)
+        .update({ room: roomNumber })
+        .then(() => {
+          console.log(`Room assigned to event: ${roomNumber}`);
+        })
+        .catch((error) => {
+          console.error("Error assigning room to event: ", error);
+        });
+    } else {
+      console.log("No available rooms matching criteria.");
+    }
+  })
+  .catch((error) => {
+    console.error("Error fetching rooms: ", error);
+  });
+
+          }
         }).catch((error) => {
           console.error("Error updating event status: ", error);
         });
@@ -950,6 +956,7 @@ function attachButtonListeners() {
     });
   });
 }
+
 
 function applyFilters2() {
   // Fetch the selected company name from the dropdown
