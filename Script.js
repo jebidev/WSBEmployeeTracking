@@ -458,6 +458,12 @@ function generateEventBoxHtml(eventDoc) {
                   <span class="tag is-light">${
                     eventDoc.data().event_category
                   }</span>
+                  <span class="tag is-light">${
+                    eventDoc.data().location
+                  }</span>
+                  <span class="tag is-light">${
+                    eventDoc.data().room
+                  }</span>
                 </p>
               </div>
               <!--Event Date-->
