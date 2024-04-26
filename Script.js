@@ -20,6 +20,44 @@ const weekdays = [
   "Saturday",
 ];
 
+// Function to open the modal and populate it with data
+function openEditModal(eventId) {
+  // Fetch the event data from Firebase
+  const eventRef = db.collection("events").doc(eventId);
+  eventRef
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const eventData = doc.data();
+        // Assume all form elements have appropriate IDs
+        document.getElementById("employerContactNumber").value =
+          eventData.employerContactNumber || "";
+        document.getElementById("eventName").value = eventData.eventName || "";
+        document.getElementById("eventDate").value = eventData.eventDate || "";
+        document.getElementById("eventOverview").value =
+          eventData.eventOverview || "";
+        document.getElementById("eventDescription").textarea =
+          eventData.eventDescription || "";
+        document.getElementById("eventCategory").value =
+          eventData.eventCategory || "";
+        document.getElementById("location").value = eventData.location || "";
+        document.getElementById("event_medium").value = eventData.medium || "";
+        document.getElementById("eventCapacity").value =
+          eventData.eventCapacity || "";
+
+        // Add logic to check checkboxes and radio buttons based on eventData
+
+        // Show the modal
+        document.getElementById("editEventModal").style.display = "block";
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting document:", error);
+    });
+}
+
 function openModal(date) {
   clicked = date;
 
@@ -352,31 +390,38 @@ function submitSignInForm() {
 }
 
 // Fetch company options from the database
-db.collection('events').get().then(snapshot => {
-  const companySelect1 = document.getElementById('companySelect').querySelector('select');
-  const companySelect2 = document.getElementById('companySelect2').querySelector('select');
-  const uniqueCompanyNames = new Set(); // Set to store unique company names
+db.collection("events")
+  .get()
+  .then((snapshot) => {
+    const companySelect1 = document
+      .getElementById("companySelect")
+      .querySelector("select");
+    const companySelect2 = document
+      .getElementById("companySelect2")
+      .querySelector("select");
+    const uniqueCompanyNames = new Set(); // Set to store unique company names
 
-  snapshot.forEach(doc => {
-    const companyName = doc.data().company_name;
-    // Check if the company name is not already added to the set
-    if (!uniqueCompanyNames.has(companyName)) {
-      const option1 = document.createElement('option');
-      option1.value = companyName;
-      option1.textContent = companyName;
-      companySelect1.appendChild(option1);
+    snapshot.forEach((doc) => {
+      const companyName = doc.data().company_name;
+      // Check if the company name is not already added to the set
+      if (!uniqueCompanyNames.has(companyName)) {
+        const option1 = document.createElement("option");
+        option1.value = companyName;
+        option1.textContent = companyName;
+        companySelect1.appendChild(option1);
 
-      const option2 = document.createElement('option');
-      option2.value = companyName;
-      option2.textContent = companyName;
-      companySelect2.appendChild(option2);
+        const option2 = document.createElement("option");
+        option2.value = companyName;
+        option2.textContent = companyName;
+        companySelect2.appendChild(option2);
 
-      uniqueCompanyNames.add(companyName); // Add the company name to the set
-    }
+        uniqueCompanyNames.add(companyName); // Add the company name to the set
+      }
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching companies: ", error);
   });
-}).catch(error => {
-  console.error('Error fetching companies: ', error);
-});
 
 function show_events_home() {
   // Fetch all events when the page loads
@@ -413,9 +458,14 @@ function show_events_home() {
 
 function generateEventBoxHtml(eventDoc) {
   const currentUser = firebase.auth().currentUser;
-  const eventId = eventDoc.id; // Ensure this is the correct document ID from Firestore
+  const currentUserId = currentUser ? currentUser.uid : null;
 
-  let currentUserId = currentUser ? currentUser.uid : null;
+  const eventUserId = eventDoc.data().userId; // Assuming userId is stored in the event data
+
+  // Check if the current user is the event creator
+  const isEventCreator = currentUserId === eventUserId;
+
+  const eventId = eventDoc.id; // Ensure this is the correct document ID from Firestore
 
   // Initialize as not registered and not bookmarked
   let isRegistered = false;
@@ -437,7 +487,8 @@ function generateEventBoxHtml(eventDoc) {
   const bookmarkButtonIconColor = isBookmarked ? "icon-red" : "icon-white";
 
   // Generate HTML for each event
-  return `<div class="box">
+  if (isEventCreator) {
+    html = `<div class="box">
             <div class="content">
               <!--Company name and logo-->
               <div class="media">
@@ -463,12 +514,8 @@ function generateEventBoxHtml(eventDoc) {
                   <span class="tag is-light">${
                     eventDoc.data().event_category
                   }</span>
-                  <span class="tag is-light">${
-                    eventDoc.data().location
-                  }</span>
-                  <span class="tag is-light">${
-                    eventDoc.data().room
-                  }</span>
+                  <span class="tag is-light">${eventDoc.data().location}</span>
+                  <span class="tag is-light">${eventDoc.data().room}</span>
                 </p>
               </div>
               <!--Event Date-->
@@ -486,11 +533,205 @@ function generateEventBoxHtml(eventDoc) {
               <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
                 ${isRegistered ? "Registered" : "Register"}
               </button>
+              <button class="button is-link-dark edit-event-button" data-event-id="${
+                eventDoc.id
+              }">
+              Edit
+            </button>
             </div>
           </div>`;
+  } else {
+    html = `<div class="box">
+            <div class="content">
+              <!--Company name and logo-->
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">${eventDoc.data().company_name}</p>
+                </div>
+              </div>
+              <!--Event Name-->
+              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+              <!--Event Description-->
+              <p>${eventDoc.data().event_description}</p>
+              <!--Event and Medium Type-->
+              <div class="field is-grouped">
+                <p class="Type">
+                  <span class="tag is-light">${
+                    eventDoc.data().event_medium
+                  }</span>
+                  <span class="tag is-light">${
+                    eventDoc.data().event_category
+                  }</span>
+                  <span class="tag is-light">${eventDoc.data().location}</span>
+                  <span class="tag is-light">${eventDoc.data().room}</span>
+                </p>
+              </div>
+              <!--Event Date-->
+              <p>
+                <span class="has-text-weight-semibold">Date:</span>
+                ${eventDoc.data().event_date}
+              </p>
+              <!--Save Button-->
+              <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
+                <span class="icon is-small">
+                  <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
+                </span>
+              </button>
+              <!--Register Button-->
+              <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
+                ${isRegistered ? "Registered" : "Register"}
+              
+            </div>
+          </div>`;
+  }
+  return html;
 }
+
 function attachSaveEventListeners() {
   // Add event listeners to save buttons
+  document.querySelectorAll(".edit-event-button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const eventId = this.getAttribute("data-event-id"); // Ensure you have 'data-event-id' set on each edit button
+
+      // Fetch the event data from Firebase
+      db.collection("events")
+        .doc(eventId)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            const eventData = doc.data();
+            // Now populate the form with the event data
+            document.getElementById("editEmployerContactNumber").value =
+              eventData.employerContactNumber || "";
+            document.getElementById("editEventName").value =
+              eventData.event_name || "";
+            document.getElementById("editEventDate").value =
+              eventData.event_date || "";
+            document.getElementById("editEventOverview").value =
+              eventData.event_overview || "";
+            document.getElementById("editEventDescription").value =
+              eventData.event_description || "";
+            document.getElementById("editEventCategory").value =
+              eventData.event_category || "";
+            document.getElementById("editLocation").value =
+              eventData.location || "";
+            document.getElementById("editEventMedium").value =
+              eventData.event_medium || "";
+            document.getElementById("editEventCapacity").value =
+              eventData.event_capacity || "";
+
+            // Set the checkboxes for beverages, meals, snacks, and disposables
+            ["beverages", "meals", "snacks", "disposables"].forEach(
+              (category) => {
+                eventData[category]?.forEach((item) => {
+                  const checkbox = document.querySelector(
+                    `input[name="${category}"][value="${item}"]`
+                  );
+                  if (checkbox) {
+                    checkbox.checked = true;
+                  }
+                });
+              }
+            );
+
+            if (eventData.seatingArrangement) {
+              const radio = document.querySelector(
+                `input[name="seatingArrangement"][value="${eventData.seatingArrangement}"]`
+              );
+              if (radio) {
+                radio.checked = true;
+                console.log(
+                  "Attempting to select radio for:",
+                  eventData.seatingArrangement
+                );
+                console.log("Radio selected:", radio.value);
+              } else {
+                console.log(
+                  "Radio not found for value:",
+                  eventData.seatingArrangement
+                );
+              }
+            }
+
+            // Open the modal
+            document.getElementById("editEventModal").style.display = "block";
+          } else {
+            console.error("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting document:", error);
+        });
+    });
+  });
+
+  document
+    .getElementById("editEventForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const eventId = document
+        .querySelector(".edit-event-button")
+        .getAttribute("data-event-id");
+      const updatedData = {
+        employerContactNumber: document.getElementById(
+          "editEmployerContactNumber"
+        ).value,
+        event_name: document.getElementById("editEventName").value,
+        event_date: document.getElementById("editEventDate").value,
+        event_overview: document.getElementById("editEventOverview").value,
+        event_description: document.getElementById("editEventDescription")
+          .value,
+        event_category: document.getElementById("editEventCategory").value,
+        location: document.getElementById("editLocation").value,
+        event_medium: document.getElementById("editEventMedium").value,
+        event_capacity: document.getElementById("editEventCapacity").value,
+        beverages: [],
+        meals: [],
+        snacks: [],
+        disposables: [],
+      };
+
+      // Handle checkboxes for beverages, meals, snacks, and disposables
+      ["beverages", "meals", "snacks", "disposables"].forEach((category) => {
+        document
+          .querySelectorAll(`input[name="${category}"]:checked`)
+          .forEach((checkbox) => {
+            updatedData[category].push(checkbox.value);
+          });
+      });
+
+      // Handle radio buttons for seating arrangement
+      const selectedRadio = document.querySelector(
+        'input[name="seatingArrangement"]:checked'
+      );
+      if (selectedRadio) {
+        updatedData.seatingArrangement = selectedRadio.value;
+      }
+
+      // Update the Firestore document
+      db.collection("events")
+        .doc(eventId)
+        .update(updatedData)
+        .then(() => {
+          console.log("Document successfully updated!");
+          // Close the modal and refresh the page or data view
+          document.getElementById("editEventModal").style.display = "none";
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    });
+
+  document.querySelector(".close-button").addEventListener("click", () => {
+    document.getElementById("editEventModal").style.display = "none";
+  });
+
   document.querySelectorAll(".save-event-button").forEach((button) => {
     button.addEventListener("click", () => {
       const icon = button.querySelector(".fas");
@@ -598,10 +839,12 @@ function attachSaveEventListeners() {
 
 function applyFilters() {
   // Fetch the bookmarked events checkbox status
-  const savedEvents = document.getElementById('savedEvents').checked;
+  const savedEvents = document.getElementById("savedEvents").checked;
 
   // Fetch the selected company name from the dropdown
-  const selectedCompany = document.getElementById("companySelect").querySelector("select").value;
+  const selectedCompany = document
+    .getElementById("companySelect")
+    .querySelector("select").value;
 
   // Get selected categories
   const selectedCategories = [];
@@ -634,12 +877,20 @@ function applyFilters() {
       data.forEach((d) => {
         // Check if the event matches all the selected filters and search input
         if (
-          (!savedEvents || (savedEvents && d.data().bookmark_users && d.data().bookmark_users.includes(firebase.auth().currentUser.uid))) &&
-          (selectedCompany === '' || d.data().company_name === selectedCompany) &&
-          (selectedCategories.length === 0 || selectedCategories.includes(d.data().event_category)) &&
-          (selectedMedium.length === 0 || selectedMedium.includes(d.data().event_medium)) &&
-          (d.data().event_name.toLowerCase().includes(searchInputValue) &&
-          (selectedDate === '' || d.data().event_date === selectedDate))
+          (!savedEvents ||
+            (savedEvents &&
+              d.data().bookmark_users &&
+              d
+                .data()
+                .bookmark_users.includes(firebase.auth().currentUser.uid))) &&
+          (selectedCompany === "" ||
+            d.data().company_name === selectedCompany) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(d.data().event_category)) &&
+          (selectedMedium.length === 0 ||
+            selectedMedium.includes(d.data().event_medium)) &&
+          d.data().event_name.toLowerCase().includes(searchInputValue) &&
+          (selectedDate === "" || d.data().event_date === selectedDate)
         ) {
           const boxHtml = generateEventBoxHtml(d); // Generate HTML for each event
           if (index % 2 === 0) {
@@ -841,14 +1092,13 @@ function populateAdminEventModal(eventData) {
     "modalEventMedium-ea": "event_medium",
     "modalEventMeals-ea": "meals",
     "modalEventSnacks-ea": "snacks",
-    "modalEventDisposables-ea": "disposables"
+    "modalEventDisposables-ea": "disposables",
   };
 
   for (const [modalId, field] of Object.entries(modalElements)) {
     document.getElementById(modalId).textContent = eventData[field] || "";
   }
 }
-
 
 function toggleAdminModal(modalId, show) {
   const modal = document.getElementById(modalId);
@@ -867,138 +1117,189 @@ closeAdminModalButton.addEventListener("click", function () {
 });
 
 // Also set up the modal to close if the background is clicked
-document.getElementById("adminEventDetailsModal").addEventListener("click", function (event) {
-  if (event.target === this) {
-    toggleAdminModal("adminEventDetailsModal", false);
-  }
-});
+document
+  .getElementById("adminEventDetailsModal")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      toggleAdminModal("adminEventDetailsModal", false);
+    }
+  });
 
 // Function to attach event listeners to Accept and Approved buttons
 function attachButtonListeners() {
-  document.querySelectorAll(".accept-button, .decline-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const eventId = button.getAttribute("data-event-id");
-      const eventName = button.getAttribute("data-event-name");
-      const newStatus = button.classList.contains("accept-button") ? "Approved" : "Declined";
-      
-      // First, get the event to retrieve ownerId
-      db.collection("events").doc(eventId).get().then((doc) => {
-        if (!doc.exists) {
-          console.error("No such event exists!");
-          return;
-        }
-        const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
+  document
+    .querySelectorAll(".accept-button, .decline-button")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const eventId = button.getAttribute("data-event-id");
+        const eventName = button.getAttribute("data-event-name");
+        const newStatus = button.classList.contains("accept-button")
+          ? "Approved"
+          : "Declined";
 
-        // Update event status
-        db.collection("events").doc(eventId).update({ event_status: newStatus }).then(() => {
-          console.log(`Event status updated to ${newStatus}`);
-          button.textContent = newStatus;
+        // First, get the event to retrieve ownerId
+        db.collection("events")
+          .doc(eventId)
+          .get()
+          .then((doc) => {
+            if (!doc.exists) {
+              console.error("No such event exists!");
+              return;
+            }
+            const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
 
-          // Fetch user and update their notifications
-          const userRef = db.collection("users").doc(ownerId);
-          db.runTransaction((transaction) => {
-            return transaction.get(userRef).then((userDoc) => {
-              if (!userDoc.exists) {
-                throw new Error("User does not exist!");
-              }
+            // Update event status
+            db.collection("events")
+              .doc(eventId)
+              .update({ event_status: newStatus })
+              .then(() => {
+                console.log(`Event status updated to ${newStatus}`);
+                button.textContent = newStatus;
 
-              // Get current notifications, add new one, and update
-              let notifications = userDoc.data().notifications || [];
-              notifications.push(`Your event "${eventName}" has been ${newStatus.toLowerCase()}.`);
-              transaction.update(userRef, { notifications: notifications });
-            });
-          }).then(() => {
-            console.log("User notification updated successfully.");
-          }).catch((error) => {
-            // console.error("Transaction failed: ", error);
+                // Fetch user and update their notifications
+                const userRef = db.collection("users").doc(ownerId);
+                db.runTransaction((transaction) => {
+                  return transaction.get(userRef).then((userDoc) => {
+                    if (!userDoc.exists) {
+                      throw new Error("User does not exist!");
+                    }
+
+                    // Get current notifications, add new one, and update
+                    let notifications = userDoc.data().notifications || [];
+                    notifications.push(
+                      `Your event "${eventName}" has been ${newStatus.toLowerCase()}.`
+                    );
+                    transaction.update(userRef, {
+                      notifications: notifications,
+                    });
+                  });
+                })
+                  .then(() => {
+                    console.log("User notification updated successfully.");
+                  })
+                  .catch((error) => {
+                    // console.error("Transaction failed: ", error);
+                  });
+
+                // Debugging: Check newStatus value
+                console.log("New Status:", newStatus);
+
+                // If the event is approved, assign a room based on location and capacity
+                if (newStatus === "Approved") {
+                  const eventLocation = doc.data().location;
+                  console.log("Event Location:", eventLocation); // Debugging line
+                  // Convert eventCapacity to a number using parseInt or parseFloat
+                  const eventCapacity = parseInt(doc.data().event_capacity, 10);
+                  console.log("Event Capacity:", eventCapacity); // Debugging line
+
+                  // Query the rooms collection for available rooms matching location and capacity
+                  db.collection("rooms")
+                    .where("Location", "==", eventLocation)
+                    .where("Capacity", ">=", eventCapacity)
+                    .orderBy("Capacity", "asc")
+                    .limit(1)
+                    .get()
+                    .then((roomSnapshot) => {
+                      if (!roomSnapshot.empty) {
+                        // If a room is found, assign it to the event
+                        const roomData = roomSnapshot.docs[0].data();
+                        const roomNumber = roomData["Room Number"];
+
+                        // Update the event with the assigned room
+                        db.collection("events")
+                          .doc(eventId)
+                          .update({ room: roomNumber })
+                          .then(() => {
+                            console.log(
+                              `Room assigned to event: ${roomNumber}`
+                            );
+                          })
+                          .catch((error) => {
+                            console.error(
+                              "Error assigning room to event: ",
+                              error
+                            );
+                          });
+                      } else {
+                        console.log("No available rooms matching criteria.");
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error fetching rooms: ", error);
+                    });
+                }
+              })
+              .catch((error) => {
+                console.error("Error updating event status: ", error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error fetching event details: ", error);
           });
-
-          // Debugging: Check newStatus value
-          console.log("New Status:", newStatus);
-
-          // If the event is approved, assign a room based on location and capacity
-          if (newStatus === "Approved") {
-            const eventLocation = doc.data().location;
-            console.log("Event Location:", eventLocation); // Debugging line
-            // Convert eventCapacity to a number using parseInt or parseFloat
-            const eventCapacity = parseInt(doc.data().event_capacity, 10);
-            console.log("Event Capacity:", eventCapacity); // Debugging line
-
-
-// Query the rooms collection for available rooms matching location and capacity
-db.collection("rooms")
-  .where("Location", "==", eventLocation)
-  .where("Capacity", ">=", eventCapacity)
-  .orderBy("Capacity", "asc")
-  .limit(1)
-  .get()
-  .then((roomSnapshot) => {
-    if (!roomSnapshot.empty) {
-      // If a room is found, assign it to the event
-      const roomData = roomSnapshot.docs[0].data();
-      const roomNumber = roomData["Room Number"];
-
-      // Update the event with the assigned room
-      db.collection("events")
-        .doc(eventId)
-        .update({ room: roomNumber })
-        .then(() => {
-          console.log(`Room assigned to event: ${roomNumber}`);
-        })
-        .catch((error) => {
-          console.error("Error assigning room to event: ", error);
-        });
-    } else {
-      console.log("No available rooms matching criteria.");
-    }
-  })
-  .catch((error) => {
-    console.error("Error fetching rooms: ", error);
-  });
-
-          }
-        }).catch((error) => {
-          console.error("Error updating event status: ", error);
-        });
-      }).catch((error) => {
-        console.error("Error fetching event details: ", error);
       });
     });
-  });
 }
 
+firebase.auth().onAuthStateChanged((user) => {
+  // Check if the current auth state is different from the last known auth state
+  const lastAuthState = sessionStorage.getItem("isLoggedIn") === "true";
+
+  if (user && !lastAuthState) {
+    console.log("User has just signed in", user);
+    sessionStorage.setItem("isLoggedIn", "true");
+    window.location.reload();
+  } else if (!user && lastAuthState) {
+    console.log("User has just signed out");
+    sessionStorage.setItem("isLoggedIn", "false");
+    window.location.reload();
+  } else {
+    // Update the current state but do not reload
+    console.log("No change in auth state");
+    sessionStorage.setItem("isLoggedIn", user ? "true" : "false");
+  }
+});
 
 function applyFilters2() {
   // Fetch the selected company name from the dropdown
-  const selectedCompany2 = document.getElementById("companySelect2").querySelector("select").value;
+  const selectedCompany2 = document
+    .getElementById("companySelect2")
+    .querySelector("select").value;
   // Get selected categories
-  const selectedCategories2 = Array.from(document.querySelectorAll('.category2-checkbox:checked')).map(checkbox => checkbox.value);
+  const selectedCategories2 = Array.from(
+    document.querySelectorAll(".category2-checkbox:checked")
+  ).map((checkbox) => checkbox.value);
 
-  const acceptEvents = document.getElementById('acceptEvents').checked;
-  const declineEvents = document.getElementById('DeclineEvents').checked;
+  const acceptEvents = document.getElementById("acceptEvents").checked;
+  const declineEvents = document.getElementById("DeclineEvents").checked;
 
   // Fetch events based on the selected company, categories, and checkboxes
-  db.collection("events").get().then((res) => {
-    let data = res.docs;
-    let htmlColumn1 = ``;
-    let htmlColumn2 = ``;
-    let index = 0;
-    data.forEach((d) => {
-      const eventId = d.id; // Get the event ID
+  db.collection("events")
+    .get()
+    .then((res) => {
+      let data = res.docs;
+      let htmlColumn1 = ``;
+      let htmlColumn2 = ``;
+      let index = 0;
+      data.forEach((d) => {
+        const eventId = d.id; // Get the event ID
 
-      // Determine the text to display on the button based on the event status
-      let buttonText1 = d.data().event_status === "Approved" ? "Approved" : "Accept";
-      let buttonText2 = d.data().event_status === "Declined" ? "Declined" : "Decline";
+        // Determine the text to display on the button based on the event status
+        let buttonText1 =
+          d.data().event_status === "Approved" ? "Approved" : "Accept";
+        let buttonText2 =
+          d.data().event_status === "Declined" ? "Declined" : "Decline";
 
-      // Check if the event matches the selected company, categories, and checkboxes
-      if (
-        (selectedCompany2 === '' || d.data().company_name === selectedCompany2) &&
-        (selectedCategories2.length === 0 || selectedCategories2.includes(d.data().event_category)) &&
-        ((acceptEvents && d.data().event_status === "Approved") || 
-        (declineEvents && d.data().event_status === "Declined") || 
-        (!acceptEvents && !declineEvents))
-      ) {
-        const boxHtml = `<div class="box">
+        // Check if the event matches the selected company, categories, and checkboxes
+        if (
+          (selectedCompany2 === "" ||
+            d.data().company_name === selectedCompany2) &&
+          (selectedCategories2.length === 0 ||
+            selectedCategories2.includes(d.data().event_category)) &&
+          ((acceptEvents && d.data().event_status === "Approved") ||
+            (declineEvents && d.data().event_status === "Declined") ||
+            (!acceptEvents && !declineEvents))
+        ) {
+          const boxHtml = `<div class="box">
           <div class="content">
             <!--Company name and logo-->
             <div class="media">
@@ -1055,29 +1356,29 @@ function applyFilters2() {
             </button>
           </div>
         </div>`;
-        if (index % 2 === 0) {
-          htmlColumn1 += boxHtml;
-        } else {
-          htmlColumn2 += boxHtml;
+          if (index % 2 === 0) {
+            htmlColumn1 += boxHtml;
+          } else {
+            htmlColumn2 += boxHtml;
+          }
+          index++;
         }
-        index++;
-      }
-    });
-    // Append HTML to the document
-    document.querySelector("#column1_events").innerHTML = htmlColumn1;
-    document.querySelector("#column2_events").innerHTML = htmlColumn2;
+      });
+      // Append HTML to the document
+      document.querySelector("#column1_events").innerHTML = htmlColumn1;
+      document.querySelector("#column2_events").innerHTML = htmlColumn2;
 
-    // Add event listeners to the buttons after they are added to the DOM
-    attachButtonListeners();
-  });
+      // Add event listeners to the buttons after they are added to the DOM
+      attachButtonListeners();
+    });
 }
 
 // Add event listener to the "Apply" button to trigger the applyFilters function
-document.getElementById("submitFilter2").addEventListener("click", applyFilters2);
+document
+  .getElementById("submitFilter2")
+  .addEventListener("click", applyFilters2);
 
 show_register_events();
-
-
 
 // calendar!!!
 // calendar functions

@@ -603,6 +603,26 @@
         background-color: white;
       }
 
+      .close {
+        cursor: pointer;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        color: #999; /* Light gray color, adjust as needed */
+      }
+
+      .close:hover {
+        color: #333; /* Darker gray on hover, adjust as needed */
+        text-decoration: none;
+      }
+
+      .close:before {
+        content: "\00d7"; /* Unicode character for multiplication sign */
+        padding: 0 10px;
+        position: relative;
+        top: 1px;
+      }
+
       .close-button {
         float: right;
         font-weight: bold;
@@ -900,6 +920,7 @@
           </p>
         </div>
       </section>
+
       <section id="mainContent" class="section">
         <h1 class="title is-size-2 p-5">All Events</h1>
         <div class="columns">
@@ -1110,6 +1131,433 @@
                 <!--Second Column-->
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Edit Event Modal -->
+        <!-- Edit Event Modal -->
+        <div id="editEventModal" class="modal">
+          <div class="modal-content">
+            <button id="close-modal-button" class="close-button">X</button>
+
+            <!-- Registration form adapted for editing -->
+            <form id="editEventForm">
+              <!-- Employer Contact Number -->
+              <div class="form-group">
+                <label for="editEmployerContactNumber"
+                  >Employer Contact Number:</label
+                >
+                <input
+                  type="tel"
+                  id="editEmployerContactNumber"
+                  name="employerContactNumber"
+                  placeholder="123-456-7890"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Name -->
+              <div class="form-group">
+                <label for="editEventName">Event Name:</label>
+                <input
+                  type="text"
+                  id="editEventName"
+                  name="eventName"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Date -->
+              <div class="form-group">
+                <label for="editEventDate">Event Date:</label>
+                <input
+                  type="date"
+                  id="editEventDate"
+                  name="eventDate"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Overview -->
+              <div class="form-group">
+                <label for="editEventOverview"
+                  >Event Overview (max 60 words):</label
+                >
+                <input
+                  type="text"
+                  id="editEventOverview"
+                  name="eventOverview"
+                  placeholder="Up to 60 words"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Description -->
+              <div class="form-group">
+                <label for="editEventDescription">Event Description:</label>
+                <textarea
+                  id="editEventDescription"
+                  name="eventDescription"
+                  rows="7"
+                  cols="50"
+                  style="width: 100%; padding: 1%; font-size: 15px"
+                ></textarea>
+              </div>
+
+              <!-- Event Category -->
+              <div class="form-group">
+                <label for="editEventCategory">Event Category:</label>
+                <select
+                  id="editEventCategory"
+                  name="eventCategory"
+                  style="font-size: 15px"
+                >
+                  <option value="Hiring">Hiring</option>
+                  <option value="Office Hour">Office Hour</option>
+                  <option value="Networking">Networking</option>
+                  <option value="Info Sessions">Info Sessions</option>
+                </select>
+              </div>
+
+              <!-- Location and Medium -->
+              <div style="display: flex; justify-content: space-between">
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editLocation">Location:</label>
+                  <select
+                    id="editLocation"
+                    name="location"
+                    style="width: 100%; font-size: 15px"
+                  >
+                    <option value="Grainger Hall">Grainger Hall</option>
+                    <option value="The Pyle Center">The Pyle Center</option>
+                    <option value="Union South">Union South</option>
+                    <option value="Memorial Union">Memorial Union</option>
+                  </select>
+                </div>
+
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editEventMedium">Medium:</label>
+                  <select
+                    id="editEventMedium"
+                    name="medium"
+                    style="width: 100%; font-size: 15px"
+                  >
+                    <option value="In-Person">In-Person</option>
+                    <option value="Virtual">Virtual</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editEventCapacity">Event Capacity:</label>
+                  <input
+                    type="number"
+                    id="editEventCapacity"
+                    name="eventCapacity"
+                    style="width: 100%; font-size: 15px"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 20px;
+                "
+              >
+                <div>
+                  <label>Beverages:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input type="checkbox" name="beverages" value="tea" />
+                        Tea</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="coffee"
+                        />
+                        Coffee</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="water"
+                        />
+                        Water</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="cold-drinks"
+                        />
+                        Cold Drinks</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="juice"
+                        />
+                        Juice</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Meals:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="pizza" />
+                        Pizza</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="burritos" />
+                        Burritos</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="salads" />
+                        Salads</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="meals"
+                          value="cut-fruit"
+                        />
+                        Cut Fruit</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="sushi" />
+                        Sushi</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Snacks:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="choco-chip-cookies"
+                        />
+                        Choco Chip Cookies</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="crackers-and-cheese"
+                        />
+                        Crackers and Cheese</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="cupcakes-and-donuts"
+                        />
+                        Cupcakes/Donuts</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="candy-and-chocolate"
+                        />
+                        Candy
+                      </label>
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="potato-chips"
+                        />
+                        Potato Chips</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Disposables:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="beverage-napkins"
+                        />
+                        Beverage Napkins</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="cutlery-and-napkin-kits"
+                        />
+                        Cutlery & Napkin
+                      </label>
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="disposable-tablecloth"
+                        />
+                        Tablecloth</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="small-plates"
+                        />
+                        Small Plates (6")</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="large-plates"
+                        />
+                        Large Plates (10")</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="serving-utensils-serving-spoons"
+                        />
+                        Serving Spoons</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="eventCapacity">Seating Arrangement:</label>
+                <div class="seating-choice-container">
+                  <!-- Seating choice 1 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement1"
+                      name="seatingArrangement"
+                      value="to8"
+                    />
+                    <img src="Image/tables of 8.png" alt="Tables of 8" />
+                    <span>Tables of 8</span>
+                  </label>
+
+                  <!-- Seating choice 2 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement2"
+                      name="seatingArrangement"
+                      value="ushape"
+                    />
+                    <img src="Image/U-shape.png" alt="U-shape" />
+                    <span>U-shape</span>
+                  </label>
+
+                  <!-- Seating choice 3 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement3"
+                      name="seatingArrangement"
+                      value="theater"
+                    />
+                    <img src="Image/theater.png" alt="Theater" />
+                    <span>Theater</span>
+                  </label>
+
+                  <!-- Seating choice 4 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement4"
+                      name="seatingArrangement"
+                      value="classroom"
+                      required
+                    />
+                    <img src="Image/classroom.png" alt="Classroom" />
+                    <span>Classroom</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
           </div>
         </div>
       </section>
@@ -1690,7 +2138,7 @@
           <!-- Event Details Modal -->
           <div id="adminEventDetailsModal" class="modal">
             <div class="modal-background-ea"></div>
-            <div class="modal-content-ea">
+            <div class="modal-content-ea p-4">
               <!-- Content to show event details -->
               <p>
                 <strong>Event:</strong> <span id="modalEventName-ea"></span>
@@ -1896,6 +2344,7 @@
             placeholder="Last Name"
           />
           <div>&nbsp;</div>
+
           <button
             type="button"
             id="create_student_account"
