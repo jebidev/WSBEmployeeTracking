@@ -333,7 +333,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         // Display welcome message in the user_welcome div
         document.getElementById('user_welcome').textContent = welcomeMessage;
-
       } else {
         console.log("No additional user data found.");
         document.getElementById('user_welcome').textContent = "Welcome!";
@@ -342,7 +341,6 @@ firebase.auth().onAuthStateChanged(function(user) {
       console.error("Error fetching user data:", error);
       document.getElementById('user_welcome').textContent = "Welcome!";
     });
-
   } else {
     // No user is signed in.
     console.log("No user is logged in");
@@ -357,54 +355,73 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
     // Fetch user details from Firestore
+    const db = firebase.firestore();
     db.collection('users').doc(user.uid).get().then(doc => {
       if (doc.exists) {
         const userData = doc.data();
-
-        // Set welcome message
         let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
-
-        // Adjust navbar visibility based on user type
-        switch (userData.userType) {
-          case 'admin':
-            // Admins see everything
-            document.getElementById('registrationNavItem').style.display = 'block';
-            document.getElementById('EmployerEngagementNavItem').style.display = 'block';
-            document.getElementById('EventsRegisterNavItem').style.display = 'block';
-            break;
-          case 'employer':
-            // Employers see only registration and employer engagement
-            document.getElementById('registrationNavItem').style.display = 'block';
-            document.getElementById('EmployerEngagementNavItem').style.display = 'block';
-            document.getElementById('EventsRegisterNavItem').style.display = 'none'; // Hide Events Administration
-            break;
-          case 'student':
-          default:
-            // Students (and other unspecified user types) don't see these sections
-            document.getElementById('registrationNavItem').style.display = 'none';
-            document.getElementById('EmployerEngagementNavItem').style.display = 'none';
-            document.getElementById('EventsRegisterNavItem').style.display = 'none';
-            break;
-        }
-        
         configure_message_bar(welcomeMessage);
-
       } else {
         console.log("No additional user data found.");
-        // Default visibility when no user data found
-        document.getElementById('registrationNavItem').style.display = 'none';
-        document.getElementById('EmployerEngagementNavItem').style.display = 'none';
-        document.getElementById('EventsRegisterNavItem').style.display = 'none';
+        configure_message_bar("Welcome!");
       }
     }).catch(error => {
       console.error("Error fetching user data:", error);
+      configure_message_bar("Error retrieving user details. Please try again later.");
     });
   } else {
     // No user is signed in.
     configure_message_bar("Please sign in or register");
-    // Default visibility when no user is signed in
-    document.getElementById('registrationNavItem').style.display = 'none';
-    document.getElementById('EmployerEngagementNavItem').style.display = 'none';
-    document.getElementById('EventsRegisterNavItem').style.display = 'none';
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Hide all restricted elements initially
+  const registrationNavItem = document.getElementById('registrationNavItem');
+  const eventsAdminNavItem = document.getElementById('EventsRegisterNavItem');
+  registrationNavItem.style.display = 'none';
+  eventsAdminNavItem.style.display = 'none';
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      sign_in_button.classList.add('is-hidden');
+      sign_up_button.classList.add('is-hidden');
+      sign_out_button.classList.remove('is-hidden');
+
+      const db = firebase.firestore();
+      db.collection('users').doc(user.uid).get().then(doc => {
+        if (doc.exists) {
+          const userData = doc.data();
+          updateUIForUser(userData);
+        } else {
+          console.log("No user data available");
+        }
+      }).catch(error => {
+        console.error("Error fetching user data:", error);
+      });
+    } else {
+      // No user is signed in.
+      console.log("No user is logged in");
+      sign_in_button.classList.remove('is-hidden');
+      sign_up_button.classList.remove('is-hidden');
+      sign_out_button.classList.add('is-hidden');
+    }
+  });
+
+  function updateUIForUser(userData) {
+    let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
+    document.getElementById('user_welcome').textContent = welcomeMessage;
+
+    // Adjust visibility based on user role
+    switch (userData.userType) {
+      case 'admin':
+        registrationNavItem.style.display = ''; // Show for admins
+        eventsAdminNavItem.style.display = '';  // Show for admins
+        break;
+      case 'employer':
+        registrationNavItem.style.display = ''; // Show for employers
+        break;
+    }
   }
 });
