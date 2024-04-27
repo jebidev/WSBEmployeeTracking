@@ -297,23 +297,25 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   });
 
-  // Admin account creation
-  document.getElementById('create_admin_account').addEventListener('click', function() {
-      const email = document.getElementById('registration_email').value;
-      const password = document.getElementById('registration_password').value;
-      const firstName = document.getElementById('admin_first_name').value;
-      const lastName = document.getElementById('admin_last_name').value;
-      const accessCode = document.getElementById('admin_access_code').value;
-      const additionalData = {
-          userType: 'admin',
-          firstName: firstName,
-          lastName: lastName,
-          accessCode: accessCode
-      };
-      registerAccount(email, password, additionalData, 'regiswarning_admin', () => closeModal(registrationModalAdmin));
-  });
-});
+// Admin account creation
+document.getElementById('create_admin_account').addEventListener('click', function() {
+  const email = document.getElementById('registration_email').value;
+  const password = document.getElementById('registration_password').value;
+  const firstName = document.getElementById('admin_first_name').value;
+  const lastName = document.getElementById('admin_last_name').value;
+  const accessCode = document.getElementById('admin_access_code').value;
+  const additionalData = {
+      userType: 'admin',
+      firstName: firstName,
+      lastName: lastName
+  };
 
+  if (accessCode === "wsbadminaccount") {
+      registerAccount(email, password, additionalData, 'regiswarning_admin', () => closeModal(registrationModalAdmin));
+  } else {
+      displayWarning('regiswarning_admin', "Incorrect access code for admin registration.");
+  }
+});
 
 // Handle showing and hiding sign in buttons
 firebase.auth().onAuthStateChanged(function(user) {
