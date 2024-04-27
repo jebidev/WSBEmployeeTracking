@@ -2243,14 +2243,15 @@
         <!--JS for Calendar-->
       </section>
     </main>
-
+    
     <!-- Login Modal -->
     <div id="login_modal" class="modal">
       <div id="login_modal_bg" class="modal-background">
         <!-- Close button -->
-        <button id="close-modal-button" class="close-button">X</button>
+        <button id="close_modal_signin" class="close-button">X</button>
         <form id="loginform" class="form">
           <div class="field">
+            <div id="regiswarning_login" class="has-text-danger has-text-weight-bold has-text-centered"></div>
             <!-- Rest of the form -->
             <label class="label">Email</label>
             <input
@@ -2328,6 +2329,7 @@
         <!-- Registration Modal 2 Content -->
         <!-- Student Registration -->
         <form id="student_registration_form" class="form">
+          <div id="regiswarning_student" class="has-text-danger has-text-weight-bold has-text-centered"></div>
           <label class="label">First Name</label>
           <input
             class="input"
@@ -2363,6 +2365,7 @@
         <button id="close_modal_2_employer" class="close-button">X</button>
         <!-- Registration Modal 2 Content -->
         <form id="company_registration_form" class="form">
+          <div id="regiswarning_employer" class="has-text-danger has-text-weight-bold has-text-centered"></div>
           <label class="label">Company Name</label>
           <input
             class="input"
@@ -2385,13 +2388,14 @@
       </div>
     </div>
 
-    <!-- Registration Modal 2: Admin -->
+    <!-- Registration Modal 3: Admin -->
     <div id="registration_modal_2_admin" class="modal">
       <div class="modal-background">
         <!-- Close button -->
         <button id="close_modal_2_admin" class="close-button">X</button>
         <!-- Registration Modal 2 Content -->
         <form id="admin_registration_form" class="form">
+          <div id="regiswarning_admin" class="has-text-danger has-text-weight-bold has-text-centered"></div>
           <label class="label">First Name</label>
           <input
             class="input"

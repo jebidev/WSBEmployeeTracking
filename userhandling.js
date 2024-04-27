@@ -26,7 +26,7 @@ function configure_message_bar(message) {
 // Sign in modal elements
 const sign_in_button = document.getElementById('signinbutton');
 const login_modal = document.getElementById('login_modal');
-const close_modal_signin = document.getElementById('close-modal-button');
+const close_modal_signin = document.getElementById('close_modal_signin');
 const register = document.getElementById('register');
 const sign_up_button = document.getElementById('signupbutton');
 const sign_out_button = document.getElementById('signoutbutton');
@@ -80,48 +80,75 @@ close_registration.addEventListener('click', function() {
   registration_modal.classList.remove('is-active');
 });
 
-// // Register an account
-// document.getElementById('create_account_button').addEventListener('click', function() {
-//   const email = document.getElementById('registration_email').value;
-//   const password = document.getElementById('registration_password').value;
-//   const userType = document.getElementById('user_types').value; // Retrieve the user type from the select dropdown
+const modal_signin = document.getElementById('modal_signin');
 
-//   firebase.auth().createUserWithEmailAndPassword(email, password)
+// modal_signin.addEventListener('click', function() {
+//   const login_email = document.getElementById('login_email').value;
+//   const login_password = document.getElementById('login_password').value;
+//   firebase.auth().signInWithEmailAndPassword(login_email, login_password)
 //     .then((userCredential) => {
-//       console.log("User created:", userCredential.user);
-
-//       // Reference to Firestore
-//       const db = firebase.firestore();
-
-//       // Storing additional data in Firestore: Email and User Type
-//       db.collection('users').doc(userCredential.user.uid).set({
-//         email: email,
-//         userType: userType
-//       }).then(() => {
-//         console.log("User data with email and type stored in Firestore.");
-//       }).catch((error) => {
-//         console.error("Error storing user data in Firestore:", error.message);
-//       });
-
-//       // Close the registration modal
-//       registration_modal.classList.remove('is-active');
-//     })
-//     .catch((error) => {
-//       console.error("Error creating user:", error.message);
+//       console.log("User logged in:", userCredential.user);
+//       login_modal.classList.remove('is-active');
 //     });
 // });
 
-const modal_signin = document.getElementById('modal_signin');
+// modal_signin.addEventListener('click', function() {
+//   const login_email = document.getElementById('login_email').value;
+//   const login_password = document.getElementById('login_password').value;
+//   firebase.auth().signInWithEmailAndPassword(login_email, login_password)
+//       .then((userCredential) => {
+//           console.log("User logged in:", userCredential.user);
+//           login_modal.classList.remove('is-active');
+//       })
+//       .catch((error) => {
+//           console.error("Login failed:", error);
+//           displayWarning('regiswarning_login', "Login error: " + error.message);
+//       });
+// });
 
+// Utility function to display warnings with cleaner UI
+function displayWarning(elementId, message) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.textContent = message; // Use textContent for security and simplicity
+    element.style.display = 'block'; // Make sure the element is visible
+    setTimeout(() => {
+        element.style.display = 'none'; // Hide the message after 7 seconds
+    }, 7000);
+  }
+}
+
+// A function to translate Firebase error messages to user-friendly text
+function getFriendlyErrorMessage(errorCode) {
+  const errorMap = {
+    'auth/wrong-password': 'Incorrect password. Please try again.',
+    'auth/user-not-found': 'No user found with this email address.',
+    'auth/user-disabled': 'This account has been disabled.',
+    'auth/email-already-in-use': 'Email is already in use by another account.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/internal-error': 'Invalid login credentials.',
+    // Add more Firebase auth error codes as needed
+  };
+
+  return errorMap[errorCode] || 'An unexpected error occurred. Please try again.';
+}
+
+// Enhanced login functionality with cleaner error messaging for Firebase 8.3.1
 modal_signin.addEventListener('click', function() {
   const login_email = document.getElementById('login_email').value;
   const login_password = document.getElementById('login_password').value;
   firebase.auth().signInWithEmailAndPassword(login_email, login_password)
-    .then((userCredential) => {
-      console.log("User logged in:", userCredential.user);
+    .then(function(result) {
+      console.log("User logged in:", result.user);
       login_modal.classList.remove('is-active');
+    })
+    .catch(function(error) {
+      console.error("Login failed:", error);
+      const friendlyMessage = getFriendlyErrorMessage(error.code);
+      displayWarning('regiswarning_login', friendlyMessage);
     });
 });
+
 
 // Elements for user type selection and modal triggers
 const userTypesDropdown = document.getElementById('user_types');
@@ -175,9 +202,21 @@ closeAdminModal.addEventListener('click', function() {
     closeModal(registrationModalAdmin);
 });
 
+
+// Utility function to display warnings
+// function displayWarning(elementId, message) {
+//   const element = document.getElementById(elementId);
+//   if(element) {
+//       element.innerHTML = message;
+//       setTimeout(() => {
+//           element.innerHTML = ''; // Clear the message after 7 seconds
+//       }, 7000);
+//   }
+// }
+
 document.addEventListener('DOMContentLoaded', function() {
   // Firebase Authentication setup
-  function registerAccount(email, password, additionalData, closeModalCallback) {
+  function registerAccount(email, password, additionalData, warningElementId, closeModalCallback) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
               console.log("User created:", userCredential.user);
@@ -192,10 +231,12 @@ document.addEventListener('DOMContentLoaded', function() {
                   closeModalCallback();
               }).catch((error) => {
                   console.error("Error storing user data in Firestore:", error.message);
+                  displayWarning(warningElementId, "Firestore error: " + error.message);
               });
           })
           .catch((error) => {
               console.error("Error creating user:", error.message);
+              displayWarning(warningElementId, "Registration error: " + error.message);
           });
   }
 
@@ -210,66 +251,51 @@ document.addEventListener('DOMContentLoaded', function() {
           firstName: firstName,
           lastName: lastName
       };
-      registerAccount(email, password, additionalData, () => closeModal(registrationModalStudent));
+      registerAccount(email, password, additionalData, 'regiswarning_student', () => closeModal(registrationModalStudent));
   });
 
-  // // Employer account creation
-  // document.getElementById('create_employer_account').addEventListener('click', function() {
-  //     const email = document.getElementById('registration_email').value;
-  //     const password = document.getElementById('registration_password').value;
-  //     const companyName = document.getElementById('company_name').value;
-  //     const additionalData = {
-  //         userType: 'employer',
-  //         companyName: companyName
-  //         // Assuming file handling for 'company_logo' is managed elsewhere
-  //     };
-  //     registerAccount(email, password, additionalData, () => closeModal(registrationModalEmployer));
-
-  //     let company_logo = document.getElementById('company_logo').files[0];
-  // });
   // Employer account creation
-document.getElementById('create_employer_account').addEventListener('click', function() {
-  const email = document.getElementById('registration_email').value;
-  const password = document.getElementById('registration_password').value;
-  const companyName = document.getElementById('company_name').value;
-  const companyLogoFile = document.getElementById('company_logo').files[0]; // Get the file
+  document.getElementById('create_employer_account').addEventListener('click', function() {
+      const email = document.getElementById('registration_email').value;
+      const password = document.getElementById('registration_password').value;
+      const companyName = document.getElementById('company_name').value;
+      const companyLogoFile = document.getElementById('company_logo').files[0]; // Get the file
 
-  if (companyLogoFile) {
-      // Create a storage reference
-      const storageRef = firebase.storage().ref();
-      const logoRef = storageRef.child('company_logos/' + companyLogoFile.name);
+      if (companyLogoFile) {
+          // Create a storage reference
+          const storageRef = firebase.storage().ref();
+          const logoRef = storageRef.child('company_logos/' + companyLogoFile.name);
 
-      // Upload the file
-      const uploadTask = logoRef.put(companyLogoFile);
+          // Upload the file
+          const uploadTask = logoRef.put(companyLogoFile);
 
-      uploadTask.on('state_changed', 
-          function(snapshot) {
-              // Observe state change events such as progress, pause, and resume
-              // You can use these to show upload progress to users
-          }, function(error) {
-              // Handle unsuccessful uploads
-              console.error("Error uploading file: ", error);
-          }, function() {
-              // Handle successful uploads on complete
-              // For instance, get the download URL
-              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                  console.log('File available at', downloadURL);
-                  
-                  // Create user account after logo upload to ensure logo URL is ready to be saved
-                  const additionalData = {
-                      userType: 'employer',
-                      companyName: companyName,
-                      companyLogoUrl: downloadURL // Save logo URL in user's profile or wherever it's needed
-                  };
+          uploadTask.on('state_changed', 
+              function(snapshot) {
+                  // Observe state change events such as progress, pause, and resume
+              }, function(error) {
+                  // Handle unsuccessful uploads
+                  console.error("Error uploading file: ", error);
+                  displayWarning('regiswarning_employer', "Upload error: " + error.message);
+              }, function() {
+                  // Handle successful uploads on complete
+                  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                      console.log('File available at', downloadURL);
+                      
+                      // Create user account after logo upload to ensure logo URL is ready to be saved
+                      const additionalData = {
+                          userType: 'employer',
+                          companyName: companyName,
+                          companyLogoUrl: downloadURL
+                      };
 
-                  registerAccount(email, password, additionalData, () => closeModal(registrationModalEmployer));
+                      registerAccount(email, password, additionalData, 'regiswarning_employer', () => closeModal(registrationModalEmployer));
+                  });
               });
-          });
-  } else {
-      console.error("No file selected for upload");
-  }
-});
-
+      } else {
+          console.error("No file selected for upload");
+          displayWarning('regiswarning_employer', "No file selected for upload.");
+      }
+  });
 
   // Admin account creation
   document.getElementById('create_admin_account').addEventListener('click', function() {
@@ -284,9 +310,10 @@ document.getElementById('create_employer_account').addEventListener('click', fun
           lastName: lastName,
           accessCode: accessCode
       };
-      registerAccount(email, password, additionalData, () => closeModal(registrationModalAdmin));
+      registerAccount(email, password, additionalData, 'regiswarning_admin', () => closeModal(registrationModalAdmin));
   });
 });
+
 
 // Handle showing and hiding sign in buttons
 firebase.auth().onAuthStateChanged(function(user) {
