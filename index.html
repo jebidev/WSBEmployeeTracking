@@ -634,18 +634,36 @@
         background-color: red;
       }
 
-      navbar.custom-navbar {
+      /* ... (rest of your CSS) ... */
+
+      .navbar.custom-navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background-color: rgb(197, 35, 40); /* Ensure the navbar has the correct background color */
       }
 
       .navbar-end {
-        /* Pulls Sign In and Sign Up to the right */
-        margin-top: 10px;
         display: flex;
-        gap: 10px; /* Adjust gap as needed */
+        align-items: center;
+        gap: 10px; /* Adjust the gap as needed */
       }
+
+      .navbar-item {
+        display: flex;
+        align-items: center;
+        color: white; /* This will ensure text color is white */
+      }
+
+      /* This will vertically center the text with the buttons */
+      .navbar-end .has-text-white {
+        align-self: center;
+        margin-right: 10px; /* Adjust the right margin as needed */
+        white-space: nowrap; /* Prevents the text from wrapping */
+      }
+
+      /* ... (rest of your CSS) ... */
+
 
       .sub-navbar {
         text-align: center; /* This will center the sub-navbar items */
@@ -828,6 +846,7 @@
         >
           Sign Up
         </button>
+        <div id="user_welcome" class="has-text-white"></div>
         <button
           class="button sign-up-btn is-hidden"
           style="background-color: white; color: black"

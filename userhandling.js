@@ -317,13 +317,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Handle showing and hiding sign in buttons
 firebase.auth().onAuthStateChanged(function(user) {
-
   if (user) {
     // User is signed in.
     const userEmail = user.email; // Assuming the user has an email. Adjust according to your user model.
     sign_in_button.classList.add('is-hidden');
     sign_up_button.classList.add('is-hidden');
     sign_out_button.classList.remove('is-hidden');
+
+    // Fetch user details from Firestore
+    const db = firebase.firestore();
+    db.collection('users').doc(user.uid).get().then(doc => {
+      if (doc.exists) {
+        const userData = doc.data();
+        let welcomeMessage = `You are signed in as ${userData.firstName + " " + userData.lastName}`;
+
+        // Display welcome message in the user_welcome div
+        document.getElementById('user_welcome').textContent = welcomeMessage;
+
+      } else {
+        console.log("No additional user data found.");
+        document.getElementById('user_welcome').textContent = "Welcome!";
+      }
+    }).catch(error => {
+      console.error("Error fetching user data:", error);
+      document.getElementById('user_welcome').textContent = "Welcome!";
+    });
+
   } else {
     // No user is signed in.
     console.log("No user is logged in");
