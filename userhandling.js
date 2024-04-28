@@ -325,7 +325,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     sign_in_button.classList.add('is-hidden');
     sign_up_button.classList.add('is-hidden');
     sign_out_button.classList.remove('is-hidden');
-
     // Fetch user details from Firestore
     const db = firebase.firestore();
     db.collection('users').doc(user.uid).get().then(doc => {
@@ -345,15 +344,20 @@ firebase.auth().onAuthStateChanged(function(user) {
     });
   } else {
     // No user is signed in.
+    const registrationNavItem = document.getElementById('registrationNavItem');
+    const eventsAdminNavItem = document.getElementById('EventsRegisterNavItem');
     console.log("No user is logged in");
     sign_in_button.classList.remove('is-hidden');
     sign_up_button.classList.remove('is-hidden');
     sign_out_button.classList.add('is-hidden');
+    registrationNavItem.style.display = 'none';
+    eventsAdminNavItem.style.display = 'none';
   }
 });
 
 // Configuring the message bar
 firebase.auth().onAuthStateChanged(function(user) {
+  const registrationNavItem = document.getElementById('registrationNavItem');const eventsAdminNavItem = document.getElementById('EventsRegisterNavItem');
   if (user) {
     // User is signed in.
     // Fetch user details from Firestore
@@ -361,11 +365,21 @@ firebase.auth().onAuthStateChanged(function(user) {
     db.collection('users').doc(user.uid).get().then(doc => {
       if (doc.exists) {
         const userData = doc.data();
+        if (userData.userType === 'admin') {
+          registrationNavItem.style.display = ''; // Show for admins
+          eventsAdminNavItem.style.display = '';  // Show for admins
+        } else {
+          // Hide all restricted elements for other user types
+          registrationNavItem.style.display = 'none';
+          eventsAdminNavItem.style.display = 'none';
+        }
         let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
         configure_message_bar(welcomeMessage);
       } else {
         console.log("No additional user data found.");
         configure_message_bar("Welcome!");
+        registrationNavItem.style.display = '';
+        eventsAdminNavItem.style.display = 'none';
       }
     }).catch(error => {
       console.error("Error fetching user data:", error);
@@ -376,6 +390,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     configure_message_bar("Please sign in or register");
   }
 });
+
 
 document.addEventListener('DOMContentLoaded', function() {
   // Hide all restricted elements initially
@@ -395,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
       db.collection('users').doc(user.uid).get().then(doc => {
         if (doc.exists) {
           const userData = doc.data();
+          console.log(userData.userType)
           updateUIForUser(userData);
         } else {
           console.log("No user data available");
@@ -414,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateUIForUser(userData) {
     let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
     document.getElementById('user_welcome').textContent = welcomeMessage;
-
+    
     // Adjust visibility based on user role
     switch (userData.userType) {
       case 'admin':

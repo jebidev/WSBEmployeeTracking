@@ -8,8 +8,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="/path/to/animate.min.css" />
-    <script src="js/notification.js"></script>
+    <!-- <link rel="stylesheet" href="/path/to/animate.min.css" /> -->
+    <!-- <script src="js/notification.js"></script> -->
 
     <script
       src="https://kit.fontawesome.com/8a80b728dc.js"
@@ -1980,7 +1980,7 @@
                 <label class="seating-choice">
                   <input
                     type="radio"
-                    id="arrangement1"
+                    id="arrangement1_"
                     name="seatingArrangement"
                     value="to8"
                   />
@@ -1992,7 +1992,7 @@
                 <label class="seating-choice">
                   <input
                     type="radio"
-                    id="arrangement2"
+                    id="arrangement2_"
                     name="seatingArrangement"
                     value="ushape"
                   />
@@ -2004,7 +2004,7 @@
                 <label class="seating-choice">
                   <input
                     type="radio"
-                    id="arrangement3"
+                    id="arrangement3_"
                     name="seatingArrangement"
                     value="theater"
                   />
@@ -2016,7 +2016,7 @@
                 <label class="seating-choice">
                   <input
                     type="radio"
-                    id="arrangement4"
+                    id="arrangement4_"
                     name="seatingArrangement"
                     value="classroom"
                     required
@@ -2682,7 +2682,6 @@
       document
         .getElementById("calendarNavItem")
         .addEventListener("click", function (event) {
-          console.log("HIIII cali");
           event.preventDefault();
           document.getElementById("openingSection").style.display = "none";
           document.getElementById("mainContent").style.display = "none";
