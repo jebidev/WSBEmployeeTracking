@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employer Tracking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <!-- <link rel="stylesheet" href="/path/to/animate.min.css" /> -->
+    <!-- <script src="js/notification.js"></script> -->
+
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script>
+      new Cleave("#employerContactNumber", {
+        phone: true,
+        phoneRegionCode: "US",
+      });
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+
+    <style>
+      .custom-navbar {
+        padding: 10px;
+        height: 80px;
+      }
+
+      .custom-navbar .navbar-brand img {
+        max-height: 70px;
+      }
+      /* Jump Animation */
+      @keyframes tinyJump {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      .jump {
+        animation: tinyJump 0.5s;
+      }
+
+      .calendar_button {
+        border: 1px solid rgb(197, 35, 40); /* Adds a red border */
+        background-color: rgb(197, 35, 40);
+        cursor: pointer;
+        font-size: 0.75em; /* Makes the icon/text smaller */
+        color: rgb(197, 35, 40); /* Text/icon color */
+        padding: 5px 10px; /* Smaller padding */
+        border-radius: 5px; /* Optional: adds rounded corners */
+      }
+
+      /* Icon Colors */
+      .icon-white {
+        color: white;
+      }
+
+      .icon-red {
+        color: rgb(197, 35, 40);
+      }
+
+      .save-event-button {
+        background-color: black; /* Original color */
+        border-color: black; /* Updated border color to black */
+        border: 1.5px solid rgb(140, 138, 138) !important; /* Ensure border width, style, and color are set */
+        border-radius: 50%;
+        color: white; /* Original text color */
+        transition: background-color 0.3s; /* Smooth transition for the background color */
+      }
+
+      .register-button {
+        background-color: rgb(23, 66, 135);
+      }
+
+      .background-image-home {
+        display: flex;
+        align-items: center; /* This will vertically center your content */
+        justify-content: center; /* This will horizontally center your content */
+        background-image: url("Image/Business Building.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 70vh; /* Adjust height as needed */
+      }
+
+      #registrationOpener {
+        display: none;
+      }
+      #registrationContainer {
+        display: none;
+      }
+      #eventsRegisterContainer {
+        display: none;
+      }
+      #eventsRegisterOpener {
+        display: none;
+      }
+      #employerEngagementOpener {
+        display: none;
+      }
+      #employerEngagementContainer {
+        display: none;
+      }
+      #calendarOpener {
+        display: none;
+      }
+      #calendarContainer {
+        display: none;
+      }
+
+      .background-image-registration {
+        display: flex;
+        align-items: center; /* This will vertically center your content */
+        justify-content: center; /* This will horizontally center your content */
+        background-image: url("Image/Career Fair.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 40vh; /* Adjust height as needed */
+      }
+
+      .text-container {
+        position: absolute;
+        top: 21%;
+        left: 50%; /* Set left position to 50% */
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center horizontally and vertically */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Adjust the alpha value (0.6) for transparency */
+        min-height: 10vh;
+        width: calc(70% - 1in);
+      }
+      .main-content {
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #dddddd;
+      }
+      button {
+        padding: 5px 15px;
+        margin: 5px;
+      }
+
+      .form-container {
+        background-color: #f9f9f9;
+        padding: 30px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #666;
+        font-weight: bold;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="date"],
+      .form-group input[type="number"],
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Added for better box sizing */
+      }
+
+      .form-group input[type="checkbox"] {
+        margin-right: 10px;
+      }
+
+      .form-group label.checkbox-label {
+        display: inline-block;
+        margin-right: 20px;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .submit-btn {
+        background-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .submit-btn:hover {
+        background-color: rgb(197, 35, 40);
+        transition: background-color 0.3s;
+      }
+
+      .seating-choice-container {
+        display: flex;
+        justify-content: center; /* Aligns items horizontally at the center */
+        flex-wrap: wrap; /* Allows items to wrap onto the next line */
+      }
+
+      .seating-choice {
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 10px;
+        text-align: center; /* Aligns text to the center */
+        cursor: pointer;
+        display: flex; /* Makes it a flex container */
+        flex-direction: column; /* Stacks items vertically */
+        justify-content: center; /* Aligns items vertically at the center */
+        align-items: center; /* Aligns items horizontally at the center */
+        flex: 1; /* Ensures that each choice takes equal space */
+      }
+
+      .is-rounded {
+        border-radius: 50%;
+      }
+      .seating-choice img {
+        width: 250px; /* Fixed width for all images */
+        max-height: 100px; /* Fixed height for all images */
+        object-fit: contain; /* Keeps the aspect ratio of the image */
+        margin-bottom: 10px; /* Space between the image and the text below it */
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      /* Adjust the width and height as necessary to fit your design */
+
+      .form-groups-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows items to wrap if the container is too narrow */
+        gap: 20px; /* Optional: adds some space between the form groups */
+      }
+
+      .form-group {
+        flex: 1; /* Each form group will grow to fill the available space */
+        min-width: 250px; /* Prevents the form groups from becoming too narrow */
+      }
+
+      .seating-choice img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .seating-choice.selected {
+        border-color: rgb(
+          197,
+          35,
+          40
+        ); /* Adjust the color to match the screenshot */
+      }
+
+      /* Hide the actual radio button */
+      .seating-choice input[type="radio"] {
+        display: none;
+      }
+
+      .seating-choice label {
+        display: block;
+        cursor: pointer;
+      }
+
+      .background-image-eventsReg {
+        background-image: url("Image/school area.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 40vh;
+      }
+      .background-image-engage {
+        background-image: url("Image/events.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 40vh;
+      }
+
+      .background-image-calendar {
+        background-image: url("Image/meeting room.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 40vh;
+      }
+      .icon-white {
+        color: white;
+      }
+
+      .icon-red {
+        color: rgb(197, 35, 40);
+      }
+
+      /*CSS for Calendar*/
+      .calendar_body {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Ensure items are vertically centered */
+        margin-top: 50px;
+        background-color: #f9f9f9;
+        width: 100%; /* Ensure the body takes full width */
+      }
+
+      #container {
+        width: 770px; /* Or any specific width */
+        margin: auto; /* This centers the container */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center-align the content */
+      }
+
+      .figure-img-circle {
+        display: block;
+        width: 100px; /* Set the width as needed */
+        height: 100px; /* Set the height to be the same as the width for a perfect circle */
+        border-radius: 50%; /* This creates the circle shape */
+        overflow: hidden; /* Ensures no part of the image spills outside the border */
+        border: 2px solid #fff; /* Optional: adds a white border around the image */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+      }
+
+      .figure-img-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the area without distorting ratio */
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 50;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-ea {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+      .modal-content-ea {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .modal-close-ea {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+      }
+
+      .calendar_button {
+        width: 75px;
+        cursor: pointer;
+        box-shadow: 0px 0px 2px gray;
+        border: none;
+        outline: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+      }
+      #header {
+        padding: 10px;
+        color: #d36c6c;
+        font-size: 26px;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: space-between;
+      }
+      #header button {
+        background-color: #92a1d1;
+      }
+      #container {
+        width: 770px;
+      }
+      #weekdays {
+        width: 100%;
+        display: flex;
+        color: #247ba0;
+      }
+      #weekdays div {
+        width: 100px;
+        margin: 3%;
+      }
+      #calendar {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .day {
+        width: 100px;
+        padding: 10px;
+        height: 100px;
+        cursor: pointer;
+        box-sizing: border-box;
+        background-color: white;
+        margin: 5px;
+        box-shadow: 0px 0px 3px #cbd4c2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .day:hover {
+        background-color: #e8faed;
+      }
+
+      .day + #currentDay {
+        background-color: #e8f4fa;
+      }
+      .event {
+        font-size: 10px;
+        padding: 3px;
+        background-color: rgb(197, 35, 40);
+        color: white;
+        border-radius: 5px;
+        max-height: 55px;
+        overflow: hidden;
+      }
+
+      .notification-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        padding: 15px 30px;
+        color: #fff;
+        background-color: black;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.5s;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .notification-content {
+        background: white;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        max-width: 600px;
+        margin: 10% auto;
+        text-align: center;
+        color: rgb(197, 35, 40);
+      }
+      .padding {
+        cursor: default !important;
+        background-color: #fffcff !important;
+        box-shadow: none !important;
+      }
+      #newEventModal,
+      #deleteEventModal {
+        display: none;
+        z-index: 20;
+        padding: 25px;
+        background-color: #e8f4fa;
+        box-shadow: 0px 0px 3px black;
+        border-radius: 5px;
+        width: 350px;
+        top: 100px;
+        left: calc(50% - 175px);
+        position: absolute;
+        font-family: sans-serif;
+      }
+      #eventTitleInput {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 25px;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 3px gray;
+      }
+      #eventTitleInput.error {
+        border: 2px solid rgb(197, 35, 40);
+      }
+      #cancelButton,
+      #deleteButton {
+        background-color: #d36c6c;
+      }
+      #saveButton,
+      #closeButton {
+        background-color: black;
+      }
+      #eventText {
+        font-size: 14px;
+      }
+      #modalBackDrop {
+        display: none;
+        top: 0px;
+        left: 0px;
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .modal-background {
+        padding: 200px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1900;
+      }
+
+      .form {
+        padding: 15px;
+        background-color: white;
+      }
+
+      .close {
+        cursor: pointer;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        color: #999; /* Light gray color, adjust as needed */
+      }
+
+      .close:hover {
+        color: #333; /* Darker gray on hover, adjust as needed */
+        text-decoration: none;
+      }
+
+      .close:before {
+        content: "\00d7"; /* Unicode character for multiplication sign */
+        padding: 0 10px;
+        position: relative;
+        top: 1px;
+      }
+
+      .close-button {
+        float: right;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-button:hover {
+        color: white;
+        background-color: red;
+      }
+
+      /* ... (rest of your CSS) ... */
+
+      .navbar.custom-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(197, 35, 40); /* Ensure the navbar has the correct background color */
+      }
+
+      .navbar-end {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Adjust the gap as needed */
+      }
+
+      .navbar-item {
+        display: flex;
+        align-items: center;
+        color: white; /* This will ensure text color is white */
+      }
+
+      /* This will vertically center the text with the buttons */
+      .navbar-end .has-text-white {
+        align-self: center;
+        margin-right: 10px; /* Adjust the right margin as needed */
+        white-space: nowrap; /* Prevents the text from wrapping */
+      }
+
+      /* ... (rest of your CSS) ... */
+
+
+      .sub-navbar {
+        text-align: center; /* This will center the sub-navbar items */
+      }
+
+      .sub-navbar-menu {
+        display: inline-block; /* Allows the menu to size according to its content */
+        margin: 0 auto; /* This will center the menu when its parent is text-aligned center */
+      }
+
+      .navbar-menu {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .navbar-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .sub-navbar-item {
+        margin: 0 15px; /* Gives space between the sub-navbar items */
+      }
+
+      .button {
+        /* Additional styles for buttons if needed */
+        background-color: rgba(197, 35, 40, 255);
+        color: white;
+      }
+
+      .navbar-item:focus,
+      .navbar-item span:focus {
+        outline: none;
+        background: none;
+      }
+
+      body nav .navbar-item .notification-dropdown {
+        position: absolute;
+        background-color: white;
+        box-shadow: 16px 16px 16px 16px rgb(0, 0, 0, 0.2);
+        z-index: 1000; /* Very high to ensure it's on top */
+        right: 0;
+        width: 300px;
+        border-radius: 4px;
+        padding: 10px;
+        top: 100%;
+        display: block;
+      }
+
+      .notification-dropdown ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .notification-dropdown li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .notification-dropdown li:last-child {
+        border-bottom: none;
+      }
+
+      .notification-dropdown li a {
+        text-decoration: none;
+        color: black;
+        display: block;
+      }
+
+      #eventDetailsModal {
+        padding-top: 120px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #adminEventDetailsModal {
+        padding-top: 80px;
+        font-family: "Arial", sans-serif; /* Or any font-family of your choice */
+        color: #333; /* Adjust text color for readability */
+      }
+
+      #eventDetailsModal .modal-content {
+        background: #fff; /* White background for the content */
+        padding: 20px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 600px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      .modal-content-ea {
+        height: 303.3px;
+        background: #fff; /* White background for the content */
+        padding: 0px; /* Padding inside the content box */
+        border-radius: 8px; /* Rounded corners for the modal */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        max-width: 800px; /* Max width for the modal */
+        margin: auto; /* Center the modal */
+      }
+
+      #eventDetailsModal p {
+        line-height: 1.6; /* Spacing between lines */
+        margin-bottom: 15px; /* Spacing between paragraphs */
+      }
+
+      #eventDetailsModal strong {
+        color: #000; /* Bold text color for labels */
+      }
+
+      .modal-close-ea {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close {
+        color: #fff; /* White text for the close button */
+        background-color: #333; /* Dark background for the close button */
+        border-radius: 50%; /* Rounded shape for the close button */
+        position: absolute; /* Position the close button absolutely */
+        top: 10px; /* Distance from the top of the modal */
+        right: 10px; /* Distance from the right of the modal */
+        font-size: 24px; /* Size of the close button */
+      }
+      .modal-close-ea:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+
+      .modal-close:hover {
+        background-color: #555; /* Darker background on hover */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+      #navbarmenu_id {
+        align-items: center; /* Align items vertically */
+        justify-content: center; /* Center items horizontally */
+        display: flex; /* Use flexbox for alignment */
+        padding: 0; /* Reset any padding */
+        margin: 0; /* Reset any margin */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- Main Top Navbar -->
+    <nav
+      class="navbar custom-navbar"
+      style="background-color: rgb(197, 35, 40)"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="Image/logo.jpeg" class="d-inline-block align-top" alt="" />
+          <span
+            class="ml-2 is-size-3"
+            id="homeNavItem"
+            style="font-weight: 600; color: white"
+            >Employer Tracking</span
+          >
+        </a>
+      </div>
+
+      <!-- Navbar End for Sign In and Sign Up Buttons -->
+      <div class="navbar-end has-dropdown">
+        <button
+          class="button sign-in-btn is-warning"
+          style="background-color: white; color: black"
+          id="signinbutton"
+        >
+          Sign In
+        </button>
+        <button
+          class="button sign-up-btn"
+          style="background-color: white; color: black"
+          id="signupbutton"
+        >
+          Sign Up
+        </button>
+        <div id="user_welcome" class="has-text-white"></div>
+        <button
+          class="button sign-up-btn is-hidden"
+          style="background-color: white; color: black"
+          id="signoutbutton"
+        >
+          Sign Out
+        </button>
+      </div>
+    </nav>
+    <!-- Message Bars -->
+    <div id="message_bar" class="has-text-centered"></div>
+    <!-- Sub-navbar -->
+    <nav
+      class="navbar custom-subnavbar"
+      role="navigation"
+      aria-label="secondary navigation"
+    >
+      <div
+        class="navbar-menu"
+        style="display: flex; justify-content: center; width: 100%"
+      >
+        <a class="navbar-item">
+          <span class="ml-2 is-size-5" style="color: black" id="Home2"
+            >Home</span
+          >
+        </a>
+        <a class="navbar-item" id="registrationNavItem">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            >Registration Form</span
+          >
+        </a>
+        <a class="navbar-item" id="calendarNavItem">
+          <span class="ml-2 is-size-5" style="color: black" 
+            >Calendar</span
+          >
+        </a>
+        <a class="navbar-item" id="EventsRegisterNavItem">
+          <span
+            class="ml-2 is-size-5"
+            style="color: black"
+            >Events Administration</span
+          >
+        </a>
+        <a class="navbar-item is-pulled-right">
+          <span class="icon">
+            <i
+              class="fa fa-bell"
+              style="color: black; font-size: 1.5em"
+              id="notificationBell"
+            ></i>
+          </span>
+          <div class="notification-dropdown" style="display: none">
+            <ul id="notificationList" style="color: black"></ul>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main>
+      <section class="section background-image-home" id="openingSection">
+        <div
+          class="pl-6 p-5"
+          style="background-color: rgba(223, 223, 223, 0.65)"
+        >
+          <h1
+            class="title is-size-1 has-text-centered mb-6"
+            style="color: black"
+          >
+            Welcome to Employer Tracking!
+          </h1>
+          <p class="subtitle" style="color: black">
+            Welcome to our School of Business employer tracking platform, where
+            ambition meets opportunity! Employers can effortlessly register
+            their forthcoming events, spanning from career expos to networking
+            sessions, offering students a portal to explore diverse professional
+            pathways.
+          </p>
+          <p class="subtitle" style="color: black">
+            Meanwhile, students can peruse a myriad of events tailored to their
+            interests and career aspirations, easily enrolling to participate
+            and engage with potential employers.
+          </p>
+          <p class="subtitle" style="color: black">
+            Join us today and unlock a realm of possibilities!
+          </p>
+        </div>
+      </section>
+
+      <section id="mainContent" class="section">
+        <h1 class="title is-size-2 p-5">All Events</h1>
+        <div class="columns">
+          <!-- Filter Sidebar -->
+          <div class="column is-3">
+            <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
+              <h1 class="is-size-3 has-text-white">Filter</h1>
+              <form action="#" id="filterForm">
+                <!-- Checkbox for saved events -->
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="savedEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="savedEvents" class="has-text-white"
+                    >Events You Saved</label
+                  >
+                </div>
+
+                <!-- Search -->
+                <div class="field">
+                  <label class="label has-text-white">Search</label>
+                  <div class="control has-icons-left">
+                    <input type="text" class="input" placeholder="Search..." />
+                    <span class="icon is-left">
+                      <i class="fas fa-search"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Dropdown for company names -->
+                <div class="field">
+                  <label class="label has-text-white">Company</label>
+                  <div class="control">
+                    <div class="select is-fullwidth" id="companySelect">
+                      <select>
+                        <option value="">Select a company...</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Checkbox for event category -->
+                <div class="field">
+                  <label class="label has-text-white">Category</label>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="hiringCheckbox"
+                            value="Hiring"
+                          />
+                          <span class="has-text-white">Hiring</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="officeHourCheckbox"
+                            value="Office Hour"
+                          />
+                          <span class="has-text-white">Office Hour</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="networkingCheckbox"
+                            value="Networking"
+                          />
+                          <span class="has-text-white">Networking</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category-checkbox"
+                            id="infoSessionsCheckbox"
+                            value="Info Sessions"
+                          />
+                          <span class="has-text-white">Info Sessions </span>
+                        </label>
+                      </div>
+                      <!-- Add more checkboxes for different event types -->
+                    </div>
+                  </div>
+                </div>
+
+                <!--Checkbox for Medium-->
+                <div class="field">
+                  <label class="label has-text-white">Medium</label>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="virtualCheckbox"
+                            value="Virtual"
+                          />
+                          <span class="has-text-white">Virtual</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="inpersonCheckbox"
+                            value="In-Person"
+                          />
+                          <span class="has-text-white">In-Person</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="medium-checkbox"
+                            id="hybridCheckbox"
+                            value="Hybrid"
+                          />
+                          <span class="has-text-white">Hybrid</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date picker -->
+                <div class="field">
+                  <label class="label has-text-white">Date</label>
+                  <div class="control">
+                    <input type="date" class="input" />
+                  </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="field">
+                  <div class="control">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Events Content -->
+
+          <!-- Event Details Modal -->
+          <div id="eventDetailsModal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <!-- Content to show event details -->
+              <p><strong>Event:</strong> <span id="modalEventName"></span></p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity"></span>
+              </p>
+
+              <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium"></span>
+              </p>
+              <p>
+                <strong>Food Included:</strong>
+                <span id="modalFoodIncluded"></span>
+              </p>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+          </div>
+
+          <div class="column is-9" id="box-container">
+            <!-- Boxes will be dynamically generated here -->
+            <div class="columns">
+              <div class="column is-6" id="column1">
+                <!--First Column-->
+              </div>
+              <div class="column is-6" id="column2">
+                <!--Second Column-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Event Modal -->
+        <!-- Edit Event Modal -->
+        <div id="editEventModal" class="modal">
+          <div class="modal-content">
+            <button id="close-modal-button" class="close-button">X</button>
+
+            <!-- Registration form adapted for editing -->
+            <form id="editEventForm">
+              <!-- Employer Contact Number -->
+              <div class="form-group">
+                <label for="editEmployerContactNumber"
+                  >Employer Contact Number:</label
+                >
+                <input
+                  type="tel"
+                  id="editEmployerContactNumber"
+                  name="employerContactNumber"
+                  placeholder="123-456-7890"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Name -->
+              <div class="form-group">
+                <label for="editEventName">Event Name:</label>
+                <input
+                  type="text"
+                  id="editEventName"
+                  name="eventName"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Date -->
+              <div class="form-group">
+                <label for="editEventDate">Event Date:</label>
+                <input
+                  type="date"
+                  id="editEventDate"
+                  name="eventDate"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Overview -->
+              <div class="form-group">
+                <label for="editEventOverview"
+                  >Event Overview (max 60 words):</label
+                >
+                <input
+                  type="text"
+                  id="editEventOverview"
+                  name="eventOverview"
+                  placeholder="Up to 60 words"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <!-- Event Description -->
+              <div class="form-group">
+                <label for="editEventDescription">Event Description:</label>
+                <textarea
+                  id="editEventDescription"
+                  name="eventDescription"
+                  rows="7"
+                  cols="50"
+                  style="width: 100%; padding: 1%; font-size: 15px"
+                ></textarea>
+              </div>
+
+              <!-- Event Category -->
+              <div class="form-group">
+                <label for="editEventCategory">Event Category:</label>
+                <select
+                  id="editEventCategory"
+                  name="eventCategory"
+                  style="font-size: 15px"
+                >
+                  <option value="Hiring">Hiring</option>
+                  <option value="Office Hour">Office Hour</option>
+                  <option value="Networking">Networking</option>
+                  <option value="Info Sessions">Info Sessions</option>
+                </select>
+              </div>
+
+              <!-- Location and Medium -->
+              <div style="display: flex; justify-content: space-between">
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editLocation">Location:</label>
+                  <select
+                    id="editLocation"
+                    name="location"
+                    style="width: 100%; font-size: 15px"
+                  >
+                    <option value="Grainger Hall">Grainger Hall</option>
+                    <option value="The Pyle Center">The Pyle Center</option>
+                    <option value="Union South">Union South</option>
+                    <option value="Memorial Union">Memorial Union</option>
+                  </select>
+                </div>
+
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editEventMedium">Medium:</label>
+                  <select
+                    id="editEventMedium"
+                    name="medium"
+                    style="width: 100%; font-size: 15px"
+                  >
+                    <option value="In-Person">In-Person</option>
+                    <option value="Virtual">Virtual</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+
+                <div
+                  class="form-group"
+                  style="flex-grow: 1; margin-right: 10px"
+                >
+                  <label for="editEventCapacity">Event Capacity:</label>
+                  <input
+                    type="number"
+                    id="editEventCapacity"
+                    name="eventCapacity"
+                    style="width: 100%; font-size: 15px"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 20px;
+                "
+              >
+                <div>
+                  <label>Beverages:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input type="checkbox" name="beverages" value="tea" />
+                        Tea</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="coffee"
+                        />
+                        Coffee</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="water"
+                        />
+                        Water</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="cold-drinks"
+                        />
+                        Cold Drinks</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="beverages"
+                          value="juice"
+                        />
+                        Juice</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Meals:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="pizza" />
+                        Pizza</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="burritos" />
+                        Burritos</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="salads" />
+                        Salads</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="meals"
+                          value="cut-fruit"
+                        />
+                        Cut Fruit</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input type="checkbox" name="meals" value="sushi" />
+                        Sushi</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Snacks:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="choco-chip-cookies"
+                        />
+                        Choco Chip Cookies</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="crackers-and-cheese"
+                        />
+                        Crackers and Cheese</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="cupcakes-and-donuts"
+                        />
+                        Cupcakes/Donuts</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="candy-and-chocolate"
+                        />
+                        Candy
+                      </label>
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="snacks"
+                          value="potato-chips"
+                        />
+                        Potato Chips</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <label>Disposables:</label>
+                  <ul
+                    class="checkbox-group"
+                    style="list-style-type: none; padding-left: 0"
+                  >
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="beverage-napkins"
+                        />
+                        Beverage Napkins</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="cutlery-and-napkin-kits"
+                        />
+                        Cutlery & Napkin
+                      </label>
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="disposable-tablecloth"
+                        />
+                        Tablecloth</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="small-plates"
+                        />
+                        Small Plates (6")</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="large-plates"
+                        />
+                        Large Plates (10")</label
+                      >
+                    </li>
+                    <li>
+                      <label
+                        ><input
+                          type="checkbox"
+                          name="disposables"
+                          value="serving-utensils-serving-spoons"
+                        />
+                        Serving Spoons</label
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="eventCapacity">Seating Arrangement:</label>
+                <div class="seating-choice-container">
+                  <!-- Seating choice 1 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement1"
+                      name="seatingArrangement"
+                      value="to8"
+                    />
+                    <img src="Image/tables of 8.png" alt="Tables of 8" />
+                    <span>Tables of 8</span>
+                  </label>
+
+                  <!-- Seating choice 2 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement2"
+                      name="seatingArrangement"
+                      value="ushape"
+                    />
+                    <img src="Image/U-shape.png" alt="U-shape" />
+                    <span>U-shape</span>
+                  </label>
+
+                  <!-- Seating choice 3 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement3"
+                      name="seatingArrangement"
+                      value="theater"
+                    />
+                    <img src="Image/theater.png" alt="Theater" />
+                    <span>Theater</span>
+                  </label>
+
+                  <!-- Seating choice 4 -->
+                  <label class="seating-choice">
+                    <input
+                      type="radio"
+                      id="arrangement4"
+                      name="seatingArrangement"
+                      value="classroom"
+                      required
+                    />
+                    <img src="Image/classroom.png" alt="Classroom" />
+                    <span>Classroom</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notification Modal -->
+      <div id="notificationModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div class="notification-content">
+            <button
+              class="delete"
+              aria-label="close"
+              onclick="closeNotificationModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p id="notificationMessage"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Form -->
+      <section
+        class="section background-image-registration"
+        id="registrationOpener"
+      >
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <p class="title is-size-1">Register Your Events Here!</p>
+        </div>
+      </section>
+      <section class="section" id="registrationContainer">
+        <h1 class="title is-size-2 p-5">
+          Please fill in the details below to get started.
+        </h1>
+        <div class="form-container">
+          <form id="registrationForm">
+            <!-- Registration form fields -->
+            <div class="form-group">
+              <label for="employerContactNumber"
+                >Employer Contact Number:</label
+              >
+              <input
+                type="tel"
+                id="employerContactNumber"
+                name="employerContactNumber"
+                placeholder="123-456-7890"
+                style="font-size: 15px"
+              />
+            </div>
+
+            <div class="form-groups-container">
+              <div class="form-group">
+                <label for="eventName">Event Name:</label>
+                <input
+                  type="text"
+                  id="eventName"
+                  name="eventName"
+                  style="font-size: 15px"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="eventDate">Event Date:</label>
+                <input
+                  type="date"
+                  id="eventDate"
+                  name="eventDate"
+                  style="font-size: 15px"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventOverview">Event Overview (max 60 words):</label>
+              <input
+                type="text"
+                id="eventOverview"
+                name="eventOverview"
+                placeholder="Up to 60 words"
+                style="font-size: 15px"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="eventDescription"
+                >Employer & Event Description:</label
+              >
+              <textarea
+                id="eventDescription"
+                name="eventDescription"
+                rows="7"
+                cols="50"
+                style="width: 100%; padding: 1%; font-size: 15px"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="eventCategory">Event Category</label>
+              <select
+                id="eventCategory"
+                name="eventTopic"
+                style="font-size: 15px"
+              >
+                <option value="Hiring">Hiring</option>
+                <option value="Office Hour">Office Hour</option>
+                <option value="Networking">Networking</option>
+                <option value="Info Sessions">Info Sessions</option>
+              </select>
+            </div>
+
+            <section style="display: flex; justify-content: space-between">
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="location">Location:</label>
+                <select
+                  id="location"
+                  name="location"
+                  style="width: 100%; font-size: 15px"
+                >
+                  <option value="Grainger Hall">Grainger Hall</option>
+                  <option value="The Pyle Center">The Pyle Center</option>
+                  <option value="Union South">Union South</option>
+                  <option value="Memorial Union">Memorial Union</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="event_medium">Medium:</label>
+                <select
+                  id="event_medium"
+                  name="medium"
+                  style="width: 100%; font-size: 15px"
+                >
+                  <option value="In-Person">In-Person</option>
+                  <option value="Virtual">Virtual</option>
+                  <option value="Hybrid">Hybrid</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex-grow: 1; margin-right: 10px">
+                <label for="eventCapacity">Event Capacity:</label>
+                <input
+                  type="number"
+                  id="eventCapacity"
+                  name="eventCapacity"
+                  style="width: 100%; font-size: 15px"
+                />
+              </div>
+            </section>
+
+            <!-- Assuming you add unique IDs for each checkbox and the corresponding labels -->
+            <div
+              class="form-group"
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+              "
+            >
+              <!-- Beverages Column -->
+              <div>
+                <label>Beverages:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="beverages" value="tea" />
+                      Tea
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="beverages" value="coffee" />
+                      Coffee
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="beverages" value="water" />
+                      Water
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="beverages"
+                        value="cold-drinks"
+                      />
+                      Cold Drinks
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="beverages" value="juice" />
+                      Juice
+                    </label>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Meals Column -->
+              <div>
+                <label>Meals:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="meals" value="pizza" />
+                      Pizza
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="meals" value="burritos" />
+                      Burritos
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="meals" value="salads" />
+                      Salads
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="meals" value="cut-fruit" />
+                      Cut Fruit
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input type="checkbox" name="meals" value="sushi" />
+                      Sushi
+                    </label>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Snacks Column -->
+              <div>
+                <label>Snacks:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="choco-chip-cookies"
+                      />
+                      Choco Chip Cookies
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="crackers-and-cheese"
+                      />
+                      Crackers and Cheese
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="cupcakes-and-donuts"
+                      />
+                      Cupcakes and Donuts
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="candy-and-chocolate"
+                      />
+                      Candy and Chocolate
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="snacks"
+                        value="potato-chips"
+                      />
+                      Potato Chips
+                    </label>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Disposables Column -->
+              <div>
+                <label>Disposables:</label>
+                <ul
+                  class="checkbox-group"
+                  style="list-style-type: none; padding-left: 0"
+                >
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="beverage-napkins"
+                      />
+                      Beverage Napkins
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="cutlery-and-napkin-kits"
+                      />
+                      Cutlery and Napkin Kits
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="disposable-tablecloth"
+                      />
+                      Disposable Tablecloth
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="small-plates"
+                      />
+                      Small Plates (6")
+                    </label>
+                  </li>
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="large-plates"
+                      />
+                      Large Plates (10")
+                    </label>
+                  </li>
+
+                  <li>
+                    <label style="font-weight: 400">
+                      <input
+                        type="checkbox"
+                        name="disposables"
+                        value="serving-utensils-serving-spoons"
+                      />
+                      Serving Spoons
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", (event) => {
+                // Add click event to each seating choice
+                document
+                  .querySelectorAll(".seating-choice")
+                  .forEach((choice) => {
+                    choice.addEventListener("click", function () {
+                      // Remove 'selected' from all choices
+                      document
+                        .querySelectorAll(".seating-choice")
+                        .forEach((c) => c.classList.remove("selected"));
+
+                      // Add 'selected' to clicked choice
+                      this.classList.add("selected");
+
+                      // Check the radio button inside the clicked choice
+                      this.querySelector('input[type="radio"]').checked = true;
+                    });
+                  });
+              });
+            </script>
+
+            <div class="form-group">
+              <label for="eventCapacity">Seating Arrangement:</label>
+              <div class="seating-choice-container">
+                <!-- Seating choice 1 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement1_"
+                    name="seatingArrangement"
+                    value="to8"
+                  />
+                  <img src="Image/tables of 8.png" alt="Tables of 8" />
+                  <span>Tables of 8</span>
+                </label>
+
+                <!-- Seating choice 2 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement2_"
+                    name="seatingArrangement"
+                    value="ushape"
+                  />
+                  <img src="Image/U-shape.png" alt="U-shape" />
+                  <span>U-shape</span>
+                </label>
+
+                <!-- Seating choice 3 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement3_"
+                    name="seatingArrangement"
+                    value="theater"
+                  />
+                  <img src="Image/theater.png" alt="Theater" />
+                  <span>Theater</span>
+                </label>
+
+                <!-- Seating choice 4 -->
+                <label class="seating-choice">
+                  <input
+                    type="radio"
+                    id="arrangement4_"
+                    name="seatingArrangement"
+                    value="classroom"
+                    required
+                  />
+                  <img src="Image/classroom.png" alt="Classroom" />
+                  <span>Classroom</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+          </form>
+        </div>
+      </section>
+      <!-- Events Page -->
+      <section
+        class="section background-image-eventsReg"
+        id="eventsRegisterOpener"
+      >
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title is-size-1">Time to Welcome Employers!</h1>
+        </div>
+      </section>
+      <section class="section" id="eventsRegisterContainer">
+        <!--Employers Signed up the event filter-->
+        <h1 class="title is-size-2 p-5">Register Events</h1>
+        <div class="columns">
+          <!-- Filter Sidebar -->
+          <div class="column is-3">
+            <div class="box" style="background-color: rgba(197, 35, 40, 0.9)">
+              <h1 class="is-size-3 has-text-white">Filter</h1>
+              <form action="#">
+                <!-- Checkbox for accept events -->
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="acceptEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="AcceptedEvents" class="has-text-white"
+                    >Events Accepted</label
+                  >
+                </div>
+
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="DeclineEvents"
+                    class="is-checkradio"
+                  />
+                  <label for="DeclineEvents" class="has-text-white"
+                    >Events Declined</label
+                  >
+                </div>
+
+                <!-- Dropdown for company names -->
+                <div class="field">
+                  <label class="label has-text-white">Company</label>
+                  <div class="control">
+                    <div class="select is-fullwidth" id="companySelect2">
+                      <select>
+                        <option value="">Select a company...</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Checkbox for event types -->
+                <div class="field">
+                  <label class="label has-text-white">Category</label>
+                  <div class="control">
+                    <div class="field is-grouped-multiline">
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="hiringCheckbox2"
+                            value="Hiring"
+                          />
+                          <span class="has-text-white">Hiring</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="officeHourCheckbox2"
+                            value="Office Hour"
+                          />
+                          <span class="has-text-white">Office Hour</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="networkingCheckbox2"
+                            value="Networking"
+                          />
+                          <span class="has-text-white">Networking</span>
+                        </label>
+                      </div>
+                      <div class="control">
+                        <label class="checkbox">
+                          <input
+                            type="checkbox"
+                            class="category2-checkbox"
+                            id="infoSessionsCheckbox2"
+                            value="Info Sessions"
+                          />
+                          <span class="has-text-white">Info Sessions </span>
+                        </label>
+                      </div>
+                      <!-- Add more checkboxes for different event types -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="field">
+                  <div class="control">
+                    <button
+                      type="submit"
+                      class="button is-white is-fullwidth"
+                      id="submitFilter2"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Events Content -->
+          <!-- Event Details Modal -->
+          <div id="adminEventDetailsModal" class="modal">
+            <div class="modal-background-ea"></div>
+            <div class="modal-content-ea p-4">
+              <!-- Content to show event details -->
+              <p>
+                <strong>Event:</strong> <span id="modalEventName-ea"></span>
+              </p>
+              <p>
+                <strong>Host:</strong>
+                <span id="modalCompanyName-ea"></span>
+              </p>
+              <p>
+                <strong>Overview:</strong>
+                <span id="modalEventOverview-ea"></span>
+              </p>
+              <p>
+                <strong>Description:</strong>
+                <span id="modalEventDescription-ea"></span>
+              </p>
+              <p>
+                <strong>Capacity:</strong>
+                <span id="modalEventCapacity-ea"></span>
+              </p>
+
+              <p>
+                <strong>Location:</strong> <span id="modalLocation-ea"></span>
+              </p>
+              <p>
+                <strong>Medium:</strong> <span id="modalEventMedium-ea"></span>
+              </p>
+              <p>
+                <strong>Meals:</strong> <span id="modalEventMeals-ea"></span>
+              </p>
+              <p>
+                <strong>Snacks:</strong> <span id="modalEventSnacks-ea"></span>
+              </p>
+              <p>
+                <strong>Disposables:</strong>
+                <span id="modalEventDisposables-ea"></span>
+              </p>
+            </div>
+            <button class="modal-close-ea is-large" aria-label="close"></button>
+          </div>
+          <div class="column is-9" id="box-container">
+            <!-- Boxes will be dynamically generated here -->
+            <div class="columns">
+              <div class="column is-6" id="column1_events">
+                <!--First Column-->
+              </div>
+              <div class="column is-6" id="column2_events">
+                <!--Second Column-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Calendar Page -->
+      <section class="section background-image-calendar" id="calendarOpener">
+        <div class="text-container pl-6 p-6 mt-6 has-text-centered">
+          <h1 class="title is-size-1">Come Explore the Dates!</h1>
+        </div>
+      </section>
+      <section class="calendar_body mb-6" , id="calendarContainer">
+        <div id="container">
+          <div class="is-size-1" id="monthDisplay"></div>
+          <div>
+            <button class="calendar_button" id="backButton">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="calendar_button" id="nextButton">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+          <div id="weekdays">
+            <div>Sunday</div>
+            <div>Monday</div>
+            <div>Tuesday</div>
+            <div>Wednesday</div>
+            <div>Thursday</div>
+            <div>Friday</div>
+            <div>Saturday</div>
+          </div>
+
+          <div id="calendar"></div>
+        </div>
+        <div id="newEventModal">
+          <h2>New Event</h2>
+
+          <input id="eventTitleInput" placeholder="Event Title" />
+
+          <button id="saveButton">Save</button>
+          <button id="cancelButton">Cancel</button>
+        </div>
+
+        <div id="deleteEventModal">
+          <h2>Event</h2>
+
+          <p id="eventText"></p>
+
+          <button id="deleteButton">Delete</button>
+          <button id="closeButton">Close</button>
+        </div>
+
+        <div id="modalBackDrop"></div>
+        <!--JS for Calendar-->
+      </section>
+    </main>
+    
+    <!-- Login Modal -->
+    <div id="login_modal" class="modal">
+      <div id="login_modal_bg" class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_signin" class="close-button">X</button>
+        <form id="loginform" class="form">
+          <div class="field">
+            <div id="regiswarning_login" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+            <!-- Rest of the form -->
+            <label class="label">Email</label>
+            <input
+              class="input"
+              type="text"
+              id="login_email"
+              placeholder="bucky@wisc.edu"
+            />
+            <div>&nbsp;</div>
+            <label class="label">Password</label>
+            <input
+              class="input"
+              type="password"
+              id="login_password"
+              placeholder="bucky123"
+            />
+            <div>&nbsp;</div>
+            <button
+              type="button"
+              id="modal_signin"
+              style="background-color: red; font-size: large; color: white"
+            >
+              Login</button
+            >&nbsp;&nbsp;
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration_modal" class="modal">
+      <div id="registration_modal_bg" class="modal-background">
+        <!-- Close button -->
+        <button id="close_registration_button" class="close-button">X</button>
+        <!-- Registration Form Content -->
+        <form id="registration_form" class="form">
+          <h1 class="title">Register</h1>
+          <label class="label">Email</label>
+          <input
+            class="input"
+            type="text"
+            id="registration_email"
+            placeholder="bucky@wisc.edu"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Password</label>
+          <input
+            class="input"
+            type="password"
+            id="registration_password"
+            placeholder="bucky123"
+          />
+          <div>&nbsp;</div>
+          <label for="user_type">What are you registering as?</label>
+          <select name="users" id="user_types">
+            <option value="student">Student</option>
+            <option value="employer">Employer</option>
+            <option value="admin">Admin</option>
+          </select>
+          <div>&nbsp;</div>
+          <button type="button" id="nextpage" class="icon-button">
+            <span class="icon">
+              <i class="fas fa-arrow-right"></i>
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Registration Modal 2: Student -->
+    <div id="registration_modal_2_student" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_student" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
+        <!-- Student Registration -->
+        <form id="student_registration_form" class="form">
+          <div id="regiswarning_student" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <label class="label">First Name</label>
+          <input
+            class="input"
+            type="text"
+            id="student_first_name"
+            placeholder="First Name"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Last Name</label>
+          <input
+            class="input"
+            type="text"
+            id="student_last_name"
+            placeholder="Last Name"
+          />
+          <div>&nbsp;</div>
+
+          <button
+            type="button"
+            id="create_student_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Registration Modal 2: Employer -->
+    <div id="registration_modal_2_employer" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_employer" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
+        <form id="company_registration_form" class="form">
+          <div id="regiswarning_employer" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <label class="label">Company Name</label>
+          <input
+            class="input"
+            type="text"
+            id="company_name"
+            placeholder="Company Name"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Company Logo</label>
+          <input type="file" id="company_logo" placeholder="Last Name" />
+          <div>&nbsp;</div>
+          <button
+            type="button"
+            id="create_employer_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Registration Modal 3: Admin -->
+    <div id="registration_modal_2_admin" class="modal">
+      <div class="modal-background">
+        <!-- Close button -->
+        <button id="close_modal_2_admin" class="close-button">X</button>
+        <!-- Registration Modal 2 Content -->
+        <form id="admin_registration_form" class="form">
+          <div id="regiswarning_admin" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <label class="label">First Name</label>
+          <input
+            class="input"
+            type="text"
+            id="admin_first_name"
+            placeholder="First Name"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Last Name</label>
+          <input
+            class="input"
+            type="text"
+            id="admin_last_name"
+            placeholder="Last Name"
+          />
+          <div>&nbsp;</div>
+          <label class="label">Access Code</label>
+          <input
+            class="input"
+            type="text"
+            id="admin_access_code"
+            placeholder="Access Code"
+          />
+          <div>&nbsp;</div>
+          <button
+            type="button"
+            id="create_admin_account"
+            style="background-color: red; font-size: large; color: white"
+          >
+            Create an account
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="footer"
+      style="
+        background: rgb(24, 23, 23);
+        color: white;
+        font-weight: bold;
+        border: 2px;
+        padding: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <a
+        href="https://business.wisc.edu/?gad_source=1&gclid=CjwKCAjwz42xBhB9EiwA48pT74bsoLucsXiqe8_nUrb-wNl2vCmGvUW1Vxlzja1nulCvehqJxOVESxoCq20QAvD_BwE"
+        style="margin-right: 50px"
+      >
+        <img
+          src="Image/big_logo.png"
+          alt="Wisconsin School of Business Logo"
+          style="height: 120px"
+        />
+      </a>
+      <div
+        style="
+          border-right: 2px solid white;
+          padding-right: 20px;
+          font-weight: 300;
+        "
+      >
+        <p style="font-size: 2em">Employer Tracking</p>
+        <p>Grainger Hall</p>
+        <a
+          href="https://www.google.com/maps/place/Wisconsin+School+of+Business/@43.0727126,-89.4042052,17z/data=!3m2!4b1!5s0x8807accba31d6d3d:0x858a349b2e7b4072!4m6!3m5!1s0x8807accbb03adcad:0xdbae6b358f4b37a9!8m2!3d43.0727087!4d-89.4016356!16s%2Fm%2F0407bc5?entry=ttu"
+          target="_blank"
+          style="color: white; text-decoration: none"
+        >
+          <p>975 University Avenue</p>
+          <p>Madison, WI 53706</p>
+        </a>
+        <p>
+          <a
+            href="mailto:employertracking@wis.edu"
+            style="color: white; text-decoration: none"
+            >Email: employertracking@wisc.edu</a
+          >
+        </p>
+        <p>
+          <a href="tel:+16082621550" style="color: white; text-decoration: none"
+            >Contact Number: +1 (608)-262-1550</a
+          >
+        </p>
+      </div>
+      <div style="flex-grow: 1; padding-left: 20px; font-weight: 200">
+        <a
+          href="https://business.wisc.edu/contact/"
+          style="
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
+          "
+        >
+          Contact Us
+        </a>
+        <a
+          href="https://map.wisc.edu"
+          style="
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
+          "
+        >
+          Campus Map
+        </a>
+        <a
+          href="https://secfac.wisc.edu/academic-calendar/"
+          style="
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
+          "
+        >
+          Academic Calendar
+        </a>
+        <a
+          href="https://business.wisc.edu/about/"
+          style="
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
+          "
+        >
+          About
+        </a>
+        <a
+          href="https://business.wisc.edu/fac-staff-resources/"
+          style="
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
+          "
+        >
+          Resources
+        </a>
+      </div>
+      <div>
+        <a
+          href="https://twitter.com/UWBusiness"
+          target="_blank"
+          style="color: white; margin-right: 20px"
+        >
+          <i class="fab fa-twitter" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Twitter icon -->
+        </a>
+        <a
+          href="https://www.instagram.com/wisconsinschoolofbusiness"
+          target="_blank"
+          style="color: white; margin-right: 20px"
+        >
+          <i class="fab fa-instagram" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Instagram icon -->
+        </a>
+        <a
+          href="https://www.linkedin.com/school/wisconsin-school-of-business/"
+          target="_blank"
+          style="color: white; margin-right: 20px"
+        >
+          <i class="fab fa-linkedin" style="font-size: 2.5em"></i>
+          <!-- Font Awesome LinkedIn icon -->
+        </a>
+        <a
+          href="https://www.facebook.com/wisconsinschoolofbusiness"
+          target="_blank"
+          style="color: white"
+        >
+          <i class="fab fa-facebook" style="font-size: 2.5em"></i>
+          <!-- Font Awesome Facebook icon -->
+        </a>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+      // // Smooth scrolling to section when a navbar item is clicked
+      // document.querySelectorAll(".navbar-item").forEach((item) => {
+      //   item.addEventListener("click", (event) => {
+      //     event.preventDefault();
+      //     const targetId = event.target.getAttribute("href").substring(1);
+      //     const targetSection = document.getElementById(targetId);
+      //     targetSection.scrollIntoView({ behavior: "smooth" });
+      //   });
+      // });
+
+      // Show the RegistrationForm section when the navbar item is clicked
+      document
+        .getElementById("registrationNavItem")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "none";
+          document.getElementById("mainContent").style.display = "none";
+          document.getElementById("registrationOpener").style.display = "block";
+          document.getElementById("registrationContainer").style.display =
+            "block";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "none";
+          document.getElementById("calendarOpener").style.display = "none";
+          document.getElementById("calendarContainer").style.display = "none";
+        });
+      // Open the Main Contents when Home is hit on the navbar
+      document
+        .getElementById("homeNavItem")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "block";
+          document.getElementById("mainContent").style.display = "block";
+          document.getElementById("registrationOpener").style.display = "none";
+          document.getElementById("registrationContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "none";
+          document.getElementById("calendarOpener").style.display = "none";
+          document.getElementById("calendarContainer").style.display = "none";
+        });
+
+      // for when home is clicked on navbar
+      document
+        .getElementById("Home2")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "block";
+          document.getElementById("mainContent").style.display = "block";
+          document.getElementById("registrationOpener").style.display = "none";
+          document.getElementById("registrationContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "none";
+          document.getElementById("calendarOpener").style.display = "none";
+          document.getElementById("calendarContainer").style.display = "none";
+        });
+      // Open the Events Register Page when clicked on navbar
+      document
+        .getElementById("EventsRegisterNavItem")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "none";
+          document.getElementById("mainContent").style.display = "none";
+          document.getElementById("registrationOpener").style.display = "none";
+          document.getElementById("registrationContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "block";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "block";
+          document.getElementById("calendarOpener").style.display = "none";
+          document.getElementById("calendarContainer").style.display = "none";
+        });
+      //Open the calendar page
+      document
+        .getElementById("calendarNavItem")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("openingSection").style.display = "none";
+          document.getElementById("mainContent").style.display = "none";
+          document.getElementById("registrationOpener").style.display = "none";
+          document.getElementById("registrationContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterContainer").style.display =
+            "none";
+          document.getElementById("eventsRegisterOpener").style.display =
+            "none";
+          document.getElementById("calendarOpener").style.display = "block";
+          document.getElementById("calendarContainer").style.display = "block";
+        });
+    </script>
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script>
+      // TODO
+      // Copy **only** your firebaseConfig from Google Firebae and add it below
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCW8uA-GfbBCeOgyDRygQC8dfRip1gbBXA",
+        authDomain: "employerstracking.firebaseapp.com",
+        projectId: "employerstracking",
+        storageBucket: "employerstracking.appspot.com",
+        messagingSenderId: "691050924031",
+        appId: "1:691050924031:web:04889e09ef130be18e49ca",
+        measurementId: "G-1XMRBS0BJ0",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const analytics = firebase.analytics();
+
+      let auth = firebase.auth();
+      let db = firebase.firestore();
+      let ref = firebase.storage().ref();
+    </script>
+
+    <script src="Script.js"></script>
+    <script src="userhandling.js"></script>
+  </body>
+</html>
