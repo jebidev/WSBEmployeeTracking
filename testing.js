@@ -12,7 +12,7 @@ async function go() {
 
     // visit the site to be tested
 
-    await page.goto('https://employerstracking.web.app/index.html')
+    await page.goto('https://employerstracking.web.app/index.html#')
 
     // click the sign-in button
     await page.click('#signinbutton')

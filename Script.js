@@ -458,14 +458,9 @@ function show_events_home() {
 
 function generateEventBoxHtml(eventDoc) {
   const currentUser = firebase.auth().currentUser;
-  const currentUserId = currentUser ? currentUser.uid : null;
-
-  const eventUserId = eventDoc.data().userId; // Assuming userId is stored in the event data
-
-  // Check if the current user is the event creator
-  const isEventCreator = currentUserId === eventUserId;
-
   const eventId = eventDoc.id; // Ensure this is the correct document ID from Firestore
+
+  let currentUserId = currentUser ? currentUser.uid : null;
 
   // Initialize as not registered and not bookmarked
   let isRegistered = false;
@@ -486,111 +481,78 @@ function generateEventBoxHtml(eventDoc) {
   const bookmarkButtonColor = isBookmarked ? "black" : "black";
   const bookmarkButtonIconColor = isBookmarked ? "icon-red" : "icon-white";
 
-  // Generate HTML for each event
-  if (isEventCreator) {
-    html = `<div class="box">
-            <div class="content">
-              <!--Company name and logo-->
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">${eventDoc.data().company_name}</p>
-                </div>
-              </div>
-              <!--Event Name-->
-              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
-              <!--Event Description-->
-              <p>${eventDoc.data().event_description}</p>
-              <!--Event and Medium Type-->
-              <div class="field is-grouped">
-                <p class="Type">
-                  <span class="tag is-light">${
-                    eventDoc.data().event_medium
-                  }</span>
-                  <span class="tag is-light">${
-                    eventDoc.data().event_category
-                  }</span>
-                  <span class="tag is-light">${eventDoc.data().location}</span>
-                  <span class="tag is-light">${eventDoc.data().room}</span>
-                </p>
-              </div>
-              <!--Event Date-->
-              <p>
-                <span class="has-text-weight-semibold">Date:</span>
-                ${eventDoc.data().event_date}
-              </p>
-              <!--Save Button-->
-              <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
-                <span class="icon is-small">
-                  <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
-                </span>
-              </button>
-              <!--Register Button-->
-              <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
-                ${isRegistered ? "Registered" : "Register"}
-              </button>
-              <button class="button is-link-dark edit-event-button" data-event-id="${
-                eventDoc.id
-              }">
-              Edit
-            </button>
-            </div>
-          </div>`;
-  } else {
-    html = `<div class="box">
-            <div class="content">
-              <!--Company name and logo-->
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img src="Image/business_logo.jpeg" alt="Company Logo" />
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <p class="title is-4">${eventDoc.data().company_name}</p>
-                </div>
-              </div>
-              <!--Event Name-->
-              <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
-              <!--Event Description-->
-              <p>${eventDoc.data().event_description}</p>
-              <!--Event and Medium Type-->
-              <div class="field is-grouped">
-                <p class="Type">
-                  <span class="tag is-light">${
-                    eventDoc.data().event_medium
-                  }</span>
-                  <span class="tag is-light">${
-                    eventDoc.data().event_category
-                  }</span>
-                  <span class="tag is-light">${eventDoc.data().location}</span>
-                  <span class="tag is-light">${eventDoc.data().room}</span>
-                </p>
-              </div>
-              <!--Event Date-->
-              <p>
-                <span class="has-text-weight-semibold">Date:</span>
-                ${eventDoc.data().event_date}
-              </p>
-              <!--Save Button-->
-              <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
-                <span class="icon is-small">
-                  <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
-                </span>
-              </button>
-              <!--Register Button-->
-              <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
-                ${isRegistered ? "Registered" : "Register"}
-              
-            </div>
-          </div>`;
-  }
+  // Return the initial HTML with a placeholder for the image
+  let html = `<div class="box">
+  <div class="content">
+    <!--Company name and logo-->
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-48x48 figure-img-circle">
+          <img id="img-${eventId}" src="" alt="Company Logo" />
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4">${eventDoc.data().company_name}</p>
+      </div>
+    </div>
+    <!--Event Name-->
+    <p class="title is-5 p-5">${eventDoc.data().event_name}</p>
+    <!--Event Description-->
+    <p>${eventDoc.data().event_description}</p>
+    <!--Event and Medium Type-->
+    <div class="field is-grouped">
+      <p class="Type">
+        <span class="tag is-light">${eventDoc.data().event_medium}</span>
+        <span class="tag is-light">${eventDoc.data().event_category}</span>
+        <span class="tag is-light">${eventDoc.data().location}</span>
+        <span class="tag is-light">${eventDoc.data().room}</span>
+      </p>
+    </div><!--Event Date-->
+    <p>
+      <span class="has-text-weight-semibold">Date:</span>
+      ${eventDoc.data().event_date}
+    </p>
+    <!--Save Button-->
+    <button class="button is-primary save-event-button" data-event-id="${eventId}" style="background-color: ${bookmarkButtonColor}">
+      <span class="icon is-small">
+        <i class="fas fa-bookmark ${bookmarkButtonIconColor}"></i>
+      </span>
+    </button> <!--Register Button-->
+    <button class="button is-primary register-button" data-event-id="${eventId}" style="background-color: ${registerButtonColor}; color: ${registerButtonTextColor}">
+      ${isRegistered ? "Registered" : "Register"}
+    </button>
+  </div>
+</div>`;
+
+  // Fetch the company logo URL asynchronously and update the image source
+  const eventUserId = eventDoc.data().userId;
+  db.collection("users")
+    .doc(eventUserId)
+    .get()
+    .then((userDoc) => {
+      if (userDoc.exists) {
+        const companyLogoUrl = userDoc.data().companyLogoUrl;
+        console.log("userDoc.data().companyLogoUrl", companyLogoUrl);
+        const imgElement = document.querySelector(`#img-${eventId}`);
+        console.log("imgelement", imgElement);
+        if (imgElement) {
+          imgElement.src = companyLogoUrl;
+          console.log(
+            "if imgeleemnt userDoc.data().companyLogoUrl",
+            companyLogoUrl
+          );
+        }
+      } else {
+        console.error("User document does not exist");
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to fetch user data:", error);
+    });
+
   return html;
 }
+
 
 function attachSaveEventListeners() {
   // Add event listeners to save buttons
