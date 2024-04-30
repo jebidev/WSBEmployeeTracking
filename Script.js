@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .get()
       .then((doc) => {
         if (!doc.exists) {
+          console.log(currentUserId)
           alert("User profile does not exist.");
           return;
         }
@@ -488,7 +489,7 @@ function generateEventBoxHtml(eventDoc) {
     <div class="media">
       <div class="media-left">
         <figure class="image is-48x48 figure-img-circle">
-          <img id="img-${eventId}" src="" alt="Company Logo" />
+          <img id="img-${eventId}" src="Image/business_logo.jpeg" alt="Company Logo" />
         </figure>
       </div>
       <div class="media-content">
@@ -525,30 +526,30 @@ function generateEventBoxHtml(eventDoc) {
 </div>`;
 
   // Fetch the company logo URL asynchronously and update the image source
-  const eventUserId = eventDoc.data().userId;
-  db.collection("users")
-    .doc(eventUserId)
-    .get()
-    .then((userDoc) => {
-      if (userDoc.exists) {
-        const companyLogoUrl = userDoc.data().companyLogoUrl;
-        console.log("userDoc.data().companyLogoUrl", companyLogoUrl);
-        const imgElement = document.querySelector(`#img-${eventId}`);
-        console.log("imgelement", imgElement);
-        if (imgElement) {
-          imgElement.src = companyLogoUrl;
-          console.log(
-            "if imgeleemnt userDoc.data().companyLogoUrl",
-            companyLogoUrl
-          );
-        }
-      } else {
-        console.error("User document does not exist");
-      }
-    })
-    .catch((error) => {
-      console.error("Failed to fetch user data:", error);
-    });
+  // const eventUserId = eventDoc.data().userId;
+  // db.collection("users")
+  //   .doc(eventUserId)
+  //   .get()
+  //   .then((userDoc) => {
+  //     if (userDoc.exists) {
+  //       const companyLogoUrl = userDoc.data().companyLogoUrl;
+  //       console.log("userDoc.data().companyLogoUrl", companyLogoUrl);
+  //       const imgElement = document.querySelector(`#img-${eventId}`); // Use template literal
+  //       console.log("imgelement", imgElement);
+  //       if (imgElement) {
+  //         imgElement.src = companyLogoUrl;
+  //         console.log(
+  //           "if imgeleemnt userDoc.data().companyLogoUrl",
+  //           companyLogoUrl
+  //         );
+  //       }
+  //     } else {
+  //       console.error("User document does not exist");
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error("Failed to fetch user data:", error);
+  //   });
 
   return html;
 }

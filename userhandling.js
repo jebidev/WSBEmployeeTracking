@@ -202,46 +202,39 @@ closeAdminModal.addEventListener('click', function() {
     closeModal(registrationModalAdmin);
 });
 
-
-// Utility function to display warnings
-// function displayWarning(elementId, message) {
-//   const element = document.getElementById(elementId);
-//   if(element) {
-//       element.innerHTML = message;
-//       setTimeout(() => {
-//           element.innerHTML = ''; // Clear the message after 7 seconds
-//       }, 7000);
-//   }
-// }
-
 document.addEventListener('DOMContentLoaded', function() {
   // Firebase Authentication setup
+  const db = firebase.firestore()
   function registerAccount(email, password, additionalData, warningElementId, closeModalCallback) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
-              console.log("User created:", userCredential.user);
-
-              // Reference to Firestore
-              const db = firebase.firestore();
-              db.collection('users').doc(userCredential.user.uid).set({
-                  email: email,
-                  ...additionalData
-              }).then(() => {
-                  console.log("User data stored in Firestore.");
-                  closeModalCallback();
-              }).catch((error) => {
-                  console.error("Error storing user data in Firestore:", error.message);
-                  displayWarning(warningElementId, "Firestore error: " + error.message);
-              });
-          })
-          .catch((error) => {
-              console.error("Error creating user:", error.message);
-              displayWarning(warningElementId, "Registration error: " + error.message);
-          });
+              console.log("User created:", userCredential.user.uid);
+              const userId = userCredential.user.uid
+              const newData = {
+                email: email,
+                ...additionalData
+              };
+              db.collection('users').doc(userId).set(newData)
+              .then(() => {
+                console.log("User data stored in Firestore.");
+                alert('it worked!')
+                //closeModalCallback();
+            })
+            .catch((error) => {
+                console.error("Error storing user data in Firestore:", error.message);
+                alert("error storing firestore data")
+            });
+    })
+    .catch((error) => {
+        alert(error.message)
+        console.error("Error creating user:", error.message);
+        displayWarning(warningElementId, "Registration error: " + error.message);
+    });
   }
 
   // Student account creation
-  document.getElementById('create_student_account').addEventListener('click', function() {
+  document.getElementById('create_student_account').addEventListener('click', function(event) {
+    event.preventDefault();
       const email = document.getElementById('registration_email').value;
       const password = document.getElementById('registration_password').value;
       const firstName = document.getElementById('student_first_name').value;
@@ -255,12 +248,13 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Employer account creation
-  document.getElementById('create_employer_account').addEventListener('click', function() {
+  document.getElementById('create_employer_account').addEventListener('click', function(event) {
+    event.preventDefault();
       const email = document.getElementById('registration_email').value;
       const password = document.getElementById('registration_password').value;
       const companyName = document.getElementById('company_name').value;
       const companyLogoFile = document.getElementById('company_logo').files[0]; // Get the file
-
+      
       if (companyLogoFile) {
           // Create a storage reference
           const storageRef = firebase.storage().ref();
@@ -298,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 // Admin account creation
-document.getElementById('create_admin_account').addEventListener('click', function() {
+document.getElementById('create_admin_account').addEventListener('click', function(event) {
   const email = document.getElementById('registration_email').value;
   const password = document.getElementById('registration_password').value;
   const firstName = document.getElementById('admin_first_name').value;
@@ -368,17 +362,20 @@ firebase.auth().onAuthStateChanged(function(user) {
         if (userData.userType === 'admin') {
           registrationNavItem.style.display = ''; // Show for admins
           eventsAdminNavItem.style.display = '';  // Show for admins
-        } else {
+          let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
+          configure_message_bar(welcomeMessage)
+
+        } else if (userData.userType === 'employer'){
           // Hide all restricted elements for other user types
-          registrationNavItem.style.display = 'none';
+          registrationNavItem.style.display = '';
           eventsAdminNavItem.style.display = 'none';
         }
-        let welcomeMessage = `Welcome ${userData.firstName + " " + userData.lastName}!`;
+        let welcomeMessage = `Welcome ${userData.companyName}!`;
         configure_message_bar(welcomeMessage);
       } else {
         console.log("No additional user data found.");
         configure_message_bar("Welcome!");
-        registrationNavItem.style.display = '';
+        registrationNavItem.style.display = 'none';
         eventsAdminNavItem.style.display = 'none';
       }
     }).catch(error => {
