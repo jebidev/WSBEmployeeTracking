@@ -14,35 +14,24 @@ async function go() {
 
     await page.goto('https://employerstracking.web.app/index.html#')
 
-    // click the sign-in button
-    await page.click('#signinbutton')
-
-    // student will provide email & password for signing in 
-    await page.type("#login_email", "bucky@wisc.edu")
-    await page.type("#login_password", 'bucky123')
-    // admin will provide email & password for signing in 
-    //await page.type("#login_email", "administration@wisc.edu")
-    //await page.type("#login_password", 'administration')
-    // // employer will provide email & password for signing in 
-    // await page.type("#login_email", "boeing@boeing.com")
-    // await page.type("#login_password", 'boeing')
-    // // click the submit button
-    await page.click('#modal_signin')
-    
-    // must dismiss dialog box for password to move on
-    page.on('dialog', async dialog => {
-        console.log(dialog.message());
-        await dialog.dismiss()
-    })
+    // no login because navigation which crash puppeteer (reloads)
 
     // go to calendar
     await page.click("#calendarNavItem")
 
-    // sign out
-    await page.click('#signoutbutton')
+    // go back home
+    await page.click("#Home2")
+
+    //page reload once
+    await page.click('#submitFilter')
+
+    //return walmart event
+    await page.type('#filterForm > div:nth-child(2) > div > input', 'test')
+    await page.click('#officeHourCheckbox')
+    await page.click('#submitFilter')
     
     // close the browser
-    //browser.close()
+    browser.close()
 }
 
 // call go()
