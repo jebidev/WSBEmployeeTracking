@@ -15,13 +15,6 @@
       src="https://kit.fontawesome.com/8a80b728dc.js"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
-    <script>
-      new Cleave("#employerContactNumber", {
-        phone: true,
-        phoneRegionCode: "US",
-      });
-    </script>
 
     <link
       rel="stylesheet"
@@ -640,7 +633,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: rgb(197, 35, 40); /* Ensure the navbar has the correct background color */
+        background-color: rgb(
+          197,
+          35,
+          40
+        ); /* Ensure the navbar has the correct background color */
       }
 
       .navbar-end {
@@ -663,7 +660,6 @@
       }
 
       /* ... (rest of your CSS) ... */
-
 
       .sub-navbar {
         text-align: center; /* This will center the sub-navbar items */
@@ -874,21 +870,15 @@
           >
         </a>
         <a class="navbar-item" id="registrationNavItem">
-          <span
-            class="ml-2 is-size-5"
-            style="color: black"
+          <span class="ml-2 is-size-5" style="color: black"
             >Registration Form</span
           >
         </a>
         <a class="navbar-item" id="calendarNavItem">
-          <span class="ml-2 is-size-5" style="color: black" 
-            >Calendar</span
-          >
+          <span class="ml-2 is-size-5" style="color: black">Calendar</span>
         </a>
         <a class="navbar-item" id="EventsRegisterNavItem">
-          <span
-            class="ml-2 is-size-5"
-            style="color: black"
+          <span class="ml-2 is-size-5" style="color: black"
             >Events Administration</span
           >
         </a>
@@ -2260,7 +2250,7 @@
         <!--JS for Calendar-->
       </section>
     </main>
-    
+
     <!-- Login Modal -->
     <div id="login_modal" class="modal">
       <div id="login_modal_bg" class="modal-background">
@@ -2268,7 +2258,10 @@
         <button id="close_modal_signin" class="close-button">X</button>
         <form id="loginform" class="form">
           <div class="field">
-            <div id="regiswarning_login" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+            <div
+              id="regiswarning_login"
+              class="has-text-danger has-text-weight-bold has-text-centered"
+            ></div>
             <!-- Rest of the form -->
             <label class="label">Email</label>
             <input
@@ -2346,7 +2339,10 @@
         <!-- Registration Modal 2 Content -->
         <!-- Student Registration -->
         <form id="student_registration_form" class="form">
-          <div id="regiswarning_student" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <div
+            id="regiswarning_student"
+            class="has-text-danger has-text-weight-bold has-text-centered"
+          ></div>
           <label class="label">First Name</label>
           <input
             class="input"
@@ -2382,7 +2378,10 @@
         <button id="close_modal_2_employer" class="close-button">X</button>
         <!-- Registration Modal 2 Content -->
         <form id="company_registration_form" class="form">
-          <div id="regiswarning_employer" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <div
+            id="regiswarning_employer"
+            class="has-text-danger has-text-weight-bold has-text-centered"
+          ></div>
           <label class="label">Company Name</label>
           <input
             class="input"
@@ -2412,7 +2411,10 @@
         <button id="close_modal_2_admin" class="close-button">X</button>
         <!-- Registration Modal 2 Content -->
         <form id="admin_registration_form" class="form">
-          <div id="regiswarning_admin" class="has-text-danger has-text-weight-bold has-text-centered"></div>
+          <div
+            id="regiswarning_admin"
+            class="has-text-danger has-text-weight-bold has-text-centered"
+          ></div>
           <label class="label">First Name</label>
           <input
             class="input"

@@ -50,11 +50,11 @@ function openEditModal(eventId) {
         // Show the modal
         document.getElementById("editEventModal").style.display = "block";
       } else {
-        console.log("No such document!");
+        // console.log("No such document!");
       }
     })
     .catch((error) => {
-      console.error("Error getting document:", error);
+      // console.error("Error getting document:", error);
     });
 }
 
@@ -80,7 +80,7 @@ function load() {
   }
 
   const day = dt.getDate();
-  console.log("Day", day);
+  // console.log("Day", day);
   const month = dt.getMonth();
   const year = dt.getFullYear();
 
@@ -95,10 +95,10 @@ function load() {
     day: "numeric",
   });
 
-  console.log("Weekday from Date:", dateString.split(", ")[0]); // Log to check what you are actually parsing
+  // console.log("Weekday from Date:", dateString.split(", ")[0]); // Log to check what you are actually parsing
 
   const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
-  console.log("paddingDays", paddingDays);
+  // console.log("paddingDays", paddingDays);
 
   document.getElementById("monthDisplay").innerText = `${dt.toLocaleDateString(
     "en-us",
@@ -195,7 +195,7 @@ function calculateMonthYear(navOffset) {
   const month = now.getMonth() + 1; // JavaScript months are 0-indexed, add 1 for human-readable month (1-12)
   const year = now.getFullYear();
 
-  console.log("returning ", year, month);
+  // console.log("returning ", year, month);
   return { month, year };
 }
 
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          console.log(currentUserId);
+          // console.log(currentUserId);
           alert("User profile does not exist.");
           return;
         }
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
           'input[name="seatingArrangement"]:checked'
         )?.value;
 
-        console.log("companyName", companyName);
+        // console.log("companyName", companyName);
 
         const regformData = {
           employerContactNumber,
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
           seatingArrangement,
         };
 
-        console.log(regformData);
+        // console.log(regformData);
 
         // Submit event data to Firestore
         db.collection("events")
@@ -338,12 +338,12 @@ document.addEventListener("DOMContentLoaded", () => {
             showNotification("Your event has been submitted for approval.");
           })
           .catch((error) => {
-            console.error("Error adding document: ", error);
+            // console.error("Error adding document: ", error);
             showNotification("There was an error submitting your event.");
           });
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        // console.error("Error fetching user data:", error);
         alert("There was an error fetching your company information.");
       });
   });
@@ -356,6 +356,123 @@ function openNotificationModal(message) {
 
 function closeNotificationModal() {
   document.getElementById("notificationModal").classList.remove("is-active");
+}
+
+// Function to handle student registration
+document
+  .getElementById("create_student_account")
+  .addEventListener("click", function () {
+    const email = document.getElementById("registration_email").value;
+    const password = document.getElementById("registration_password").value;
+    var firstName = document.getElementById("student_first_name").value;
+    var lastName = document.getElementById("student_last_name").value;
+
+    db.collection("users")
+      .add({
+        firstName: firstName,
+        email: document.getElementById("registration_email").value,
+        lastName: lastName,
+        userType: "student",
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        registerAccount(email, password, () =>
+          closeModal(registrationModalAdmin)
+        );
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
+  });
+
+// Function to handle employer registration
+document
+  .getElementById("create_employer_account")
+  .addEventListener("click", function () {
+    const email = document.getElementById("registration_email").value;
+    const password = document.getElementById("registration_password").value;
+    var companyName = document.getElementById("company_name").value;
+    var companyLogo = document.getElementById("company_logo").files[0]; // Assuming you handle file uploads separately
+
+    db.collection("users")
+      .add({
+        companyName: companyName,
+        companyLogoUrl: companyLogo,
+        userType: "employer",
+        email: document.getElementById("registration_email").value,
+        notifcations: [],
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        registerAccount(email, password, () =>
+          closeModal(registrationModalAdmin)
+        );
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
+  });
+
+// Function to handle admin registration
+document
+  .getElementById("create_admin_account")
+  .addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent default if nested in a form unintentionally
+    event.stopPropagation(); // Stop propagation to handle nested elements
+
+    console.log("Attempting to create student account:");
+
+    const email = document.getElementById("registration_email").value;
+    const password = document.getElementById("registration_password").value;
+
+    var firstName = document.getElementById("admin_first_name").value;
+    var lastName = document.getElementById("admin_last_name").value;
+    var accessCode = document.getElementById("admin_access_code").value;
+
+    if (accessCode === "wsbadminaccount") {
+      registerAccount(email, password, () =>
+        closeModal(registrationModalAdmin)
+      );
+
+      db.collection("users")
+        .add({
+          firstName: firstName,
+          lastName: lastName,
+          accessCode: accessCode,
+          email: document.getElementById("registration_email").value,
+          userType: "admin",
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      displayWarning(
+        "regiswarning_admin",
+        "Incorrect access code for admin registration."
+      );
+    }
+  });
+
+function registerAccount(
+  email,
+  password,
+  warningElementId,
+  closeModalCallback
+) {
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      console.log("User created:", userCredential.user.uid);
+    })
+    .catch((error) => {
+      alert(error.message);
+      console.error("Error creating user:", error.message);
+      displayWarning(warningElementId, "Registration error: " + error.message);
+    });
 }
 
 function showNotification(message) {
@@ -386,7 +503,7 @@ function submitSignInForm() {
   // Handle the sign-in/create user form submission here.
   // Validate input fields, make API calls if necessary, etc.
 
-  console.log("Form Submitted"); // Placeholder action
+  // console.log("Form Submitted"); // Placeholder action
   toggleModal("signInModal", false); // Close the modal upon submission
 }
 
@@ -421,7 +538,7 @@ db.collection("events")
     });
   })
   .catch((error) => {
-    console.error("Error fetching companies: ", error);
+    // console.error("Error fetching companies: ", error);
   });
 
 function show_events_home() {
@@ -672,27 +789,27 @@ function attachSaveEventListeners() {
               );
               if (radio) {
                 radio.checked = true;
-                console.log(
-                  "Attempting to select radio for:",
-                  eventData.seatingArrangement
-                );
-                console.log("Radio selected:", radio.value);
+                // console.log(
+                //   "Attempting to select radio for:",
+                //   eventData.seatingArrangement
+                // );
+                // console.log("Radio selected:", radio.value);
               } else {
-                console.log(
-                  "Radio not found for value:",
-                  eventData.seatingArrangement
-                );
+                // console.log(
+                //   "Radio not found for value:",
+                //   eventData.seatingArrangement
+                // );
               }
             }
 
             // Open the modal
             document.getElementById("editEventModal").style.display = "block";
           } else {
-            console.error("No such document!");
+            // console.error("No such document!");
           }
         })
         .catch((error) => {
-          console.error("Error getting document:", error);
+          // console.error("Error getting document:", error);
         });
     });
   });
@@ -746,12 +863,12 @@ function attachSaveEventListeners() {
         .doc(eventId)
         .update(updatedData)
         .then(() => {
-          console.log("Document successfully updated!");
+          // console.log("Document successfully updated!");
           // Close the modal and refresh the page or data view
           document.getElementById("editEventModal").style.display = "none";
         })
         .catch((error) => {
-          console.error("Error updating document: ", error);
+          // console.error("Error updating document: ", error);
         });
     });
 
@@ -788,7 +905,7 @@ function attachSaveEventListeners() {
       const currentUserId = currentUser.uid;
       const eventId = button.getAttribute("data-event-id"); // Ensure your button elements have a data-event-id attribute
 
-      console.log("currentUserId eventid ", currentUserId, eventId);
+      // console.log("currentUserId eventid ", currentUserId, eventId);
 
       // Reference to the event document
       const eventRef = db.collection("events").doc(eventId);
@@ -807,12 +924,12 @@ function attachSaveEventListeners() {
           } else {
             // Add user to bookmark list
             bookmarkUsers.push(currentUserId);
-            console.log("PUSHED USRE TO BOOKMAKR USERS");
+            // console.log("PUSHED USRE TO BOOKMAKR USERS");
             transaction.update(eventRef, { bookmark_users: bookmarkUsers });
           }
         });
       }).catch((error) => {
-        console.error("Transaction failed: ", error);
+        // console.error("Transaction failed: ", error);
         alert("Failed to bookmark/unbookmark. Please try again.");
       });
     });
@@ -828,7 +945,7 @@ function attachSaveEventListeners() {
       const currentUserId = currentUser.uid;
       const eventId = this.getAttribute("data-event-id"); // Ensure your event elements have a data-event-id attribute
 
-      console.log("currentUserId eventid ", currentUserId, eventId);
+      // console.log("currentUserId eventid ", currentUserId, eventId);
 
       // Reference to the event document
       const eventRef = db.collection("events").doc(eventId);
@@ -857,7 +974,7 @@ function attachSaveEventListeners() {
           }
         });
       }).catch((error) => {
-        console.error("Transaction failed: ", error);
+        // console.error("Transaction failed: ", error);
         alert("Failed to register/unregister. Please try again.");
       });
     });
@@ -1100,11 +1217,11 @@ function showAdminEventDetailsModal(eventId) {
         populateAdminEventModal(eventData);
         toggleAdminModal("adminEventDetailsModal", true);
       } else {
-        console.error("No such event!");
+        // console.error("No such event!");
       }
     })
     .catch((error) => {
-      console.error("Error getting event:", error);
+      // console.error("Error getting event:", error);
     });
 }
 
@@ -1170,7 +1287,7 @@ function attachButtonListeners() {
           .get()
           .then((doc) => {
             if (!doc.exists) {
-              console.error("No such event exists!");
+              // console.error("No such event exists!");
               return;
             }
             const ownerId = doc.data().ownerId; // Assume ownerId is stored in each event
@@ -1180,7 +1297,7 @@ function attachButtonListeners() {
               .doc(eventId)
               .update({ event_status: newStatus })
               .then(() => {
-                console.log(`Event status updated to ${newStatus}`);
+                // console.log(`Event status updated to ${newStatus}`);
                 button.textContent = newStatus;
 
                 // Fetch user and update their notifications
@@ -1202,22 +1319,22 @@ function attachButtonListeners() {
                   });
                 })
                   .then(() => {
-                    console.log("User notification updated successfully.");
+                    // console.log("User notification updated successfully.");
                   })
                   .catch((error) => {
                     // console.error("Transaction failed: ", error);
                   });
 
                 // Debugging: Check newStatus value
-                console.log("New Status:", newStatus);
+                // console.log("New Status:", newStatus);
 
                 // If the event is approved, assign a room based on location and capacity
                 if (newStatus === "Approved") {
                   const eventLocation = doc.data().location;
-                  console.log("Event Location:", eventLocation); // Debugging line
+                  // console.log("Event Location:", eventLocation); // Debugging line
                   // Convert eventCapacity to a number using parseInt or parseFloat
                   const eventCapacity = parseInt(doc.data().event_capacity, 10);
-                  console.log("Event Capacity:", eventCapacity); // Debugging line
+                  // console.log("Event Capacity:", eventCapacity); // Debugging line
 
                   // Query the rooms collection for available rooms matching location and capacity
                   db.collection("rooms")
@@ -1237,31 +1354,31 @@ function attachButtonListeners() {
                           .doc(eventId)
                           .update({ room: roomNumber })
                           .then(() => {
-                            console.log(
-                              `Room assigned to event: ${roomNumber}`
-                            );
+                            // console.log(
+                            //   `Room assigned to event: ${roomNumber}`
+                            // );
                           })
                           .catch((error) => {
-                            console.error(
-                              "Error assigning room to event: ",
-                              error
-                            );
+                            // console.error(
+                            //   "Error assigning room to event: ",
+                            //   error
+                            // );
                           });
                       } else {
-                        console.log("No available rooms matching criteria.");
+                        // console.log("No available rooms matching criteria.");
                       }
                     })
                     .catch((error) => {
-                      console.error("Error fetching rooms: ", error);
+                      // console.error("Error fetching rooms: ", error);
                     });
                 }
               })
               .catch((error) => {
-                console.error("Error updating event status: ", error);
+                // console.error("Error updating event status: ", error);
               });
           })
           .catch((error) => {
-            console.error("Error fetching event details: ", error);
+            // console.error("Error fetching event details: ", error);
           });
       });
     });
@@ -1272,16 +1389,16 @@ firebase.auth().onAuthStateChanged((user) => {
   const lastAuthState = sessionStorage.getItem("isLoggedIn") === "true";
 
   if (user && !lastAuthState) {
-    console.log("User has just signed in", user);
+    // console.log("User has just signed in", user);
     sessionStorage.setItem("isLoggedIn", "true");
     window.location.reload();
   } else if (!user && lastAuthState) {
-    console.log("User has just signed out");
+    // console.log("User has just signed out");
     sessionStorage.setItem("isLoggedIn", "false");
     window.location.reload();
   } else {
     // Update the current state but do not reload
-    console.log("No change in auth state");
+    // console.log("No change in auth state");
     sessionStorage.setItem("isLoggedIn", user ? "true" : "false");
   }
 });
@@ -1411,7 +1528,7 @@ show_register_events();
 // calendar functions
 function call_events(currentyear, currentmonth) {
   function fetchApprovedEvents() {
-    console.log("Fetching events from Firestore...", currentyear, currentmonth);
+    // console.log("Fetching events from Firestore...", currentyear, currentmonth);
     db.collection("events")
       .where("event_status", "==", "Approved")
       .get()
@@ -1432,22 +1549,48 @@ function call_events(currentyear, currentmonth) {
           event_name: event.event_name,
         }));
 
-        console.log("approved_calendar_events", approved_calendar_events);
+        // console.log("approved_calendar_events", approved_calendar_events);
 
         // Generate the calendar here
-        console.log("calling ", currentmonth, currentyear);
+        // console.log("calling ", currentmonth, currentyear);
         generateCalendar(currentmonth, currentyear);
       })
       .catch((error) => {
-        console.error("Error fetching events: ", error);
+        // console.error("Error fetching events: ", error);
       });
   }
 
   // Call fetchApprovedEvents on document ready
   fetchApprovedEvents();
 
+  function updateNotificationsArray(userId, message) {
+    const userRef = db.collection("users").doc(userId);
+    db.runTransaction((transaction) => {
+      return transaction.get(userRef).then((userDoc) => {
+        if (!userDoc.exists) {
+          throw "User does not exist!";
+        }
+
+        // Get the current array of notifications (or initialize if it doesn't exist)
+        let notifications = userDoc.data().notifications || [];
+        notifications.push(message);
+
+        // Update the document
+        transaction.update(userRef, { notifications: notifications });
+      });
+    })
+      .then(() => {
+        // console.log("Notification added to user.");
+        showNotification(message); // This could also show a notification on the admin's side
+      })
+      .catch((error) => {
+        // console.error("Transaction failed: ", error);
+        showNotification("Failed to update notifications.");
+      });
+  }
+
   function generateCalendar(month, year) {
-    console.log("Generating month, year:", month, year);
+    // console.log("Generating month, year:", month, year);
     const calendarContainer = document.getElementById("calendar");
     calendarContainer.innerHTML = ""; // Clear existing calendar entries
 
@@ -1456,7 +1599,7 @@ function call_events(currentyear, currentmonth) {
 
     // Ensure we have a valid approvedEvents array loaded
     if (!approved_calendar_events) {
-      console.error("No approved events available");
+      // console.error("No approved events available");
       return;
     }
 
@@ -1504,6 +1647,6 @@ function call_events(currentyear, currentmonth) {
 
 let today = new Date();
 // generateCalendar(today.getMonth(), today.getFullYear());
-console.log("GOSSIP", today.getMonth(), today.getFullYear());
+// console.log("GOSSIP", today.getMonth(), today.getFullYear());
 
 call_events(today.getFullYear(), today.getMonth());
