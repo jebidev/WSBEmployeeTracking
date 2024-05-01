@@ -388,29 +388,49 @@ document
 // Function to handle employer registration
 document
   .getElementById("create_employer_account")
-  .addEventListener("click", function () {
+  .addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
     const email = document.getElementById("registration_email").value;
     const password = document.getElementById("registration_password").value;
-    var companyName = document.getElementById("company_name").value;
-    var companyLogo = document.getElementById("company_logo").files[0]; // Assuming you handle file uploads separately
+    const companyName = document.getElementById("company_name").value;
+    const companyLogoFile = document.getElementById("company_logo").files[0]; // Get the file
 
-    db.collection("users")
-      .add({
-        companyName: companyName,
-        companyLogoUrl: companyLogo,
-        userType: "employer",
-        email: document.getElementById("registration_email").value,
-        notifcations: [],
-      })
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        registerAccount(email, password, () =>
-          closeModal(registrationModalAdmin)
-        );
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
+    if (companyLogoFile) {
+      const storageRef = firebase.storage().ref();
+      const logoRef = storageRef.child("company_logos/" + companyLogoFile.name);
+
+      // Upload the file
+      logoRef
+        .put(companyLogoFile)
+        .then((snapshot) => {
+          return snapshot.ref.getDownloadURL(); // Get the download URL after upload
+        })
+        .then((downloadURL) => {
+          console.log("File available at", downloadURL);
+
+          // Add employer info to Firestore with the download URL
+          return firebase.firestore().collection("users").add({
+            companyName: companyName,
+            companyLogoUrl: downloadURL,
+            userType: "employer",
+            email: email,
+            notifications: [],
+          });
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          registerAccount(email, password, () =>
+            closeModal(registrationModalAdmin)
+          );
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+          displayWarning("regiswarning_employer", "Error: " + error.message);
+        });
+    } else {
+      console.error("No file selected for upload");
+      displayWarning("regiswarning_employer", "No file selected for upload.");
+    }
   });
 
 // Function to handle admin registration
