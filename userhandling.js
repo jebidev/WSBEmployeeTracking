@@ -235,7 +235,6 @@ document.addEventListener("DOMContentLoaded", function () {
           .set(newData)
           .then(() => {
             console.log("User data stored in Firestore.");
-            alert("it worked!");
             //closeModalCallback();
           })
           .catch((error) => {
@@ -381,149 +380,107 @@ document.addEventListener("DOMContentLoaded", function () {
       sign_in_button.classList.add("is-hidden");
       sign_up_button.classList.add("is-hidden");
       sign_out_button.classList.remove("is-hidden");
-      // Fetch user details from Firestore
-      const db = firebase.firestore();
-      db.collection("users")
-        .doc(user.uid)
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            const userData = doc.data();
-            let welcomeMessage = `You are signed in as ${
-              userData.firstName + " " + userData.lastName
-            }`;
+      // // Fetch user details from Firestore
+      // const db = firebase.firestore();
+      // db.collection("users")
+      //   .doc(user.uid)
+      //   .get()
+      //   .then((doc) => {
+      //     if (doc.exists) {
+      //       const userData = doc.data();
+      //       let welcomeMessage = `You are signed in as ${
+      //         userData.firstName + " " + userData.lastName
+      //       }`;
 
-            // Display welcome message in the user_welcome div
-            document.getElementById("user_welcome").textContent =
-              welcomeMessage;
-          } else {
-            // console.log("No additional user data found.");
-            document.getElementById("user_welcome").textContent = "Welcome!";
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          document.getElementById("user_welcome").textContent = "Welcome!";
-        });
+      //       // Display welcome message in the user_welcome div
+      //       document.getElementById("user_welcome").textContent =
+      //         welcomeMessage;
+      //     } else {
+      //       // console.log("No additional user data found.");
+      //       document.getElementById("user_welcome").textContent = "Error fetching sign in details";
+      //     }
+      //   })
     } else {
       // No user is signed in.
-      const registrationNavItem = document.getElementById(
-        "registrationNavItem"
-      );
-      const eventsAdminNavItem = document.getElementById(
-        "EventsRegisterNavItem"
-      );
       console.log("No user is logged in");
       sign_in_button.classList.remove("is-hidden");
       sign_up_button.classList.remove("is-hidden");
       sign_out_button.classList.add("is-hidden");
-      registrationNavItem.style.display = "none";
-      eventsAdminNavItem.style.display = "none";
     }
   });
+});
 
-  // Configuring the message bar
-  firebase.auth().onAuthStateChanged(function (user) {
-    const registrationNavItem = document.getElementById("registrationNavItem");
-    const eventsAdminNavItem = document.getElementById("EventsRegisterNavItem");
+// firebase.auth().onAuthStateChanged(function (user) {
+//   if (user) {
+//       // Fetch user details from Firestore
+//       const db = firebase.firestore();
+//       db.collection("users").doc(user.uid).get().then((doc) => {
+//           if (doc.exists) {
+//               const userData = doc.data();
+//               adjustNavItemsForRole(userData.userType);
+//           } else {
+//               console.log("No user data available");
+//           }
+//       });
+//   }
+// });
+
+// function adjustNavItemsForRole(userType) {
+//   const registrationNavItem = document.getElementById('registrationNavItem');
+//   const eventsRegisterNavItem = document.getElementById('EventsRegisterNavItem');
+
+//   // Hide both initially
+//   registrationNavItem.classList.add('is-hidden');
+//   eventsRegisterNavItem.classList.add('is-hidden');
+
+//   if (userType === 'employer') {
+//       registrationNavItem.classList.remove('is-hidden');
+//   } else if (userType === 'admin') {
+//       registrationNavItem.classList.remove('is-hidden');
+//       eventsRegisterNavItem.classList.remove('is-hidden');
+//   }
+// }
+
+document.addEventListener("DOMContentLoaded", function() {
+  firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      // User is signed in.
       // Fetch user details from Firestore
       const db = firebase.firestore();
-      db.collection("users")
-        .doc(user.uid)
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            const userData = doc.data();
-            if (userData.userType === "admin") {
-              registrationNavItem.style.display = ""; // Show for admins
-              eventsAdminNavItem.style.display = ""; // Show for admins
-              let welcomeMessage = `Welcome ${
-                userData.firstName + " " + userData.lastName
-              }!`;
-              configure_message_bar(welcomeMessage);
-            } else if (userData.userType === "employer") {
-              // Hide all restricted elements for other user types
-              registrationNavItem.style.display = "";
-              eventsAdminNavItem.style.display = "none";
-            }
-            let welcomeMessage = `Welcome ${userData.companyName}!`;
-            configure_message_bar(welcomeMessage);
-          } else {
-            // console.log("No additional user data found.");
-            configure_message_bar("Welcome!");
-            registrationNavItem.style.display = "none";
-            eventsAdminNavItem.style.display = "none";
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          // configure_message_bar(
-          //   "Error retrieving user details. Please try again later."
-          // );
-        });
+      db.collection("users").doc(user.uid).get().then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          adjustNavItemsForRole(userData.userType);
+        } else {
+          console.log("No user data available");
+        }
+      });
     } else {
-      // No user is signed in.
-      configure_message_bar("Please sign in or register");
+      // Handle non-logged in users
+      adjustNavItemsForRole(null);
     }
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    // Hide all restricted elements initially
-    const registrationNavItem = document.getElementById("registrationNavItem");
-    const eventsAdminNavItem = document.getElementById("EventsRegisterNavItem");
-    registrationNavItem.style.display = "none";
-    eventsAdminNavItem.style.display = "none";
+  function adjustNavItemsForRole(userType) {
+    const registrationNavItem = document.getElementById('registrationNavItem');
+    const EventsRegisterNavItem = document.getElementById('EventsRegisterNavItem');
 
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        // User is signed in.
-        sign_in_button.classList.add("is-hidden");
-        sign_up_button.classList.add("is-hidden");
-        sign_out_button.classList.remove("is-hidden");
+    // Hide both initially using "is-hidden" for compatibility
+    registrationNavItem.classList.add('is-hidden');
+    EventsRegisterNavItem.classList.add('is-hidden');
 
-        const db = firebase.firestore();
-        db.collection("users")
-          .doc(user.uid)
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              const userData = doc.data();
-              console.log(userData.userType);
-              updateUIForUser(userData);
-            } else {
-              console.log("No user data available");
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          });
-      } else {
-        // No user is signed in.
-        console.log("No user is logged in");
-        sign_in_button.classList.remove("is-hidden");
-        sign_up_button.classList.remove("is-hidden");
-        sign_out_button.classList.add("is-hidden");
-      }
-    });
+    // Remove "is-active" to ensure elements are not interactable
+    registrationNavItem.classList.remove('is-active');
+    EventsRegisterNavItem.classList.remove('is-active');
 
-    function updateUIForUser(userData) {
-      let welcomeMessage = `Welcome ${
-        userData.firstName + " " + userData.lastName
-      }!`;
-      document.getElementById("user_welcome").textContent = welcomeMessage;
-
-      // Adjust visibility based on user role
-      switch (userData.userType) {
-        case "admin":
-          registrationNavItem.style.display = ""; // Show for admins
-          eventsAdminNavItem.style.display = ""; // Show for admins
-          break;
-        case "employer":
-          registrationNavItem.style.display = ""; // Show for employers
-          break;
-      }
+    if (userType === 'employer') {
+      registrationNavItem.classList.remove('is-hidden');
+      registrationNavItem.classList.add('is-active');
+    } else if (userType === 'admin') {
+      registrationNavItem.classList.remove('is-hidden');
+      EventsRegisterNavItem.classList.remove('is-hidden');
+      registrationNavItem.classList.add('is-active');
+      EventsRegisterNavItem.classList.add('is-active');
     }
-  });
+    // Non-logged in users and students do not see these items
+  }
 });
