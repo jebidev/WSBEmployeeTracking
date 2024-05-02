@@ -484,3 +484,48 @@ document.addEventListener("DOMContentLoaded", function() {
     // Non-logged in users and students do not see these items
   }
 });
+// configure_message_bar("I hate my life");
+
+// document.addEventListener("DOMContentLoaded", function() {
+//   firebase.auth().onAuthStateChanged(function(user) {
+//     if (user) {
+//       // Fetch user details from Firestore
+//       const db = firebase.firestore();
+//       db.collection("users").doc(user.uid).get().then((doc) => {
+//         if (doc.exists) {
+//           const userData = doc.data();
+//         } else {
+//           configure_message_bar("You fucking suck");
+//         }
+//       });
+//     } else {
+//       // Handle non-logged in users
+//       adjustNavItemsForRole(null);
+//     }
+//   });
+// });
+document.addEventListener("DOMContentLoaded", function() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // Fetch user details from Firestore
+      const db = firebase.firestore();
+      db.collection("users").doc(user.uid).get().then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          let message = "";
+          if (userData.userType === "employer") {
+            message = `Welcome! You are signed in as ${userData.companyName}`;
+          } else if (userData.userType === "admin" || userData.userType === "student") {
+            message = `Welcome! You are signed in as ${userData.firstName} ${userData.lastName}`;
+          }
+          configure_message_bar(message);
+        } else {
+          console.log("No user data available");
+          configure_message_bar("User data not found. Please ensure your profile is complete.");
+        }
+      });
+    } else {
+      configure_message_bar("Please log in to continue.");
+    }
+  });
+});
