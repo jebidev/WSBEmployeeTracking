@@ -521,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function() {
           configure_message_bar(message);
         } else {
           console.log("No user data available");
-          configure_message_bar("User data not found. Please ensure your profile is complete.");
+          configure_message_bar("Welcome!");
         }
       });
     } else {
