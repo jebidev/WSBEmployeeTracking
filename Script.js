@@ -745,9 +745,10 @@ function generateEventBoxHtml(eventDoc) {
             companyLogoUrl
           );
         }
-      } else {
-        console.error("User document does not exist");
-      }
+      } 
+      // else {
+      //   console.error("User document does not exist");
+      // }
     })
     .catch((error) => {
       console.error("Failed to fetch user data:", error);
